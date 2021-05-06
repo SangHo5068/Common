@@ -140,8 +140,8 @@
     <Compile Include="Base\BaseUserControl.cs" />
     <Compile Include="Container\Events\DelegateReference.cs" />
     <Compile Include="Container\Events\PubSubEvent.cs" />
-    <Compile Include="Base\Interface\IControlView.cs" />
-    <Compile Include="Base\Interface\IModule.cs" />
+    <Compile Include="Models\IControlView.cs" />
+    <Compile Include="Models\IModule.cs" />
     <Compile Include="Command\AsyncCommand.cs" />
     <Compile Include="Command\EventToCommand.cs" />
     <Compile Include="Command\ExtendedActionCommand.cs" />

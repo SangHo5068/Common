@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-using Common.Base;
+using Common.Models;
 
 namespace Common.Views
 {

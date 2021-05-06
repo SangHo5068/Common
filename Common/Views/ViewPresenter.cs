@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
 
-using Common.Base;
+using Common.Models;
 
 namespace Common.Views
 {

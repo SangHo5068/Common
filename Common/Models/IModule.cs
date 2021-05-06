@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 
-using Common.Models;
-
-namespace Common.Base
+namespace Common.Models
 {
     public interface IModule : IDisposable, ISupportInitialize
     {

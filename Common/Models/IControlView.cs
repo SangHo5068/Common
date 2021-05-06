@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Common.Base
+namespace Common.Models
 {
     public interface IControlView
     {

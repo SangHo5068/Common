@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Input;
 
 using Common.Command;
+using Common.Models;
 using Common.Utilities;
 
 namespace Common.Base
