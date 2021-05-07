@@ -89,6 +89,7 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -138,6 +139,7 @@
     <Compile Include="Base\BaseControlViewModel.cs" />
     <Compile Include="Base\BaseMainControlViewModel.cs" />
     <Compile Include="Base\BaseUserControl.cs" />
+    <Compile Include="Bootstrapper.cs" />
     <Compile Include="Container\Events\DelegateReference.cs" />
     <Compile Include="Container\Events\PubSubEvent.cs" />
     <Compile Include="Models\IControlView.cs" />
@@ -210,9 +212,7 @@
     <Compile Include="Views\ViewsManager.cs" />
     <Compile Include="Views\WindowRoot.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\Images\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Page Include="Controls\UpDownControls\NumericUpDown.xaml">
       <SubType>Designer</SubType>
@@ -247,6 +247,15 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\key_black_18dp.png" />
+    <Resource Include="Resources\Images\Logout.png" />
+    <Resource Include="Resources\Images\logout_black_18dp.png" />
+    <Resource Include="Resources\Images\person_black_18dp.png" />
+    <Resource Include="Resources\Images\pw_hide.png" />
+    <Resource Include="Resources\Images\pw_show.png" />
+    <Resource Include="Resources\Images\search_black_18dp.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

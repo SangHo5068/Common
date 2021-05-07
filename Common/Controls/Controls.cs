@@ -4,10 +4,54 @@ using System.Globalization;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 
 namespace Common.Controls
 {
+    #region Button
+    public class CommonButton : Button { }
+    public class PopupCommonButton : Button { }
+
+    public class WindowMinButton : Button { }
+    public class WindowMaxButton : Button { }
+    public class WindowCloseButton : Button { }
+
+    public class LogoutButton : Button { }
+    public class RadiusButton : Button
+    {
+        #region DependencyProperty
+        public static DependencyProperty CornerRadiusProperty = DependencyProperty.Register(nameof(CornerRadius), typeof(CornerRadius), typeof(RadiusButton), new PropertyMetadata(null));
+        #endregion //DependencyProperty
+
+        #region Property
+
+        #region CornerRadius
+        /// <summary>
+        /// CornerRadius
+        /// </summary>
+        public CornerRadius CornerRadius
+        {
+            get { return (CornerRadius)GetValue(CornerRadiusProperty); }
+            set { SetValue(CornerRadiusProperty, value); }
+        }
+        #endregion //CornerRadius
+
+        #endregion //Property
+    }
+    public class RemoveTextButton : Button
+    {
+        /// <summary>
+        /// Initializes the <see cref="CrossButton"/> class.
+        /// </summary>
+        static RemoveTextButton()
+        {
+            //  Set the style key, so that our control template is used.
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(RemoveTextButton), new FrameworkPropertyMetadata(typeof(RemoveTextButton)));
+        }
+    }
+    #endregion //Button
+
     #region MessageBox
     public class MessageGrid : Grid { }
     public class MessagePanel : StackPanel { }
@@ -21,6 +65,68 @@ namespace Common.Controls
     public class VerticalPanel : StackPanel { }
     public class RightPanel : StackPanel { }
     #endregion //Panels
+
+    #region PasswordBox
+    public class WaterMarkPassword : ContentControl
+    {
+        private const string PART_Remove = "PART_Remove";
+        private Button _Remove;
+
+        #region DependencyProperty
+        public static DependencyProperty WaterMarkProperty = DependencyProperty.Register(nameof(WaterMark), typeof(String), typeof(WaterMarkPassword), new PropertyMetadata(null));
+        public static DependencyProperty PasswordProperty = DependencyProperty.Register(nameof(Password), typeof(String), typeof(WaterMarkPassword), new PropertyMetadata(null));
+        public static DependencyProperty PasswordCharProperty = DependencyProperty.Register(nameof(PasswordChar), typeof(char), typeof(WaterMarkPassword), new PropertyMetadata(null));
+        #endregion //DependencyProperty
+
+        #region Property
+
+        #region WaterMark
+        /// <summary>
+        /// TextBox 에 보여지는 WaterMark
+        /// </summary>
+        public String WaterMark
+        {
+            get { return (String)GetValue(WaterMarkProperty); }
+            set { SetValue(WaterMarkProperty, value); }
+        }
+        #endregion //WaterMark
+
+        #region Password
+        /// <summary>
+        /// TextBox 에 보여지는 WaterMark
+        /// </summary>
+        public String Password
+        {
+            get { return (String)GetValue(PasswordProperty); }
+            set { SetValue(PasswordProperty, value); }
+        }
+        #endregion //WaterMark
+
+        #region PasswordChar
+        /// <summary>
+        /// PasswordChar
+        /// </summary>
+        public char PasswordChar
+        {
+            get { return (char)GetValue(PasswordCharProperty); }
+            set { SetValue(PasswordCharProperty, value); }
+        }
+        #endregion //PasswordChar
+
+        #endregion //Property
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            if (GetTemplateChild(PART_Remove) is Button btn)
+            {
+                _Remove = btn;
+                _Remove.Click += (s, e) => { this.Password = string.Empty; };
+            }
+        }
+    }
+    #endregion //PasswordBox
 
     #region TextBlock
     /// <summary>
@@ -129,12 +235,78 @@ namespace Common.Controls
     public class PopupTextBlockHeader : TextBlockEx { }
     #endregion //TextBlock
 
-    #region Button
-    public class CommonButton : Button { }
-    public class PopupCommonButton : Button { }
+    #region TextBox
+    public class PopupTextBox : TextBox { }
+    /// <summary>
+    /// Watermark TextBox
+    /// </summary>
+    [TemplatePart(Name = PART_WaterMark, Type = typeof(TextBlock))]
+    [TemplatePart(Name = PART_TextBox, Type = typeof(TextBox))]
+    public class WaterMarkTextBox : TextBox
+    {
+        private const string PART_WaterMark = "PART_WaterMark";
+        private const string PART_TextBox = "PART_TextBox";
+        private const string PART_Remove = "PART_Remove";
+        private TextBlock _WaterMarkTextBlock;
+        private TextBox _TextBox;
+        private Button _Remove;
 
-    public class WindowMinButton : Button { }
-    public class WindowMaxButton : Button { }
-    public class WindowCloseButton : Button { }
-    #endregion //Button
+        #region DependencyProperty
+        public static DependencyProperty WaterMarkProperty = DependencyProperty.Register(nameof(WaterMark), typeof(String), typeof(WaterMarkTextBox), new PropertyMetadata(null));
+        public static DependencyProperty IsEnabledRemoveProperty = DependencyProperty.Register(nameof(IsEnabledRemove), typeof(Boolean), typeof(WaterMarkTextBox), new PropertyMetadata(true));
+        #endregion //DependencyProperty
+
+        #region Property
+
+        #region WaterMark
+        /// <summary>
+        /// TextBox 에 보여지는 WaterMark
+        /// </summary>
+        public String WaterMark
+        {
+            get { return (String)GetValue(WaterMarkProperty); }
+            set { SetValue(WaterMarkProperty, value); }
+        }
+        #endregion //WaterMark
+
+        #region IsEnabledRemove
+        /// <summary>
+        /// 텍스트 삭제 버튼 표시 여부
+        /// </summary>
+        public Boolean IsEnabledRemove
+        {
+            get { return (Boolean)GetValue(IsEnabledRemoveProperty); }
+            set { SetValue(IsEnabledRemoveProperty, value); }
+        }
+        #endregion //WaterMark
+
+        #endregion //Property
+
+
+        public WaterMarkTextBox()
+            : base()
+        {
+        }
+
+
+        #region Override
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            _WaterMarkTextBlock = GetTemplateChild(PART_WaterMark) as TextBlock;
+            _TextBox = GetTemplateChild(PART_TextBox) as TextBox;
+            if (GetTemplateChild(PART_Remove) is Button btn)
+            {
+                _Remove = btn;
+                _Remove.Click += (s, e) => { this.Text = string.Empty; };
+            }
+        }
+        #endregion //Override
+    }
+    #endregion //TextBox
+
+    #region Toggle
+    public class EyeToggleButton : ToggleButton { }
+    #endregion //Toggle
 }

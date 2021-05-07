@@ -1,7 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
                     xmlns:converter="clr-namespace:Common.Converters"
                     xmlns:ctrl="clr-namespace:Common.Controls"
+                    xmlns:util="clr-namespace:Common.Utilities"
                     xmlns:view="clr-namespace:Common.Views">
 
     <!--#region Converter-->
@@ -17,6 +19,7 @@
     <converter:StringToImageConverter                 x:Key="StringToImageConverter"/>
     <converter:StringToDoubleConverter                x:Key="StringToDoubleConverter"/>
     <converter:SubtractionConverter                   x:Key="SubtractionConverter"/>
+    <converter:TextInputToVisibilityConverter         x:Key="TextInputToVisibilityConverter"/>
     <converter:WidthConverter                         x:Key="WidthConverter"/>
     <converter:WaitingMessageConverter                x:Key="WaitingMessageConverter"/>
     <!--#endregion //Converter-->
@@ -92,6 +95,13 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+    <Style TargetType="Button" x:Key="ButtonStyle">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Margin" Value="5,2"/>
+        <Setter Property="Height" Value="24"/>
+        <Setter Property="MinWidth" Value="80"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
     </Style>
     
     <Style TargetType="ctrl:CommonButton" BasedOn="{StaticResource BaseButtonStyle}">
@@ -234,6 +244,143 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="ctrl:LogoutButton">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Foreground" Value="{StaticResource Foreground_Logout}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:LogoutButton}">
+                    <Grid Background="#00000000">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="14"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Image x:Name="normal" Height="14" Source="../Resources/Images/Logout.png" Stretch="Fill" Width="12"/>
+                        <Image x:Name="over" Height="14" Source="../Resources/Images/logout_black_18dp.png" Stretch="Fill" Width="12" Opacity="0"/>
+
+                        <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Margin="2,0,0,0" x:Name="txt" Text="{TemplateBinding Content}" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{TemplateBinding Foreground}" FontFamily="Dotum" FontWeight="Bold" FontSize="{DynamicResource DefaultFontSize}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" TargetName="txt" Value="{DynamicResource Brush.White}"/>
+                            <Setter Property="Opacity" TargetName="over" Value="1"/>
+                            <Setter Property="Opacity" TargetName="normal" Value="0"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Foreground" TargetName="txt" Value="{DynamicResource Brush.White}"/>
+                            <Setter Property="Opacity" TargetName="normal" Value="0"/>
+                            <Setter Property="Opacity" TargetName="over" Value="1"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="#FF838383"/>
+                            <Setter Property="Opacity" TargetName="normal" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ctrl:RadiusButton">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Foreground" Value="{StaticResource Foreground_CommonText}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:RadiusButton}">
+                    <Border CornerRadius="{TemplateBinding CornerRadius}" Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid Background="Transparent">
+                            <TextBlock Margin="0,2,0,0" FontFamily="{StaticResource AppFont}" FontWeight="Bold" FontSize="{DynamicResource DefaultFontSize}"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Text="{TemplateBinding Content}"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <!--<Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" TargetName="txt" Value="{DynamicResource Brush.White}"/>
+                        </Trigger>-->
+                        <!--<Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Foreground" TargetName="txt" Value="{DynamicResource Brush.White}"/>
+                        </Trigger>-->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Disabled}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ctrl:RemoveTextButton">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Foreground" Value="{StaticResource Foreground_Logout}"/>
+        <!-- The control template. -->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:RemoveTextButton}">
+                    <Grid Background="Transparent">
+                        <!-- The background of the button, as an ellipse. -->
+                        <Ellipse x:Name="backgroundEllipse" />
+
+                        <!-- A path that renders a cross. -->
+                        <Path x:Name="ButtonPath"
+                              Margin="3"
+                              Stroke="{StaticResource TabItemCloseButtonNormalForegroundBrush}"
+                              StrokeThickness="1.5"
+                              StrokeStartLineCap="Square"
+                              StrokeEndLineCap="Square"
+                              Stretch="Uniform"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center">
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathGeometry.Figures>
+                                        <PathFigure StartPoint="0,0">
+                                            <LineSegment Point="25,25"/>
+                                        </PathFigure>
+                                        <PathFigure StartPoint="0,25">
+                                            <LineSegment Point="25,0"/>
+                                        </PathFigure>
+                                    </PathGeometry.Figures>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+                    </Grid>
+
+                    <!-- The triggers. -->
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="backgroundEllipse" Property="Fill"
+                                    Value="{StaticResource TabItemCloseButtonHoverBackgroundBrush}" />
+                            <Setter TargetName="ButtonPath" Property="Stroke" 
+                                    Value="{StaticResource TabItemCloseButtonHoverForegroundBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter TargetName="backgroundEllipse" Property="Fill"
+                                    Value="{StaticResource TabItemCloseButtonPressedBackgroundBrush}" />
+                            <Setter TargetName="backgroundEllipse" Property="Stroke"
+                                    Value="{StaticResource TabItemCloseButtonPressedBorderBrush}" />
+                            <Setter TargetName="ButtonPath" Property="Stroke" 
+                                    Value="{StaticResource TabItemCloseButtonPressedForegroundBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <!--#endregion //Button-->
 
 
@@ -312,43 +459,6 @@
     </DataTemplate>
     <!--#endregion //List GridView-->
 
-    <!--#region TextBlock-->
-    <Style TargetType="TextBlock" x:Key="TextBased">
-        <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
-        <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
-        <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="TextWrapping" Value="NoWrap"/>
-        <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="{DynamicResource Foreground_Disabled}"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBased}" x:Key="PopupTextBlockStyle">
-        <Setter Property="Foreground" Value="{DynamicResource Foreground_CommonText}"/>
-        <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
-        <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="Margin" Value="0,8,0,0"/>
-        <Setter Property="LineHeight" Value="20"/>
-    </Style>
-    
-    <Style TargetType="ctrl:PopupTextBlockHeader">
-        <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="Foreground" Value="{DynamicResource Brush.White}"/>
-        <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
-        <Setter Property="Margin" Value="15,1,0,0"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-    </Style>
-    <Style TargetType="ctrl:PopupTextBlockHeader" x:Key="PopupTextBlockHeaderStyle">
-        <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="Foreground" Value="{DynamicResource Brush.White}"/>
-        <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
-        <Setter Property="Margin" Value="15,1,0,0"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-    </Style>
-    <!--#endregion //TextBlock-->
-
     <!--#region Panel-->
     <Style TargetType="ctrl:PopupBottomPanel">
         <Setter Property="Orientation" Value="Horizontal"/>
@@ -381,6 +491,282 @@
         <Setter Property="Margin" Value="0,0,10,0"/>
     </Style>
     <!--#endregion-->
+
+    <!--#region PasswordBox-->
+    <Style TargetType="PasswordBox">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}" />
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="PasswordChar" Value="●"/>
+        <Setter Property="Height" Value="24"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type PasswordBox}">
+                    <Border BorderThickness="1" BorderBrush="{StaticResource Brush_PopupCommon}">
+                        <Microsoft_Windows_Themes:ListBoxChrome x:Name="Bd" BorderThickness="0"
+                                                            RenderMouseOver="{TemplateBinding IsMouseOver}" RenderFocused="{TemplateBinding IsKeyboardFocusWithin}" SnapsToDevicePixels="true">
+                            <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </Microsoft_Windows_Themes:ListBoxChrome>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="true">
+                <Setter Property="ToolTip" Value="{Binding (Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Self}}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="PasswordBox" x:Key="BasePassWord">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}" />
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="PasswordChar" Value="●"/>
+        <Setter Property="Height" Value="24"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type PasswordBox}">
+                    <Border BorderThickness="1" BorderBrush="{StaticResource Brush_PopupCommon}">
+                        <Microsoft_Windows_Themes:ListBoxChrome x:Name="Bd" BorderThickness="0"
+                                                            RenderMouseOver="{TemplateBinding IsMouseOver}" RenderFocused="{TemplateBinding IsKeyboardFocusWithin}" SnapsToDevicePixels="true">
+                            <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </Microsoft_Windows_Themes:ListBoxChrome>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="true">
+                <Setter Property="ToolTip" Value="{Binding (Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Self}}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="ctrl:WaterMarkPassword">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}" />
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="PasswordChar" Value="●"/>
+        <Setter Property="Height" Value="24"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:WaterMarkPassword}">
+                    <Border BorderBrush="{StaticResource Brush_PopupCommon}">
+                        <Grid>
+                            <TextBlock x:Name="PART_WaterMark"
+                                       Text="{TemplateBinding WaterMark}"
+                                       Margin="5,6,0,0"
+                                       VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                                       FontFamily="{StaticResource AppFont}"
+                                       FontSize="12"
+                                       Visibility="{Binding Path=IsChecked, ElementName=xEyeToggle, Converter={StaticResource BooleanToVisibilityInvertConverter}, ConverterParameter=false}"
+                                       Foreground="{Binding Path=Foreground, ElementName=xWaterMarkTextBox}"
+                                       Width="{Binding ElementName=xPasswordBox, Path=ActualWidth}"
+                                       Height="{Binding ElementName=xPasswordBox, Path=ActualHeight}"/>
+                            <PasswordBox x:Name="PART_PasswordBox" MinWidth="120" HorizontalAlignment="Stretch"
+                                         PasswordChar="{TemplateBinding PasswordChar}"
+                                         Visibility="{Binding Path=IsChecked, ElementName=xEyeToggle, Converter={StaticResource BooleanToVisibilityInvertConverter}, ConverterParameter=false}"
+                                         util:PasswordHelper.Attach="True"
+                                         util:PasswordHelper.Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
+                            <ctrl:WaterMarkTextBox x:Name="xWaterMarkTextBox" WaterMark="{TemplateBinding WaterMark}" Margin="0"
+                                         Visibility="{Binding Path=IsChecked, ElementName=xEyeToggle, Converter={StaticResource BooleanToVisibilityInvertConverter}}"
+                                         Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                         Width="{Binding ElementName=xPasswordBox, Path=ActualWidth}"
+                                         Height="{Binding ElementName=xPasswordBox, Path=ActualHeight}"/>
+
+                            <ctrl:RightPanel Margin="0">
+                                <ctrl:EyeToggleButton x:Name="xEyeToggle" Width="16" Height="16" Margin="0,2,2,2"
+                                                      HorizontalAlignment="Right" VerticalAlignment="Center" />
+                                <ctrl:RemoveTextButton x:Name="PART_Remove" Margin="4" Width="12" Visibility="Collapsed" />
+                            </ctrl:RightPanel>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_Remove" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <DataTrigger  Binding="{Binding Path=IsFocused, ElementName=PART_PasswordBox}" Value="True">
+                            <Setter TargetName="PART_WaterMark" Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=Password, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource StringEmptyToVisibilityConverter}}" Value="Collapsed">
+                            <Setter TargetName="PART_WaterMark" Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="true">
+                <Setter Property="ToolTip" Value="{Binding (Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Self}}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <!--#endregion //PasswordBox-->
+
+    <!--#region ProgressBar-->
+    <Style TargetType="ProgressBar">
+        <Setter Property="Height" Value="32"/>
+        <Setter Property="Margin" Value="10,5"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ProgressBar">
+                    <Border BorderBrush="{DynamicResource Brush_Progress}" BorderThickness="1" CornerRadius="5" Padding="1">
+                        <Grid x:Name="PART_Track">
+                            <Rectangle x:Name="PART_Indicator" HorizontalAlignment="Left" RadiusX="5" RadiusY="5" Fill="{DynamicResource Brush_ProgressFill}"/>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--#endregion //ProgressBar-->
+
+    <!--#region TextBlock-->
+    <Style TargetType="TextBlock" x:Key="TextBased">
+        <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
+        <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource Foreground_Disabled}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="TextBlock" BasedOn="{StaticResource TextBased}" x:Key="PopupTextBlockStyle">
+        <Setter Property="Foreground" Value="{DynamicResource Foreground_CommonText}"/>
+        <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Margin" Value="0,8,0,0"/>
+        <Setter Property="LineHeight" Value="20"/>
+    </Style>
+
+    <Style TargetType="ctrl:PopupTextBlockHeader">
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.White}"/>
+        <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
+        <Setter Property="Margin" Value="15,1,0,0"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style TargetType="ctrl:PopupTextBlockHeader" x:Key="PopupTextBlockHeaderStyle">
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.White}"/>
+        <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
+        <Setter Property="Margin" Value="15,1,0,0"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <!--#endregion //TextBlock-->
+
+    <!--#region TextBox-->
+    <Style TargetType="TextBox">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}" />
+    </Style>
+    <Style TargetType="TextBox" x:Key="BaseTextBoxStyle">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}" />
+    </Style>
+    <Style TargetType="ctrl:PopupTextBox" BasedOn="{StaticResource BaseTextBoxStyle}">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+    <Style TargetType="ctrl:WaterMarkTextBox">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Background" Value="{DynamicResource Background_PopupCommon}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush_PopupCommon}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+        <Setter Property="Height" Value="22"/>
+        <Setter Property="Margin" Value="5,0,0,0"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+        <Setter Property="AllowDrop" Value="True"/>
+        <Setter Property="Foreground" Value="{DynamicResource Foreground_CommonText}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:WaterMarkTextBox}">
+                    <Grid>
+                        <TextBlock x:Name="PART_WaterMark" Text="{TemplateBinding WaterMark}" Margin="5,2"
+                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                   VerticalAlignment="Center">
+                            <TextBlock.Visibility>
+                                <MultiBinding Converter="{StaticResource TextInputToVisibilityConverter}">
+                                    <Binding ElementName="PART_TextBox" Path="Text" />
+                                    <Binding ElementName="PART_TextBox" Path="IsFocused" />
+                                </MultiBinding>
+                            </TextBlock.Visibility>
+                        </TextBlock>
+                        <ctrl:PopupTextBox x:Name="PART_TextBox" Background="Transparent" Width="{TemplateBinding Width}" Margin="0" MaxLength="{TemplateBinding MaxLength}"
+                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                           Text="{Binding Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"/>
+
+                        <ctrl:RemoveTextButton x:Name="PART_Remove" HorizontalAlignment="Right" Margin="4" Width="12" Height="12" Visibility="Collapsed" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="IsEnabledRemove" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_Remove" Property="Visibility" Value="Visible" />
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--#endregion //TextBox-->
+    
+    <!--#region Toggle-->
+    <Style TargetType="ctrl:EyeToggleButton">
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:EyeToggleButton}">
+                    <Grid Width="16" Height="16" Background="Transparent">
+                        <Image x:Name="hide" Width="12" Height="14" Source="../Resources/Images/pw_hide.png" Stretch="Fill"/>
+                        <Image x:Name="show" Width="12" Height="14" Source="../Resources/Images/pw_show.png" Stretch="Fill" Opacity="0"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="hide" Property="Opacity" Value="0"/>
+                            <Setter TargetName="show" Property="Opacity" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--#endregion //Toggle-->
     
     <!--#region UpDownControls-->
     <ctrl:IsCornerCtrlCornerToRadiusConverter x:Key="IsCornerCtrlCornerToRadiusConverter"/>
