@@ -142,6 +142,13 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Container\Events\DelegateReference.cs" />
     <Compile Include="Container\Events\PubSubEvent.cs" />
+    <Compile Include="Controls\ColorPicker\BindOnEnterTextBox.cs" />
+    <Compile Include="Controls\ColorPicker\ColorComboBox.cs" />
+    <Compile Include="Controls\ColorPicker\ColorPicker.cs" />
+    <Compile Include="Controls\ColorPicker\ColorSlider.cs" />
+    <Compile Include="Controls\ColorPicker\ColorUtils.cs" />
+    <Compile Include="Controls\ColorPicker\HsvControl.cs" />
+    <Compile Include="Controls\ColorPicker\SpectrumSlider.cs" />
     <Compile Include="Models\IControlView.cs" />
     <Compile Include="Models\IModule.cs" />
     <Compile Include="Command\AsyncCommand.cs" />
@@ -214,6 +221,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Page Include="Controls\ColorPicker\ColorPicker_Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\UpDownControls\NumericUpDown.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
