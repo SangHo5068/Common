@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>false</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -205,6 +207,7 @@
     <Compile Include="Utilities\FileManager.cs" />
     <Compile Include="Utilities\FindResources.cs" />
     <Compile Include="Utilities\GetMethodInfoStrings.cs" />
+    <Compile Include="Utilities\GitHelper.cs" />
     <Compile Include="Utilities\HashHelper.cs" />
     <Compile Include="Converters\ImageConverter.cs" />
     <Compile Include="Utilities\IpAddressHelper.cs" />
@@ -277,4 +280,11 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\packages\GitInfo.2.1.2\build\GitInfo.targets" Condition="Exists('..\packages\GitInfo.2.1.2\build\GitInfo.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>이 프로젝트는 이 컴퓨터에 없는 NuGet 패키지를 참조합니다. 해당 패키지를 다운로드하려면 NuGet 패키지 복원을 사용하십시오. 자세한 내용은 http://go.microsoft.com/fwlink/?LinkID=322105를 참조하십시오. 누락된 파일은 {0}입니다.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\GitInfo.2.1.2\build\GitInfo.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\GitInfo.2.1.2\build\GitInfo.targets'))" />
+  </Target>
 </Project>

@@ -1,7 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                     xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
                     xmlns:converter="clr-namespace:Common.Converters"
+                    xmlns:command="clr-namespace:Common.Command"
                     xmlns:ctrl="clr-namespace:Common.Controls"
                     xmlns:util="clr-namespace:Common.Utilities"
                     xmlns:view="clr-namespace:Common.Views">
@@ -15,6 +17,7 @@
     <converter:EnumToVisibleConverter                 x:Key="EnumToVisibleConverter"/>
     <converter:EnumToCollapsedConverter               x:Key="EnumToCollapsedConverter"/>
     <converter:EnumToDisplayConverter                 x:Key="EnumToDisplayConverter"/>
+    <converter:ObjectNullToVisibilityConverter        x:Key="ObjectNullToVisibilityConverter"/>
     <converter:StringEmptyToVisibilityConverter       x:Key="StringEmptyToVisibilityConverter"/>
     <converter:StringToImageConverter                 x:Key="StringToImageConverter"/>
     <converter:StringToDoubleConverter                x:Key="StringToDoubleConverter"/>
@@ -23,6 +26,21 @@
     <converter:WidthConverter                         x:Key="WidthConverter"/>
     <converter:WaitingMessageConverter                x:Key="WaitingMessageConverter"/>
     <!--#endregion //Converter-->
+
+    <Color x:Key="Color_White">#FFFFFFFF</Color>
+    <Color x:Key="Color_Black">#FF000000</Color>
+    <Color x:Key="Color_Blue" >#FF0000FF</Color>
+    <Color x:Key="Color_Red"  >#FFFF0000</Color>
+    <Color x:Key="Color_Gray" >#FF00FFFF</Color>
+    <Color x:Key="Color_Waiting">#66000000</Color>
+
+    <SolidColorBrush x:Key="Brush.White" Color="{StaticResource Color_White}"/>
+    <SolidColorBrush x:Key="Brush.Black" Color="{StaticResource Color_Black}"/>
+    <SolidColorBrush x:Key="Brush.Blue"  Color="{StaticResource Color_Blue}"/>
+    <SolidColorBrush x:Key="Brush.Red"   Color="{StaticResource Color_Red}"/>
+
+    <SolidColorBrush x:Key="Background_Main" Color="{StaticResource Color_White}"/>
+    <SolidColorBrush x:Key="Background_MainBorder" Color="#FF203355"/>
 
     <!--#region FocusVisual-->
     <Style x:Key="ButtonFocusVisual">
@@ -62,6 +80,180 @@
         </Setter>
     </Style>
     <!--#endregion //FocusVisual-->
+
+    <!--#region WindowStyle-->
+    <Style TargetType="Window" x:Key="StartAppWindowStyle">
+        <Setter Property="Background" Value="{DynamicResource Background_Window}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush_WindowBorder}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="WindowStyle" Value="None" />
+        <Setter Property="ResizeMode" Value="NoResize" />
+        <Setter Property="AllowsTransparency" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Window}">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" CornerRadius="5">
+                        <ContentPresenter x:Name="WindowContent" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="Window" x:Key="MainWindowStyle">
+        <Setter Property="Background" Value="{DynamicResource Background_MainBorder}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="WindowStyle" Value="None" />
+        <Setter Property="ResizeMode" Value="CanResizeWithGrip" />
+        <Setter Property="AllowsTransparency" Value="True" />
+        <!--<Setter Property="SnapsToDevicePixels" Value="True" />-->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Window}">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}"
+                            CornerRadius="6">
+                        <Grid>
+                            <AdornerDecorator>
+                                <ContentPresenter x:Name="WindowContent" />
+                            </AdornerDecorator>
+                            <ResizeGrip x:Name="WindowResizeGrip" VerticalAlignment="Bottom" HorizontalAlignment="Right" IsTabStop="false" Visibility="Collapsed" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ResizeMode" Value="CanResizeWithGrip" />
+                                <Condition Property="WindowState" Value="Normal" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="WindowResizeGrip" Property="Visibility" Value="Visible" />
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="Window" x:Key="PopupWindowStyle">
+        <Setter Property="Background" Value="{DynamicResource Brush.White}" />
+        <Setter Property="WindowStyle" Value="None" />
+        <Setter Property="ResizeMode" Value="NoResize" />
+        <Setter Property="AllowsTransparency" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Window}">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2" Background="{TemplateBinding Background}"
+                            CornerRadius="5">
+                        <Grid>
+                            <AdornerDecorator>
+                                <ContentPresenter x:Name="WindowContent"/>
+                            </AdornerDecorator>
+                            <ResizeGrip x:Name="WindowResizeGrip" VerticalAlignment="Bottom" HorizontalAlignment="Right" IsTabStop="false" Visibility="Collapsed" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ResizeMode" Value="NoResize" />
+                                <Condition Property="WindowState" Value="Normal" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Visibility" TargetName="WindowResizeGrip" Value="Visible" />
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--#endregion WindowStyle-->
+
+    <!--#region Borders-->
+    <Style TargetType="ctrl:BorderMainHeader">
+        <Setter Property="Background" Value="{DynamicResource Background_MainBorder}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:BorderMainHeader}">
+                    <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseLeftButtonDown">
+                                <command:EventToCommand Command="{Binding CommandMouseLeftButtonDown, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" PassEventArgsToCommand="True"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Image Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Visibility="{Binding Image, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource ObjectNullToVisibilityConverter}}"
+                                   Width="{TemplateBinding ImageWidth}" Height="{TemplateBinding ImageHeight}"
+                                   Source="{TemplateBinding Image}" />
+
+                            <ctrl:TextBlockMainHeader Grid.Column="1" Margin="20,0,5,5" Text="{TemplateBinding Header}" />
+
+                            <ctrl:RightPanel Grid.Column="2">
+                                <ctrl:WindowMinButton Margin="0,0,5,0" Command="{Binding CommandWindowMin, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" CommandParameter="Minimized" Visibility="{TemplateBinding IsShowMin}"/>
+                                <ctrl:WindowMaxButton Margin="2,0,2,0" Command="{Binding CommandWindowMax, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" CommandParameter="Maximized" Visibility="{TemplateBinding IsShowMax}"/>
+                                <ctrl:WindowCloseButton Margin="0,0,0,0" Command="{Binding CommandWindowClose, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}"/>
+                                <!--<ctrl:WindowCloseButton Margin="0,0,0,0" Command="{TemplateBinding CloseCommand}"/>-->
+                            </ctrl:RightPanel>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ctrl:BorderMainFooter">
+        <Setter Property="Background" Value="{DynamicResource Background_MainBorder}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:BorderMainFooter}">
+                    <Border CornerRadius="{TemplateBinding CornerRadius}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Image Width="24" Height="24" Stretch="Fill"
+                                   Visibility="{Binding Image, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource ObjectNullToVisibilityConverter}}"
+                                   Source="{TemplateBinding Image}" />
+                            <ContentPresenter Grid.Column="1" Content="{TemplateBinding Content}"
+                                              HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ctrl:StrokeBorder">
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <VisualBrush>
+                    <VisualBrush.Visual>
+                        <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                   Fill="{Binding Path=Fill, RelativeSource={RelativeSource AncestorType=ctrl:StrokeBorder}}"
+                                   Stroke="{Binding Path=Stroke, RelativeSource={RelativeSource AncestorType=ctrl:StrokeBorder}}"
+                                   StrokeDashArray="{Binding Path=StrokeDashArray, RelativeSource={RelativeSource AncestorType=ctrl:StrokeBorder}}"
+                                   StrokeThickness="{Binding Path=StrokeThickness, RelativeSource={RelativeSource AncestorType=ctrl:StrokeBorder}}"
+                                   Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type Border}}}"
+                                   Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type Border}}}"/>
+                    </VisualBrush.Visual>
+                </VisualBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--#endregion //Borders-->
 
     <!--#region Button-->
     <Style TargetType="Button">
@@ -679,6 +871,13 @@
         <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
         <Setter Property="Margin" Value="15,1,0,0"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style TargetType="ctrl:TextBlockMainHeader" BasedOn="{StaticResource TextBased}">
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.White}"/>
     </Style>
     <!--#endregion //TextBlock-->
 

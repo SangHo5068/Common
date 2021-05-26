@@ -1,12 +1,61 @@
-﻿<Window x:Class="Common.Demo.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Common.Demo"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
-</Window>
+﻿<baseview:BaseWindow x:Class="Common.Demo.MainWindow"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                     xmlns:baseview="clr-namespace:Common.Views;assembly=Common"
+                     xmlns:basectrl="clr-namespace:Common.Controls;assembly=Common"
+                     xmlns:command="clr-namespace:Common.Command;assembly=Common"
+                     xmlns:local="clr-namespace:Common.Demo"
+                     mc:Ignorable="d"
+                     Style="{StaticResource MainWindowStyle}"
+                     Title="{Binding Header, UpdateSourceTrigger=PropertyChanged}"
+                     MinHeight="768" MinWidth="1024"
+                     Height="800" Width="1280"
+                     WindowStartupLocation="CenterScreen"
+                     ShowInTaskbar="True">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Common;component/Resources/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Window.DataContext>
+        <local:MainWindowViewModel />
+    </Window.DataContext>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="MouseLeftButtonDown">
+            <command:EventToCommand Command="{Binding CommandMouseMove}" PassEventArgsToCommand="True"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    
+    
+    <Border>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition />
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <basectrl:BorderMainHeader CornerRadius="5 5 0 0"
+                                       Background="{DynamicResource Background_MainBorder}" Foreground="{DynamicResource Brush.White}"
+                                       Header="{Binding Header}" Height="40"/>
+
+
+            <!--Footer-->
+            <basectrl:BorderMainFooter Grid.Row="2" CornerRadius="0 0 5 5">
+                <basectrl:BorderMainFooter.Content>
+                    <Grid>
+                        <basectrl:TextBlockMainHeader Margin="20,0,0,0" Text="{Binding ProductVersion, StringFormat=Ver : {0}, UpdateSourceTrigger=PropertyChanged}" />
+                        <basectrl:TextBlockMainHeader Margin="0,0,20,0" Text="{Binding BuildTime, StringFormat=Last Build : {0}, UpdateSourceTrigger=PropertyChanged}"
+                                                      HorizontalAlignment="Right"/>
+                    </Grid>
+                </basectrl:BorderMainFooter.Content>
+            </basectrl:BorderMainFooter>
+        </Grid>
+    </Border>
+</baseview:BaseWindow>
