@@ -60,9 +60,9 @@ namespace Common.Demo
         {
             base.InitData(parameter);
 
-            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             var gitVer = GitHelper.GitVersionToString();
             ProductVersion = gitVer;
+            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             BuildTime = Defined.Get_BuildDateTime(version).ToString(Defined.DateSFormat);
         }
         #endregion //override
