@@ -42,8 +42,9 @@
             </Grid.RowDefinitions>
 
             <basectrl:BorderMainHeader CornerRadius="5 5 0 0"
-                                       Background="{DynamicResource Background_MainBorder}" Foreground="{DynamicResource Brush.White}"
-                                       Header="{Binding Header}" Height="40"/>
+                                       Foreground="{DynamicResource Brush.White}"
+                                       Header="{Binding Header}"
+                                       CloseCommand="{Binding CommandWindowClose, RelativeSource={RelativeSource AncestorType=baseview:BaseWindow}}"/>
 
 
             <!--Footer-->

@@ -93,11 +93,11 @@ namespace Common.Controls
         }
 
 
-        protected override void OnPreviewMouseLeftButtonUp(MouseButtonEventArgs e)
-        {
-            base.OnPreviewMouseLeftButtonUp(e);
-            e.Handled = true;
-        }
+        //protected override void OnPreviewMouseLeftButtonUp(MouseButtonEventArgs e)
+        //{
+        //    base.OnPreviewMouseLeftButtonUp(e);
+        //    e.Handled = true;
+        //}
     }
 
     public class BorderMainFooter : ContentControl
