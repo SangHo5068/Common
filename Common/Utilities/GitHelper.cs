@@ -60,7 +60,12 @@ namespace Common.Utilities
             public static String Source { get => ThisAssembly.Git.SemVer.Source; }
         }
 
-        public static String GitVersionToString()
+        public static String VersionToString()
+        {
+            var format = "{0}.{1}.{2}";
+            return String.Format(format, SemVer.Major, SemVer.Minor, SemVer.Patch);
+        }
+        public static String FullVersionToString()
         {
             var format = "{0}.{1}.{2}-{3}+{4}";
             return String.Format(format, SemVer.Major, SemVer.Minor, SemVer.Patch, Branch, Commit);

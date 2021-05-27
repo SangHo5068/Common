@@ -51,8 +51,8 @@
             <basectrl:BorderMainFooter Grid.Row="2" CornerRadius="0 0 5 5">
                 <basectrl:BorderMainFooter.Content>
                     <Grid>
-                        <basectrl:TextBlockMainHeader Margin="20,0,0,0" Text="{Binding ProductVersion, StringFormat=Ver : {0}, UpdateSourceTrigger=PropertyChanged}" />
-                        <basectrl:TextBlockMainHeader Margin="0,0,20,0" Text="{Binding BuildTime, StringFormat=Last Build : {0}, UpdateSourceTrigger=PropertyChanged}"
+                        <basectrl:TextBlockMainHeader Margin="20,0,0,0" VerticalAlignment="Center" Text="{Binding ProductVersion, StringFormat=Ver : {0}, UpdateSourceTrigger=PropertyChanged}" />
+                        <basectrl:TextBlockMainHeader Margin="0,0,20,0" VerticalAlignment="Center" Text="{Binding BuildTime, StringFormat=Last Build : {0}, UpdateSourceTrigger=PropertyChanged}"
                                                       HorizontalAlignment="Right"/>
                     </Grid>
                 </basectrl:BorderMainFooter.Content>
