@@ -251,7 +251,7 @@ namespace Common.Notify
         /// Static Notify
         /// </summary>
         /// <param name="propertyName"></param>
-        protected static void NotifyStaticPropertyChanged([CallerMemberName] string propertyName = "")
+        protected static void NotifyStaticPropertyChanged([CallerMemberName] string propertyName = null)
         {
             StaticPropertyChanged?.Invoke(null, new PropertyChangedEventArgs(propertyName));
         }

@@ -406,7 +406,7 @@
                             <Setter TargetName="xBorder" Property="Background" Value="LightPink"/>
                         </Trigger>-->
                         <!--<DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" Value="Maximized">-->
-                        <DataTrigger Binding="{Binding Source={x:Static util:WindowStateHelper.IsMaximized}, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                        <DataTrigger Binding="{Binding Path=(util:WindowStateHelper.IsMaximized), UpdateSourceTrigger=PropertyChanged}" Value="True">
                             <Setter TargetName="xPath" Property="Data">
                                 <Setter.Value>
                                     <PathGeometry Figures="m 9.999999 19.999999 c 0 0 0 -9.5 0 -9.5 0 0 -1 0 -1 0 0 0 0 10.500001 0 10.500001 0 0 10.5 0 10.5 0 0 0 0 -1.000001 0 -1.000001 0 0 -9.5 0 -9.5 0 z M 21 8.999999 c 0 0 -10 0 -10 0 0 0 0 10.000001 0 10.000001 0 0 10 0 10 0 0 0 0 -10.000001 0 -10.000001 z m -1.000001 3 c 0 0 0 6 0 6 0 0 -8 0 -8 0 0 0 0 -6 0 -6 0 0 8 0 8 0 z" FillRule="EvenOdd" />

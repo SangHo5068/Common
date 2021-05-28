@@ -32,7 +32,7 @@ namespace Common.Utilities
             set
             {
                 _IsMaximized = value;
-                NotifyStaticPropertyChanged();
+                NotifyStaticPropertyChanged(nameof(IsMaximized));
             }
         }
         // Blocks the window from running OnSizeChanged when resizing the window
