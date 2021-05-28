@@ -212,9 +212,15 @@
     <Compile Include="Converters\ImageConverter.cs" />
     <Compile Include="Utilities\IpAddressHelper.cs" />
     <Compile Include="Utilities\LogManager.cs" />
+    <Compile Include="Utilities\Screen\ScreenFinder.cs" />
+    <Compile Include="Utilities\Screen\Screen.cs" />
+    <Compile Include="Utilities\Screen\MouseHelper.cs" />
+    <Compile Include="Utilities\Screen\NativeMethods.cs" />
     <Compile Include="Utilities\PasswordHelper.cs" />
     <Compile Include="Utilities\SerializeHelper.cs" />
     <Compile Include="Extensions\TreeViewItemExtensions.cs" />
+    <Compile Include="Utilities\Screen\SystemInformation.cs" />
+    <Compile Include="Utilities\Screen\WindowStateHelper.cs" />
     <Compile Include="Views\BaseWindow.cs" />
     <Compile Include="Controls\Controls.cs" />
     <Compile Include="Controls\MessageBox.cs" />

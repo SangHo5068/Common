@@ -8,7 +8,7 @@ using System.Windows.Shapes;
 
 using Common.Command;
 using Common.Notify;
-
+using Common.Utilities;
 
 namespace Common.Views
 {
@@ -16,6 +16,7 @@ namespace Common.Views
     {
         #region ICommand
         public ICommand CommandMouseLeftButtonDown { get; private set; }
+        public ICommand CommandMouseLeftDoubleClick { get; private set; }
 
         public ICommand CommandWindowMin { get; private set; }
         public ICommand CommandWindowMax { get; private set; }
@@ -26,6 +27,7 @@ namespace Common.Views
         public BaseWindow()
         {
             CommandMouseLeftButtonDown = new RelayCommand(OnMouseLeftButtonDown);
+            CommandMouseLeftDoubleClick = new RelayCommand(OnMouseLeftDoubleClick);
 
             CommandWindowMin = new RelayCommand(OnWindowMin);
             CommandWindowMax = new RelayCommand(OnWindowMax);
@@ -55,9 +57,46 @@ namespace Common.Views
             this.Close();
         }
 
+        
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            base.OnRenderSizeChanged(sizeInfo);
+
+            if (WindowState == WindowState.Maximized)
+            {
+                WindowStateHelper.SetWindowMaximized(this);
+                WindowStateHelper.BlockStateChange = true;
+
+                var screen = ScreenFinder.FindAppropriateScreen(this);
+                if (screen != null)
+                {
+                    Top = screen.WorkingArea.Top;
+                    Left = screen.WorkingArea.Left;
+                    Width = screen.WorkingArea.Width;
+                    Height = screen.WorkingArea.Height;
+                }
+            }
+            else
+            {
+                if (WindowStateHelper.BlockStateChange)
+                {
+                    WindowStateHelper.BlockStateChange = false;
+                    return;
+                }
+
+                WindowStateHelper.UpdateLastKnownNormalSize(Width, Height);
+                WindowStateHelper.UpdateLastKnownLocation(Top, Left);
+            }
+        }
         private void OnWindowMax(object obj)
         {
-            WindowState = (WindowState == WindowState.Normal) ? WindowState.Maximized : WindowState.Normal;
+            if (!WindowStateHelper.IsMaximized)
+                WindowState = WindowState.Maximized;
+            else
+            {
+                WindowStateHelper.SetWindowSizeToNormal(this);
+                //WindowState = WindowState.Normal;
+            }
         }
         private void OnWindowMin(object obj)
         {
@@ -77,18 +116,39 @@ namespace Common.Views
             if (e.LeftButton != MouseButtonState.Pressed)
                 return;
 
-            if (e.ClickCount == 2)
-            {
-                OnWindowMax(e);
-                return;
-            }
-            if (WindowState is WindowState.Normal)
+            ////if (WindowState is WindowState.Normal)
+            if (!WindowStateHelper.IsMaximized)
                 DragMove();
+
+            //if (WindowStateHelper.IsMaximized && e.LeftButton == MouseButtonState.Pressed)
+            //{
+            //    WindowStateHelper.SetWindowSizeToNormal(this, true);
+            //    WindowStateHelper.UpdateLastKnownLocation(Top, Left);
+            //}
+
+            //DragMove();
         }
 
         protected virtual void Window_Minimize(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
+        }
+
+        /// <summary>
+        /// Header Click
+        /// </summary>
+        /// <param name="obj"></param>
+        private void OnMouseLeftDoubleClick(object obj)
+        {
+            if (!(obj is MouseButtonEventArgs e))
+                return;
+
+            if (e.ClickCount == 2)
+            {
+                OnWindowMax(e);
+                e.Handled = true;
+                return;
+            }
         }
 
         #endregion //WindowAction

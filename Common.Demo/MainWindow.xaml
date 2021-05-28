@@ -14,7 +14,8 @@
                      MinHeight="768" MinWidth="1024"
                      Height="800" Width="1280"
                      WindowStartupLocation="CenterScreen"
-                     ShowInTaskbar="True">
+                     ShowInTaskbar="True"
+                     d:DataContext="{d:DesignInstance local:MainWindowViewModel}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -27,8 +28,8 @@
     </Window.DataContext>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="MouseLeftButtonDown">
-            <command:EventToCommand Command="{Binding CommandMouseMove}" PassEventArgsToCommand="True"
-                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+            <command:EventToCommand PassEventArgsToCommand="True"
+                                    Command="{Binding CommandMouseLeftButtonDown, RelativeSource={RelativeSource AncestorType=baseview:BaseWindow}}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
     
