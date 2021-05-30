@@ -34,23 +34,29 @@ namespace Common.Controls
 
     public class ColorPicker : Control
     {
-        #region Public Methods
+        private const string RedColorSliderName = "PART_RedColorSlider";
+        private const string GreenColorSliderName = "PART_GreenColorSlider";
+        private const string BlueColorSliderName = "PART_BlueColorSlider";
+        private const string AlphaColorSliderName = "PART_AlphaColorSlider";
 
-        static ColorPicker()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(ColorPicker), new FrameworkPropertyMetadata(typeof(ColorPicker)));
+        private const string SpectrumSliderName = "PART_SpectrumSlider1";
+        private const string HsvControlName = "PART_HsvControl";
 
-            // Register Event Handler for slider
-            EventManager.RegisterClassHandler(typeof(ColorPicker), Slider.ValueChangedEvent, new RoutedPropertyChangedEventHandler<double>(ColorPicker.OnSliderValueChanged));
+        #region Fields
+        private ColorSlider m_redColorSlider;
+        private ColorSlider m_greenColorSlider;
+        private ColorSlider m_blueColorSlider;
+        private ColorSlider m_alphaColorSlider;
 
-            // Register Event Handler for Hsv Control
-            EventManager.RegisterClassHandler(typeof(ColorPicker), HsvControl.SelectedColorChangedEvent, new RoutedPropertyChangedEventHandler<Color>(ColorPicker.OnHsvControlSelectedColorChanged));
-        }
+        private SpectrumSlider m_spectrumSlider;
 
-        #endregion
+        private HsvControl m_hsvControl;
+
+        private bool m_withinChange;
+        private bool m_templateApplied;
+        #endregion //Fields
 
         #region Dependency Properties
-
         public String BeforeColorText
         {
             get { return (String)GetValue(BeforeColorTextProperty); }
@@ -58,7 +64,7 @@ namespace Common.Controls
         }
         public static readonly DependencyProperty BeforeColorTextProperty =
             DependencyProperty.Register("BeforeColorText", typeof(String), typeof(ColorPicker),
-            new UIPropertyMetadata("#FF000000"));
+            new UIPropertyMetadata(Brushes.Black.ToString()));
 
         public String SelectedColorText
         {
@@ -67,7 +73,7 @@ namespace Common.Controls
         }
         public static readonly DependencyProperty SelectedColorTextProperty =
             DependencyProperty.Register("SelectedColorText", typeof(String), typeof(ColorPicker),
-            new UIPropertyMetadata("#FF000000"));
+            new UIPropertyMetadata(Brushes.Black.ToString()));
 
         public Color BeforeColor
         {
@@ -87,6 +93,16 @@ namespace Common.Controls
             DependencyProperty.Register("SelectedColor", typeof(Color), typeof(ColorPicker), 
             new UIPropertyMetadata(Colors.Black, new PropertyChangedCallback(OnSelectedColorPropertyChanged)));
 
+        public Orientation Orientation
+        {
+            get { return (Orientation)GetValue(OrientationProperty); }
+            set { SetValue(OrientationProperty, value); }
+        }
+
+        public static readonly DependencyProperty OrientationProperty =
+            DependencyProperty.Register("Orientation", typeof(Orientation), typeof(ColorPicker),
+            new UIPropertyMetadata(Orientation.Horizontal));
+
         public bool FixedSliderColor
         {
             get { return (bool)GetValue(FixedSliderColorProperty); }
@@ -97,8 +113,7 @@ namespace Common.Controls
         public static readonly DependencyProperty FixedSliderColorProperty =
             DependencyProperty.Register("FixedSliderColor", typeof(bool), typeof(SpectrumSlider),
             new UIPropertyMetadata(false, new PropertyChangedCallback(OnFixedSliderColorPropertyChanged)));
-
-        #endregion
+        #endregion //Dependency Properties
 
         #region Routed Events
 
@@ -115,7 +130,23 @@ namespace Common.Controls
             remove { RemoveHandler(SelectedColorChangedEvent, value); }
         }
 
-        #endregion
+        #endregion Routed Events
+
+
+
+        static ColorPicker()
+        {
+            Type type = typeof(ColorPicker);
+            DefaultStyleKeyProperty.OverrideMetadata(type, new FrameworkPropertyMetadata(type));
+
+            // Register Event Handler for slider
+            EventManager.RegisterClassHandler(type, Slider.ValueChangedEvent, new RoutedPropertyChangedEventHandler<double>(ColorPicker.OnSliderValueChanged));
+
+            // Register Event Handler for Hsv Control
+            EventManager.RegisterClassHandler(type, HsvControl.SelectedColorChangedEvent, new RoutedPropertyChangedEventHandler<Color>(ColorPicker.OnHsvControlSelectedColorChanged));
+        }
+
+
 
         #region Event Handling
 
@@ -322,48 +353,26 @@ namespace Common.Controls
 
         private void UpdateSelectedColor(Color newColor)
         {
-            Color oldColor = SelectedColor;
+            BeforeColor = SelectedColor;
+            BeforeColorText = BeforeColor.ToString();
             SelectedColor = newColor;
+            SelectedColorText = SelectedColor.ToString();
 
             if (!FixedSliderColor)
                 UpdateColorSlidersBackground();
 
-            ColorUtils.FireSelectedColorChangedEvent(this, SelectedColorChangedEvent, oldColor, newColor);
+            ColorUtils.FireSelectedColorChangedEvent(this, SelectedColorChangedEvent, BeforeColor, newColor);
         }
 
         private void UpdateControlColors(Color oldColor, Color newColor)
         {
             BeforeColor = oldColor;
+            BeforeColorText = BeforeColor.ToString();
             UpdateRgbColors(newColor);
             UpdateSpectrumColor(newColor);
             UpdateHsvControlColor(newColor);
             UpdateColorSlidersBackground();
         }
-
-        #endregion
-
-        #region Private Members
-
-        private const string RedColorSliderName = "PART_RedColorSlider";
-        private const string GreenColorSliderName = "PART_GreenColorSlider";
-        private const string BlueColorSliderName  = "PART_BlueColorSlider";
-        private const string AlphaColorSliderName = "PART_AlphaColorSlider";
-
-        private const string SpectrumSliderName   = "PART_SpectrumSlider1";
-        private const string HsvControlName       = "PART_HsvControl";
-
-        private ColorSlider     m_redColorSlider;
-        private ColorSlider     m_greenColorSlider;
-        private ColorSlider     m_blueColorSlider;
-        private ColorSlider     m_alphaColorSlider;
-
-        private SpectrumSlider  m_spectrumSlider;
-
-        private HsvControl      m_hsvControl;
-
-        private bool            m_withinChange;
-        private bool            m_templateApplied;
-
 
         #endregion
     }

@@ -224,7 +224,7 @@
         </Setter>
       </Style>
     <Style TargetType="{x:Type TextBox}" x:Key="ColorPickerTextBox">
-        <Setter Property="Margin" Value="5,1,3,3"/>
+        <Setter Property="Margin" Value="5,1,3,1"/>
         <Setter Property="BorderThickness" Value="0"/>
     </Style>
     <Style TargetType="{x:Type colorPicker:ColorPicker}">
@@ -236,71 +236,84 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Background="{TemplateBinding Background}">
-                        <Grid Height="80" Width="270">
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="80" />
-                                <ColumnDefinition Width="20" />
-                                <ColumnDefinition Width="20" />
-                                <ColumnDefinition Width="110" />
-                                <ColumnDefinition Width="40" />
-                            </Grid.ColumnDefinitions>
-                    
-                            <colorPicker:HsvControl x:Name="PART_HsvControl" Grid.Row="0" Grid.Column="0" Grid.RowSpan="4"/>
-                            <colorPicker:SpectrumSlider x:Name="PART_SpectrumSlider1" 
-                                                        Grid.Column="1" Grid.RowSpan="4"
-                                                        BorderBrush="Black" BorderThickness="1" 
-                                                        LargeChange="30" SmallChange="10" Hue="0" />
-                            <TextBlock Text="R" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="0"/>
-                            <TextBlock Text="G" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="1"/>
-                            <TextBlock Text="B" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="2"/>
-                            <TextBlock Text="A" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="3"/>
-                            <colorPicker:BindOnEnterTextBox Grid.Column="4" Grid.Row="0" Style="{StaticResource ColorPickerTextBox}"
-                                        Text="{Binding Path=Value, ElementName=PART_RedColorSlider, Mode=TwoWay, Converter={StaticResource DoubleToIntegerStringConverter}}"/>
-                            <colorPicker:BindOnEnterTextBox Grid.Column="4" Grid.Row="1" Style="{StaticResource ColorPickerTextBox}"
-                                        Text="{Binding Path=Value, ElementName=PART_GreenColorSlider, Mode=TwoWay, Converter={StaticResource DoubleToIntegerStringConverter}}"/>
-                            <colorPicker:BindOnEnterTextBox Grid.Column="4" Grid.Row="2" Style="{StaticResource ColorPickerTextBox}"
-                                        Text="{Binding Path=Value, ElementName=PART_BlueColorSlider, Mode=TwoWay, Converter={StaticResource DoubleToIntegerStringConverter}}"/>
-                            <colorPicker:BindOnEnterTextBox Grid.Column="4" Grid.Row="3" Style="{StaticResource ColorPickerTextBox}"
-                                        Text="{Binding Path=Value, ElementName=PART_AlphaColorSlider, Mode=TwoWay, Converter={StaticResource DoubleToIntegerStringConverter}}"/>
-                            <colorPicker:ColorSlider x:Name="PART_RedColorSlider" Grid.Column="3" Grid.Row="0" BorderBrush="Black" BorderThickness="1"/>
-                            <colorPicker:ColorSlider x:Name="PART_GreenColorSlider" Grid.Column="3" Grid.Row="1" BorderBrush="Black" BorderThickness="1"/>
-                            <colorPicker:ColorSlider x:Name="PART_BlueColorSlider" Grid.Column="3" Grid.Row="2" BorderBrush="Black" BorderThickness="1"/>
-                            <colorPicker:ColorSlider x:Name="PART_AlphaColorSlider" Grid.Column="3" Grid.Row="3" Background="{StaticResource CheckersBrush}"
-                                                     BorderBrush="Black" BorderThickness="1"
-                                                     LeftColor="#00000000" RightColor="#FF000000"/>
-
-                            <Grid Grid.Row="4" Grid.ColumnSpan="5" Margin="1">
+                        <StackPanel x:Name="PART_Area" Height="90" Width="260"
+                                    Orientation="{Binding Orientation, RelativeSource={RelativeSource AncestorType=colorPicker:ColorPicker}}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="40" />
-                                    <ColumnDefinition Width="40" />
-                                    <ColumnDefinition Width="20" />
                                     <ColumnDefinition Width="80" />
-                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition Width="20" />
                                 </Grid.ColumnDefinitions>
 
-                                <Grid Grid.ColumnSpan="3">
+                                <colorPicker:HsvControl x:Name="PART_HsvControl" Grid.Row="0" Grid.Column="0" Grid.RowSpan="4"/>
+                                <colorPicker:SpectrumSlider x:Name="PART_SpectrumSlider1" 
+                                                            Grid.Column="1" Grid.RowSpan="4"
+                                                            BorderBrush="Black" BorderThickness="1" 
+                                                            LargeChange="30" SmallChange="10" Hue="0" />
+                                <Grid Grid.Row="4" Grid.ColumnSpan="2" Margin="0 2 0 0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition />
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
-                                    <Rectangle Grid.Column="0" Width="40" Height="24" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Fill"
+                                    <Rectangle Grid.Column="0" Height="24" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Fill"
                                                Fill="{Binding BeforeColorText, RelativeSource={RelativeSource AncestorType=colorPicker:ColorPicker}}" StrokeThickness="1" />
-                                    <Rectangle Grid.Column="1" Width="40" Height="24" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Fill"
+                                    <Rectangle Grid.Column="1" Height="24" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Fill"
                                                Fill="{Binding SelectedColorText, RelativeSource={RelativeSource AncestorType=colorPicker:ColorPicker}}" StrokeThickness="1" />
                                 </Grid>
-                                <TextBox Grid.Column="3" Grid.ColumnSpan="2" x:Name="PART_ColorCode" Margin="0" HorizontalAlignment="Right"
+                            </Grid>
+
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="80" />
+                                    <ColumnDefinition Width="60" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="R" HorizontalAlignment="Center"/>
+                                <TextBlock Grid.Column="0" Grid.Row="1" Text="G" HorizontalAlignment="Center"/>
+                                <TextBlock Grid.Column="0" Grid.Row="2" Text="B" HorizontalAlignment="Center"/>
+                                <TextBlock Grid.Column="0" Grid.Row="3" Text="A" HorizontalAlignment="Center"/>
+                                <colorPicker:ColorSlider x:Name="PART_RedColorSlider"   Grid.Column="1" Grid.Row="0" BorderBrush="Black" BorderThickness="1"/>
+                                <colorPicker:ColorSlider x:Name="PART_GreenColorSlider" Grid.Column="1" Grid.Row="1" BorderBrush="Black" BorderThickness="1"/>
+                                <colorPicker:ColorSlider x:Name="PART_BlueColorSlider"  Grid.Column="1" Grid.Row="2" BorderBrush="Black" BorderThickness="1"/>
+                                <colorPicker:ColorSlider x:Name="PART_AlphaColorSlider" Grid.Column="1" Grid.Row="3" Background="{StaticResource CheckersBrush}"
+                                                         BorderBrush="Black" BorderThickness="1"
+                                                         LeftColor="#00000000" RightColor="#FF000000"/>
+
+                                <colorPicker:BindOnEnterTextBox Grid.Column="2" Grid.Row="0" Style="{StaticResource ColorPickerTextBox}"
+                                        Text="{Binding Path=Value, ElementName=PART_RedColorSlider, Mode=TwoWay, Converter={StaticResource DoubleToIntegerStringConverter}}"/>
+                                <colorPicker:BindOnEnterTextBox Grid.Column="2" Grid.Row="1" Style="{StaticResource ColorPickerTextBox}"
+                                        Text="{Binding Path=Value, ElementName=PART_GreenColorSlider, Mode=TwoWay, Converter={StaticResource DoubleToIntegerStringConverter}}"/>
+                                <colorPicker:BindOnEnterTextBox Grid.Column="2" Grid.Row="2" Style="{StaticResource ColorPickerTextBox}"
+                                        Text="{Binding Path=Value, ElementName=PART_BlueColorSlider, Mode=TwoWay, Converter={StaticResource DoubleToIntegerStringConverter}}"/>
+                                <colorPicker:BindOnEnterTextBox Grid.Column="2" Grid.Row="3" Style="{StaticResource ColorPickerTextBox}"
+                                        Text="{Binding Path=Value, ElementName=PART_AlphaColorSlider, Mode=TwoWay, Converter={StaticResource DoubleToIntegerStringConverter}}"/>
+
+                                <TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" x:Name="PART_ColorCode" Margin="0" Width="100" HorizontalAlignment="Right"
                                          Style="{StaticResource ColorPickerTextBox}"
                                          Text="{Binding SelectedColor, RelativeSource={RelativeSource AncestorType=colorPicker:ColorPicker}}"/>
                             </Grid>
-                        </Grid>
+                        </StackPanel>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Orientation, RelativeSource={RelativeSource AncestorType=colorPicker:ColorPicker}}" Value="Vertical">
+                            <Setter TargetName="PART_Area" Property="Height" Value="260" />
+                            <Setter TargetName="PART_Area" Property="Width" Value="90" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
