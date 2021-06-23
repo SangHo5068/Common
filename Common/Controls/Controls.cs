@@ -1,12 +1,15 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+
+using Common.Utilities;
 
 namespace Common.Controls
 {
@@ -215,6 +218,16 @@ namespace Common.Controls
             DefaultStyleKeyProperty.OverrideMetadata(typeof(RemoveTextButton), new FrameworkPropertyMetadata(typeof(RemoveTextButton)));
         }
     }
+    public class InitialButton : Button { }
+    public class SearchButton : Button { }
+
+    #region Paging
+    public class PagingCommon : Button { }
+    public class PagingFirst : Button { }
+    public class PagingPrev : Button { }
+    public class PagingNext : Button { }
+    public class PagingLast : Button { }
+    #endregion //Paging
     #endregion //Button
 
     #region MessageBox
@@ -321,14 +334,13 @@ namespace Common.Controls
 
         public static void OnTextBlockSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            TextBlockEx textBlock = sender as TextBlockEx;
-            if (null == textBlock)
+            if (!(sender is TextBlockEx textBlock))
                 return;
             if (textBlock.IsTrimmingToolTip)
-                textBlock.SetValue(IsTextTrimmedKey, calculateIsTextTrimmed(textBlock));
+                textBlock.SetValue(IsTextTrimmedKey, CalculateIsTextTrimmed(textBlock));
         }
 
-        private static bool calculateIsTextTrimmed(TextBlock textBlock)
+        private static bool CalculateIsTextTrimmed(TextBlock textBlock)
         {
             double width = textBlock.ActualWidth;
             if (textBlock.TextTrimming == TextTrimming.None)
@@ -349,7 +361,7 @@ namespace Common.Controls
         /// <summary>
         /// The ThreadBarrier's captured SynchronizationContext
         /// </summary>
-        private SynchronizationContext _synchronizationContext;
+        private readonly SynchronizationContext _synchronizationContext;
 
         #region IsTrimmingToolTip
         public static readonly DependencyProperty IsTrimmingToolTipProperty =
@@ -400,10 +412,175 @@ namespace Common.Controls
     public class PopupTextBlockHeader : TextBlockEx { }
 
     public class TextBlockMainHeader : TextBlock { }
+    public class TextBlockPopupLabel : TextBlock { }
+
+    #region Paging
+    public class PagingTextBlock : TextBlockEx { }
+    public class PagingCountTextBlock : TextBlockEx { }
+    #endregion //Paging
     #endregion //TextBlock
 
     #region TextBox
     public class PopupTextBox : TextBox { }
+    public class NumericTextBox : TextBox
+    {
+        private bool IsControlV = false;
+
+        #region DependencyProperty
+        public static DependencyProperty MinProperty;
+        public static DependencyProperty MaxProperty;
+        #endregion //DependencyProperty
+
+        #region Property
+        public int? Min
+        {
+            get { return (int?)GetValue(MinProperty); }
+            set { SetValue(MinProperty, value); }
+        }
+
+        public int? Max
+        {
+            get { return (int?)GetValue(MaxProperty); }
+            set { SetValue(MaxProperty, value); }
+        }
+
+        /// <summary>
+        /// TextBox Text 최초 설정시 값을 Backup 한다.
+        /// </summary>
+        public string OrignalValue { get; private set; }
+        #endregion //Property
+
+
+        static NumericTextBox()
+        {
+            Type type = typeof(NumericTextBox);
+            MinProperty = DependencyProperty.Register(nameof(Min), typeof(int?), type, new PropertyMetadata(null));
+            MaxProperty = DependencyProperty.Register(nameof(Max), typeof(int?), type, new PropertyMetadata(null));
+        }
+        public NumericTextBox()
+            : base()
+        {
+            //한글 사용 불가
+            InputMethod.SetIsInputMethodEnabled(this, false);
+        }
+
+
+        #region Override
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            if (e.Key == Key.Space)
+                e.Handled = true;
+            else if (ModifierKeys.Shift == Keyboard.Modifiers && e.Key == Key.Tab)
+            {
+                e.Handled = true;
+                KeysEnter.KeyEvent(this, Key.Tab);
+            }
+            //else if (e.Key == Key.Delete || e.Key == Key.Back) { }
+            //else if (!DataValidation.IsIPv4Key(e.Key))
+            //    e.Handled = true;
+
+            // 텍스트 박스에 붙여넣기가 가능.
+            if (e.Key == Key.V && Keyboard.Modifiers == ModifierKeys.Control)
+                IsControlV = true;
+
+            base.OnPreviewKeyDown(e);
+        }
+
+        protected override void OnPreviewTextInput(TextCompositionEventArgs e)
+        {
+            char c = e.Text.ToCharArray().First();
+            // 한글 및 특수문자 입력 제한
+            if (DataValidation.IsValidHangul(c) || DataValidation.IsValidSpecialLetters(c))
+                e.Handled = true;
+
+            if (!int.TryParse(e.Text.Trim(), out int _))
+            {
+                e.Handled = true;
+                if (e.Text == "\r")
+                {
+                    e.Handled = true;
+                    KeysEnter.KeyEvent(this, Key.Tab);
+                }
+            }
+            base.OnPreviewTextInput(e);
+        }
+
+        protected override void OnTextChanged(TextChangedEventArgs e)
+        {
+            bool bReturn = true;
+            if (string.IsNullOrEmpty(OrignalValue))
+                OrignalValue = (string.IsNullOrEmpty(Text)) ? string.Empty : Text;
+
+            int? value;
+            if (IsControlV)
+            {
+                if (Text == String.Empty) { }
+                else
+                {
+                    if (!DataValidation.IsValidRegexMatch(1, Text))
+                    {
+                        //Text = string.Empty;
+                        //e.Handled = true;
+                        bReturn = false;
+                        ////return;
+                    }
+                    else
+                    {
+                        if (Min != null || Max != null)
+                        {
+                            value = Convert.ToInt32(Text.ToString());
+                            if (value == null) { }
+                            else
+                            {
+                                if ((Min != 0 && Min > value) || (Max != 0 && value > Max))
+                                    bReturn = false;
+                            }
+                        }
+                    }
+                }
+                IsControlV = false;
+                if (!bReturn)
+                {
+                    ShowErrorMessgae();
+                    return;
+                }
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(Text)) { }
+                else
+                {
+                    if (Min != null || Max != null)
+                    {
+                        value = Convert.ToInt32(Text.ToString());
+                        if (value == null)
+                            return;
+
+                        //if ((Min != 0 && Min > value) || (Max != 0 && value > Max))
+                        if (Max != 0 && value > Max)
+                        {
+                            ShowErrorMessgae();
+                            return;
+                        }
+                    }
+                }
+            }
+            base.OnTextChanged(e);
+        }
+
+        /// <summary>
+        /// 범위 값이 유효하지 않을 때 Message를 표시하고 _OrignalValue 값으로 되돌린다.
+        /// </summary>
+        private void ShowErrorMessgae()
+        {
+            //Text: "{0}" 값이 유효하지 않습니다.\n값에 대한 유효범위를 확인하시기 바랍니다.  //Text: 확인
+            //MessageBox.Show("M900017", ConvertLanguage.GetCodeText("T23003"), MessageBoxButton.OK, MessageBoxImage.Warning, Text);
+            Text = OrignalValue;
+            Focus();
+            SelectAll();
+        }
+        #endregion //Override
+    }
     /// <summary>
     /// Watermark TextBox
     /// </summary>

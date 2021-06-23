@@ -10,7 +10,7 @@
 
     <!--#region Converter-->
     <converter:BooleanToVisibilityInvertConverter     x:Key="BooleanToVisibilityInvertConverter"/>
-    <converter:BoolToVisibilityConverter              x:Key="BoolToVisibilityConverter"/>
+    <converter:BooleanToVisibilityConverter           x:Key="BooleanToVisibilityConverter"/>
     <converter:BooleanToReverseConverter              x:Key="BooleanToReverseConverter"/>
     <converter:EnumToBooleanConverter                 x:Key="EnumToBooleanConverter" />
     <converter:EnumToBooleanReverseConverter          x:Key="EnumToBooleanReverseConverter" />
@@ -575,6 +575,323 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    <Style TargetType="ctrl:SearchButton">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Background" Value="{DynamicResource Background_SearchButton}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush_SearchButtonOuter}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Foreground_SearchText}"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="Margin" Value="5,0,0,0"/>
+        <Setter Property="MinWidth" Value="55"/>
+        <Setter Property="Height" Value="23"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:SearchButton}">
+                    <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True" BorderThickness="1" CornerRadius="2">
+                        <Border x:Name="Inner" CornerRadius="1" BorderBrush="{DynamicResource Brush_SearchButtonInner}" BorderThickness="0,1,0,0">
+                            <ctrl:HorizonPanel HorizontalAlignment="Center" Margin="5,0">
+                                <Image Height="11" Source="pack://application:,,,/Common;component/Resources/Images/search_black_18dp.png" Stretch="Fill" Width="9"/>
+                                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="3,0,0,0"/>
+                            </ctrl:HorizonPanel>
+                        </Border>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background"  TargetName="border" Value="{DynamicResource Background_SearchButtonOver}"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Brush_SearchButtonOuterOver}"/>
+                            <Setter Property="BorderBrush" TargetName="Inner" Value="{DynamicResource Brush_SearchButtonInnerOver}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background"  TargetName="border" Value="{DynamicResource Background_SearchButtonOver}"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Brush_SearchButtonOuterOver}"/>
+                            <Setter Property="Margin"      TargetName="Inner" Value="1 1 0 0"/>
+                            <Setter Property="BorderBrush" TargetName="Inner" Value="{DynamicResource Brush_SearchButtonInnerOver}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" TargetName="border" Value="0.8"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ctrl:InitialButton">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Background" Value="{DynamicResource Background_SearchButton}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush_SearchButtonOuter}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Foreground_SearchText}"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="Margin" Value="5,0,0,0"/>
+        <Setter Property="MinWidth" Value="50"/>
+        <Setter Property="Height" Value="23"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:InitialButton}">
+                    <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True" BorderThickness="1" CornerRadius="2">
+                        <Border x:Name="Inner" CornerRadius="1" BorderBrush="{DynamicResource Brush_SearchButtonInner}" BorderThickness="0,1,0,0">
+                            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="5,0,5,1"/>
+                        </Border>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background"  TargetName="border" Value="{DynamicResource Background_SearchButtonOver}"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Brush_SearchButtonOuterOver}"/>
+                            <Setter Property="BorderBrush" TargetName="Inner" Value="{DynamicResource Brush_SearchButtonInnerOver}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background"  TargetName="border" Value="{DynamicResource Background_SearchButtonOver}"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Brush_SearchButtonOuterOver}"/>
+                            <Setter Property="Margin"      TargetName="Inner" Value="1 1 0 0"/>
+                            <Setter Property="BorderBrush" TargetName="Inner" Value="{DynamicResource Brush_SearchButtonInnerOver}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" TargetName="border" Value="0.8"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ctrl:PagingCommon">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Foreground_ButtonText}"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="Width" Value="18"/>
+        <Setter Property="Height" Value="18"/>
+        <Setter Property="Margin" Value="2,0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:PagingCommon}">
+                    <Border Background="{DynamicResource Background_PageButton}" BorderBrush="{DynamicResource Brush_PageButtonOuter}" BorderThickness="1" CornerRadius="2" x:Name="root" SnapsToDevicePixels="True">
+                        <Border BorderBrush="{DynamicResource Brush_PageButtonInner}" CornerRadius="1" BorderThickness="0,1,0,0">
+                            <Grid>
+                                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="7,0,0,0"/>
+                            </Grid>
+                        </Border>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="root" Value="{DynamicResource Background_PageButtonOver}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" TargetName="root" Value="{DynamicResource Background_PageButtonOver}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" TargetName="root" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ctrl:PagingPrev">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Foreground_ButtonText}"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="Width" Value="18"/>
+        <Setter Property="Height" Value="18"/>
+        <Setter Property="Margin" Value="2,0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:PagingPrev}">
+                    <Border Background="{DynamicResource Background_PageButton}" BorderBrush="{DynamicResource Brush_PageButtonOuter}" BorderThickness="1" CornerRadius="2" x:Name="root" SnapsToDevicePixels="True">
+                        <Border BorderBrush="{DynamicResource Brush_PageButtonInner}" CornerRadius="1" BorderThickness="0,1,0,0">
+                            <Grid>
+                                <!--<ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,0"/>-->
+                                <Path x:Name="ArrowBottom" Data="M-0.67790158,0.48683691 C-0.67790158,0.48683691 7.7539062,0.46679688 7.7539062,0.46679688 7.7539062,0.46679688 3.5,6 3.5,6 3.5,6 -0.67790158,0.48683691 -0.67790158,0.48683691 z" Stretch="Uniform" Height="3" Width="Auto" Fill="{TemplateBinding Foreground}" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                                    <Path.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="90"/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Path.RenderTransform>
+                                </Path>
+                            </Grid>
+                        </Border>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="root" Value="{DynamicResource Background_PageButtonOver}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" TargetName="root" Value="{DynamicResource Background_PageButtonOver}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" TargetName="root" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ctrl:PagingFirst">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Foreground_ButtonText}"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="Width" Value="18"/>
+        <Setter Property="Height" Value="18"/>
+        <Setter Property="Margin" Value="2,0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:PagingFirst}">
+                    <Border Background="{DynamicResource Background_PageButton}" BorderBrush="{DynamicResource Brush_PageButtonOuter}" BorderThickness="1" CornerRadius="2" x:Name="root" SnapsToDevicePixels="True">
+                        <Border BorderBrush="{DynamicResource Brush_PageButtonInner}" CornerRadius="1" BorderThickness="0,1,0,0">
+                            <Grid>
+                                <!--<ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,0"/>-->
+                                <ctrl:HorizonPanel HorizontalAlignment="Center">
+                                    <Path x:Name="ArrowBottom" Data="M-0.67790158,0.48683691 C-0.67790158,0.48683691 7.7539062,0.46679688 7.7539062,0.46679688 7.7539062,0.46679688 3.5,6 3.5,6 3.5,6 -0.67790158,0.48683691 -0.67790158,0.48683691 z" Stretch="Uniform" Height="3" Fill="{TemplateBinding Foreground}" RenderTransformOrigin="0.5,0.5">
+                                        <Path.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform/>
+                                                <SkewTransform/>
+                                                <RotateTransform Angle="90"/>
+                                                <TranslateTransform/>
+                                            </TransformGroup>
+                                        </Path.RenderTransform>
+                                    </Path>
+                                    <Path x:Name="ArrowBottom_Copy" Data="M-0.67790158,0.48683691 C-0.67790158,0.48683691 7.7539062,0.46679688 7.7539062,0.46679688 7.7539062,0.46679688 3.5,6 3.5,6 3.5,6 -0.67790158,0.48683691 -0.67790158,0.48683691 z" Stretch="Uniform" Height="3" Width="Auto" Fill="{TemplateBinding Foreground}" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Grid.ColumnSpan="1">
+                                        <Path.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform/>
+                                                <SkewTransform/>
+                                                <RotateTransform Angle="90"/>
+                                                <TranslateTransform/>
+                                            </TransformGroup>
+                                        </Path.RenderTransform>
+                                    </Path>
+                                </ctrl:HorizonPanel>
+                            </Grid>
+                        </Border>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="root" Value="{DynamicResource Background_PageButtonOver}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" TargetName="root" Value="{DynamicResource Background_PageButtonOver}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" TargetName="root" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ctrl:PagingNext">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Foreground_ButtonText}"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="Width" Value="18"/>
+        <Setter Property="Height" Value="18"/>
+        <Setter Property="Margin" Value="2,0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:PagingNext}">
+                    <Border Background="{DynamicResource Background_PageButton}" BorderBrush="{DynamicResource Brush_PageButtonOuter}" BorderThickness="1" CornerRadius="2" x:Name="root" SnapsToDevicePixels="True">
+                        <Border BorderBrush="{DynamicResource Brush_PageButtonInner}" CornerRadius="1" BorderThickness="0,1,0,0">
+                            <Grid>
+                                <!--<ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,7,0"/>-->
+                                <Path x:Name="ArrowBottom" Data="M-0.67790158,0.48683691 C-0.67790158,0.48683691 7.7539062,0.46679688 7.7539062,0.46679688 7.7539062,0.46679688 3.5,6 3.5,6 3.5,6 -0.67790158,0.48683691 -0.67790158,0.48683691 z" Stretch="Uniform" Height="3" Width="Auto" Fill="{TemplateBinding Foreground}" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Grid.Column="1">
+                                    <Path.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="270"/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Path.RenderTransform>
+                                </Path>
+                            </Grid>
+                        </Border>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="root" Value="{DynamicResource Background_PageButtonOver}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" TargetName="root" Value="{DynamicResource Background_PageButtonOver}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" TargetName="root" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ctrl:PagingLast">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Foreground_ButtonText}"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="Width" Value="18"/>
+        <Setter Property="Height" Value="18"/>
+        <Setter Property="Margin" Value="2,0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:PagingLast}">
+                    <Border Background="{DynamicResource Background_PageButton}" BorderBrush="{DynamicResource Brush_PageButtonOuter}" BorderThickness="1" CornerRadius="2" x:Name="root" SnapsToDevicePixels="True">
+                        <Border BorderBrush="{DynamicResource Brush_PageButtonInner}" CornerRadius="1" BorderThickness="0,1,0,0">
+                            <ctrl:HorizonPanel HorizontalAlignment="Center">
+                                <!--<ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,7,0"/>-->
+                                <Path x:Name="ArrowBottom" Data="M-0.67790158,0.48683691 C-0.67790158,0.48683691 7.7539062,0.46679688 7.7539062,0.46679688 7.7539062,0.46679688 3.5,6 3.5,6 3.5,6 -0.67790158,0.48683691 -0.67790158,0.48683691 z" Stretch="Uniform" Fill="{TemplateBinding Foreground}" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Height="3">
+                                    <Path.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="270"/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Path.RenderTransform>
+                                </Path>
+                                <Path x:Name="ArrowBottom_Copy" Data="M-0.67790158,0.48683691 C-0.67790158,0.48683691 7.7539062,0.46679688 7.7539062,0.46679688 7.7539062,0.46679688 3.5,6 3.5,6 3.5,6 -0.67790158,0.48683691 -0.67790158,0.48683691 z" Stretch="Uniform" Fill="{TemplateBinding Foreground}" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Grid.Column="2" Grid.ColumnSpan="1" Height="3">
+                                    <Path.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="270"/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Path.RenderTransform>
+                                </Path>
+                            </ctrl:HorizonPanel>
+                        </Border>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="root" Value="{DynamicResource Background_PageButtonOver}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" TargetName="root" Value="{DynamicResource Background_PageButtonOver}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" TargetName="root" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <!--#endregion //Button-->
 
 
@@ -881,6 +1198,29 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource Brush.White}"/>
     </Style>
+
+    <Style TargetType="ctrl:PagingTextBlock" BasedOn="{StaticResource TextBased}">
+        <Setter Property="Foreground" Value="{DynamicResource Foreground_PageText}"/>
+        <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Margin" Value="3,1,3,0"/>
+    </Style>
+    <Style TargetType="ctrl:PagingCountTextBlock" BasedOn="{StaticResource TextBased}">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Foreground_CommonText}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <!--[2016.02.01 추가] TextTrimming 속성이 CharacterEllipsis 일 때 IsTrimmingToolTip="True" 이면 ToolTip를 표시한다.-->
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="ctrl:TextBlockService.IsTextTrimmed" Value="True"/>
+                    <Condition Property="IsTrimmingToolTip" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="ToolTip" Value="{Binding Path=Text, RelativeSource={RelativeSource Self}}"/>
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
     <!--#endregion //TextBlock-->
 
     <!--#region TextBox-->
@@ -892,11 +1232,57 @@
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="FontFamily" Value="{DynamicResource AppFont}" />
     </Style>
+    <Style TargetType="TextBox" x:Key="TextBoxStyle">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Background" Value="{DynamicResource Background_TextBox}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush_TextBox}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Foreground_CommonText}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+        <Setter Property="Height" Value="22"/>
+        <Setter Property="Margin" Value="5,0,0,0"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+        <Setter Property="AllowDrop" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True" CornerRadius="2">
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Margin="2,1,2,0"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Background_PopupFocus}"/>
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Background_PopupFocus}"/>
+                        </Trigger>
+                        <Trigger Property="IsReadOnly" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource Background_PopupDisabled}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource Background_PopupDisabled}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Foreground_DisabledText}"/>
+                        </Trigger>
+                        <!--<DataTrigger Binding="{Binding Source={x:Static lang:ConvertLanguage.CurrentLangType}}" Value="{x:Static lang:CurrentLanguageTypes.ja}">
+                            <Setter Property="Margin" TargetName="PART_ContentHost" Value="2,-2,0,0"/>
+                        </DataTrigger>-->
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <!--<Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="true">
+                <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors).CurrentItem.ErrorContent}"/>
+            </Trigger>
+        </Style.Triggers>-->
+    </Style>
     <Style TargetType="ctrl:PopupTextBox" BasedOn="{StaticResource BaseTextBoxStyle}">
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
+    <Style TargetType="ctrl:NumericTextBox" BasedOn="{StaticResource TextBoxStyle}"/>
     <Style TargetType="ctrl:WaterMarkTextBox">
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Background" Value="{DynamicResource Background_PopupCommon}"/>
@@ -1056,7 +1442,84 @@
                                 ConverterParameter=false}"/>
     </Style>
     <!--#endregion //UpDownControls-->
-
+    
+    <!--#region SearchPanel-->
+    <Style TargetType="ctrl:SearchPanel">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="ClipToBounds" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:SearchPanel}">
+                    <Grid x:Name="PART_CONTROL_AREA" IsHitTestVisible="True">
+                        <Rectangle x:Name="PART_BACKGROUND_AREA" IsHitTestVisible="True" Visibility="Collapsed" Opacity="0">
+                            <Rectangle.Fill>
+                                <SolidColorBrush Color="#FF333333" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Grid Name="PART_CONTENT_AREA" VerticalAlignment="Top" IsHitTestVisible="True">
+                            <ItemsControl x:Name="Root" UseLayoutRounding="True">
+                                <ItemsControl.Template>
+                                    <ControlTemplate TargetType="ItemsControl">
+                                        <ItemsPresenter/>
+                                    </ControlTemplate>
+                                </ItemsControl.Template>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <!--Parent="{Binding ElementName=PART_CONTENT_AREA}"-->
+                                        <ctrl:SearchWrapPanel ItemSize="LastWidthStar" HorizontalAlignment="Left" Parent="{Binding ElementName=PART_CONTROL_AREA}"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                            <Grid x:Name="PART_SEARCHBUTTON_AREA" HorizontalAlignment="Stretch">
+                                <ctrl:RightPanel x:Name="BtnPanel" Orientation="Horizontal" VerticalAlignment="Bottom" Background="{x:Null}" Margin="2">
+                                    <ctrl:InitialButton Command="{Binding InitialCommand}" Content="{Binding LanguageInitialize, FallbackValue=Initialize}" IsEnabled="{Binding IsEnabled, ElementName=BtnSearch}" Visibility="{TemplateBinding Property=VisibilityInitial}"/>
+                                    <ctrl:SearchButton x:Name="BtnSearch" Command="{Binding SearchCommand}" Content="{Binding LanguageSearch, FallbackValue=Search}" IsEnabled="{Binding IsEnabledSearching}"/>
+                                </ctrl:RightPanel>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <EventTrigger RoutedEvent="ctrl:SearchPanel.Show">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="PART_BACKGROUND_AREA" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                        <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}"/>
+                                    </ObjectAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PART_BACKGROUND_AREA" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0.5"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PART_CONTENT_AREA" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(TranslateTransform.Y)">
+                                        <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="-400"/>
+                                        <EasingDoubleKeyFrame KeyTime="00:00:00.4000000" Value="0"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="ctrl:SearchPanel.Hide">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PART_CONTENT_AREA" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(TranslateTransform.Y)">
+                                        <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="-400"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PART_BACKGROUND_AREA" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0.5"/>
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0" KeySpline="0,0,0.38,1"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="PART_BACKGROUND_AREA" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                        <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Collapsed}"/>
+                                    </ObjectAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--#endregion //SearchPanel-->
 
 
     <!--#region ChildWindow-->

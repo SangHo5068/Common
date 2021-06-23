@@ -151,6 +151,10 @@
     <Compile Include="Controls\ColorPicker\ColorUtils.cs" />
     <Compile Include="Controls\ColorPicker\HsvControl.cs" />
     <Compile Include="Controls\ColorPicker\SpectrumSlider.cs" />
+    <Compile Include="Controls\PagingControl.xaml.cs">
+      <DependentUpon>PagingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SearchPanel\SearchPanel.cs" />
     <Compile Include="Models\IControlView.cs" />
     <Compile Include="Models\IModule.cs" />
     <Compile Include="Command\AsyncCommand.cs" />
@@ -202,6 +206,7 @@
     <Compile Include="Utilities\BackgroundHelper.cs" />
     <Compile Include="Utilities\BindingProxy.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
+    <Compile Include="Utilities\DataValidation.cs" />
     <Compile Include="Utilities\EnumFactory.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Utilities\FileManager.cs" />
@@ -211,6 +216,7 @@
     <Compile Include="Utilities\HashHelper.cs" />
     <Compile Include="Converters\ImageConverter.cs" />
     <Compile Include="Utilities\IpAddressHelper.cs" />
+    <Compile Include="Utilities\KeysEnter.cs" />
     <Compile Include="Utilities\LogManager.cs" />
     <Compile Include="Utilities\Screen\ScreenFinder.cs" />
     <Compile Include="Utilities\Screen\Screen.cs" />
@@ -228,11 +234,17 @@
     <Compile Include="Views\ViewsManager.cs" />
     <Compile Include="Views\WindowRoot.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Controls\PaggingControl\" />
+  </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\ColorPicker\ColorPicker_Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\PagingControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\UpDownControls\NumericUpDown.xaml">
       <SubType>Designer</SubType>

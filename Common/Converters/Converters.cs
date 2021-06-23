@@ -103,14 +103,14 @@ namespace Common.Converters
     }
 
     [ValueConversion(typeof(bool), typeof(Visibility))]
-    public class BoolToVisibilityConverter : IValueConverter
+    public class BooleanToVisibilityConverter : IValueConverter
     {
-        static BoolToVisibilityConverter()
+        static BooleanToVisibilityConverter()
         {
-            Instance = new BoolToVisibilityConverter();
+            Instance = new BooleanToVisibilityConverter();
         }
 
-        public static BoolToVisibilityConverter Instance
+        public static BooleanToVisibilityConverter Instance
         {
             get;
             private set;

@@ -41,7 +41,9 @@ namespace Common.Command
 
         public virtual void Execute(object parameter)
         {
-            Logger.WriteLog(LogTypes.Info, string.Format("Command Execute Method : {0}, param : {1}", _execute.Method.Name, parameter));
+#if DEBUG
+            Logger.WriteLog(LogTypes.Info, string.Format("Execute Method : {0}, param : {1}", _execute.Method.Name, parameter));
+#endif
             this._execute(parameter);
         }
     }

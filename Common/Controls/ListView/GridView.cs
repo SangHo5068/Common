@@ -356,7 +356,7 @@ namespace Common.Controls
 
         static GridViewEx()
         {
-            //Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(TMSGridViewEx), new FrameworkPropertyMetadata { DefaultValue = 20 });
+            //Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(GridView), new FrameworkPropertyMetadata { DefaultValue = 20 });
         }
 
         //protected override void PrepareItem(ListViewItem item)
