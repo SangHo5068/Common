@@ -7,11 +7,11 @@
                       xmlns:base="clr-namespace:Common.Base"
                       xmlns:converter="clr-namespace:Common.Converters"
                       xmlns:local="clr-namespace:Common.Controls"
-                      DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
                       d:DataContext="{d:DesignInstance Type=local:PagingControl}"
                       Height="40"
                       mc:Ignorable="d"
                       d:DesignWidth="800">
+    <!--DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"-->
     <base:BaseUserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -55,7 +55,7 @@
                     </local:NumericTextBox.InputBindings>
                 </local:NumericTextBox>
                 <local:PagingTextBlock Text="/" Foreground="{DynamicResource Foreground_PageText2}" Margin="5,1,0,0"/>
-                <local:PagingTextBlock x:Name="TxtLast" Text="{Binding Path=Last}" Margin="5,1,10,0"/>
+                <local:PagingTextBlock x:Name="TxtLast" Text="{Binding Path=Last, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:PagingControl}}" Margin="5,1,10,0"/>
                 <local:PagingTextBlock x:Name="Label1" Text="|" Foreground="{DynamicResource Foreground_PageText2}" Margin="0,2,0,0" Visibility="Collapsed"/>
                 <local:PagingNext x:Name="BtnNext" Content="{Binding LanguageNext, FallbackValue=Next}" TabIndex="2"/>
                 <local:PagingLast x:Name="BtnLast" Content="{Binding LanguageLast, FallbackValue=Last}"  TabIndex="3"/>
@@ -65,10 +65,11 @@
 
             <!--Total Count-->
             <local:RightPanel Grid.Column="2" Margin="0,0,5,0">
-                <local:PagingCountTextBlock x:Name="TxtTotal" Text="{Binding LanguageTotal, FallbackValue=Total}"/>
-                <local:PagingCountTextBlock Text="{Binding Path=DataContext.TxtTotalCount, RelativeSource={RelativeSource Self}}"/>
-                <local:PagingCountTextBlock x:Name="TxtCount" Text="{Binding LanguageCount, FallbackValue=Count}"/>
-                <ComboBox Width="100" FontSize="10" Name="cbPageSize" Margin="5,0" TabIndex="6" SelectedIndex="0"
+                <!--<local:PagingCountTextBlock x:Name="TxtTotal" Text="{Binding LanguageTotal, FallbackValue=Total}"/>-->
+                <local:PagingCountTextBlock Margin="5 0 15 0" Text="{Binding Path=TotalCount, StringFormat={}Total : {0}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:PagingControl}}"/>
+                <!--<local:PagingCountTextBlock Text="{Binding Path=DataContext.TxtTotalCount, RelativeSource={RelativeSource Self}}"/>-->
+                <!--<local:PagingCountTextBlock x:Name="TxtCount" Text="{Binding LanguageCount, FallbackValue=Count}"/>-->
+                <ComboBox Width="100" FontSize="10" Name="cbPageSize" Margin="15,0,5,0" TabIndex="6" SelectedIndex="0"
                           ItemsSource="{Binding Source={StaticResource PagingDictionary}}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
