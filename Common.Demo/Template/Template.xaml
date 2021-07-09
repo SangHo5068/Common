@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:noti="clr-namespace:Common.Notify;assembly=Common"
+                    xmlns:view="clr-namespace:Common.Demo.Views">
+
+
+    <DataTemplate DataType="{x:Type view:BaseContentView}">
+        <Grid noti:LoadedBindings.LoadedEnabled="True"
+              noti:LoadedBindings.LoadedAction="{Binding LoadAction}">
+            <TextBlock Text="Test" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        </Grid> 
+    </DataTemplate>
+</ResourceDictionary>

@@ -68,6 +68,8 @@ namespace Common.Models
             set { SetValue(ref _Header, value); }
         }
 
+        public virtual object[] InnerParams { get; private set; }
+
         /// <summary>
         /// 이벤트 관리
         /// </summary>
@@ -79,10 +81,23 @@ namespace Common.Models
         public BaseViewModel(BindableAndDisposable parent, params object[] param)
         {
             Parent = parent;
-            InitialData(param);
+            InnerParams = param;
         }
 
 
+
+        private DelegateLoadedAction _loadAction = null;
+        public DelegateLoadedAction LoadAction
+        {
+            get
+            {
+                return _loadAction ?? (_loadAction = new DelegateLoadedAction((s) => {
+                    View = s as FrameworkElement;
+                    /// do your window initialization here
+                    InitialData(InnerParams);
+                }));
+            }
+        }
 
         public virtual void Clear() { }
         public virtual void InitialData(params object[] param) { }
@@ -345,7 +360,7 @@ namespace Common.Models
         public virtual void Close()
         {
             DialogCloseEvent?.Invoke(this);
-            this.Dispose();
+            Dispose();
         }
         public virtual void SetCloseCommand(ICommand command)
         {
@@ -438,8 +453,8 @@ namespace Common.Models
         public BaseChildViewModel(BindableAndDisposable parent, double w, double h, params object[] param)
             : base(parent, param)
         {
-            this.Width = w;
-            this.Height = h;
+            Width = w;
+            Height = h;
         }
         protected override void DisposeUnmanaged()
         {
@@ -459,11 +474,11 @@ namespace Common.Models
         #region Methods
         public virtual void Close()
         {
-            this.Dispose();
+            Dispose();
         }
         public virtual void OnClose(object obj)
         {
-            this.Close();
+            Close();
         }
         #endregion //Methods
     }

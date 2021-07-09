@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
 using Common.Base;
 using Common.Command;
+using Common.Demo.Views;
 using Common.Utilities;
 
 namespace Common.Demo
@@ -16,6 +13,7 @@ namespace Common.Demo
     {
         private string _ProductVersion;
         private string _BuildTime;
+        private BaseContentView _CurrentView;
 
         #region Properties
         public string ProductVersion
@@ -27,6 +25,12 @@ namespace Common.Demo
         {
             get => _BuildTime;
             set => SetValue(ref _BuildTime, value);
+        }
+
+        public BaseContentView CurrentView
+        {
+            get => _CurrentView;
+            set => SetValue(ref _CurrentView, value);
         }
         #endregion //Properties
 
@@ -64,6 +68,8 @@ namespace Common.Demo
             ProductVersion = gitVer;
             var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             BuildTime = Defined.Get_BuildDateTime(version).ToString(Defined.DateSFormat);
+
+            CurrentView = new BaseContentView();
         }
         #endregion //override
 

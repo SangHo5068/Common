@@ -1,0 +1,22 @@
+﻿[*.cs]
+
+# IDE0011: 중괄호 추가
+dotnet_diagnostic.IDE0011.severity = none
+
+# IDE0008: 명시적 형식 사용
+dotnet_diagnostic.IDE0008.severity = none
+
+# IDE0049: 이름 단순화
+dotnet_diagnostic.IDE0049.severity = none
+
+# IDE0027: 접근자에 식 본문 사용
+dotnet_diagnostic.IDE0027.severity = none
+
+# IDE0025: 속성에 식 본문 사용
+dotnet_diagnostic.IDE0025.severity = none
+
+# IDE0045: 조건식으로 변환
+dotnet_diagnostic.IDE0045.severity = none
+
+# IDE0055: 서식 수정
+dotnet_diagnostic.IDE0055.severity = none

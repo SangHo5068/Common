@@ -48,6 +48,10 @@
                                        CloseCommand="{Binding CommandWindowClose, RelativeSource={RelativeSource AncestorType=baseview:BaseWindow}}"/>
 
 
+            <!--Change Content-->
+            <ContentPresenter Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                              Content="{Binding CurrentView, UpdateSourceTrigger=PropertyChanged}"/>
+
             <!--Footer-->
             <basectrl:BorderMainFooter Grid.Row="2" CornerRadius="0 0 5 5">
                 <basectrl:BorderMainFooter.Content>
