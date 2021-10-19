@@ -14,6 +14,18 @@ namespace Common.Controls
 {
     public class Paging : Dictionary<String, String> { }
 
+    public class PagingChangedEventArgs : RoutedEventArgs
+    {
+        public int CurrentPage { get; internal set; }
+        public int PageSize { get; internal set; }
+
+
+        public PagingChangedEventArgs(RoutedEvent routedEvent, object source)
+            : base(routedEvent, source)
+        {
+        }
+    }
+
 
     /// <summary>
     /// PagingControl.xaml에 대한 상호 작용 논리
@@ -56,11 +68,37 @@ namespace Common.Controls
         #endregion //DependencyProperty
 
         #region Event
-        public delegate void PageChangedEventHandler(Object sender, int CurrPage);
-        public event PageChangedEventHandler PageChanged;
+        //public delegate void PageChangedEventHandler(Object sender, int CurrPage);
+        //public delegate void PageSizeChangedEventHandler(int PageSize);
 
-        public delegate void PageSizeChangedEventHandler(int PageSize);
-        public event PageSizeChangedEventHandler PageSizeChanged;
+        //public event PageChangedEventHandler PageChanged;
+        //public event PageSizeChangedEventHandler PageSizeChanged;
+
+        public static readonly RoutedEvent PageChangedEvent = 
+            EventManager.RegisterRoutedEvent(nameof(PageChanged),
+                                             RoutingStrategy.Bubble,
+                                             typeof(RoutedEventHandler),
+                                             typeof(PagingControl));
+
+        // Provide CLR accessors for the event 
+        public event RoutedEventHandler PageChanged
+        {
+            add { AddHandler(PageChangedEvent, value); }
+            remove { RemoveHandler(PageChangedEvent, value); }
+        }
+
+        public static readonly RoutedEvent PageSizeChangedEvent =
+            EventManager.RegisterRoutedEvent(nameof(PageSizeChanged),
+                                             RoutingStrategy.Bubble,
+                                             typeof(RoutedEventHandler),
+                                             typeof(PagingControl));
+
+        // Provide CLR accessors for the event 
+        public event RoutedEventHandler PageSizeChanged
+        {
+            add { AddHandler(PageSizeChangedEvent, value); }
+            remove { RemoveHandler(PageSizeChangedEvent, value); }
+        }
         #endregion //Event
 
         #region Properties
@@ -320,23 +358,23 @@ namespace Common.Controls
         static PagingControl()
         {
             Type owner = typeof(PagingControl);
-            FirstProperty = DependencyProperty.Register(nameof(First), typeof(int), owner, new PropertyMetadata(1));
-            CurrentPageProperty = DependencyProperty.Register(nameof(CurrentPage), typeof(int), owner, new FrameworkPropertyMetadata(1, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnCurrentPageChanged, OnCurrentPage_Core, false, UpdateSourceTrigger.PropertyChanged));
-            CurrentMinProperty = DependencyProperty.Register(nameof(CurrentMin), typeof(int), owner, new FrameworkPropertyMetadata());
-            CurrentMaxProperty = DependencyProperty.Register(nameof(CurrentMax), typeof(int), owner, new FrameworkPropertyMetadata());
-            LastProperty = DependencyProperty.Register(nameof(Last), typeof(int), owner, new PropertyMetadata(1));
-            TotalCountProperty = DependencyProperty.Register(nameof(TotalCount), typeof(int), owner, new PropertyMetadata(0, new PropertyChangedCallback(OnTotalCountChanged), new CoerceValueCallback(OnTotalCount_Core)));
-            PageSizeProperty = DependencyProperty.Register(nameof(PageSize), typeof(int), owner, new PropertyMetadata(PAGE_COUNT));
+            FirstProperty       = DependencyProperty.Register(nameof(First),        typeof(int), owner, new PropertyMetadata(1));
+            CurrentPageProperty = DependencyProperty.Register(nameof(CurrentPage),  typeof(int), owner, new FrameworkPropertyMetadata(1, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnCurrentPageChanged, OnCurrentPage_Core, false, UpdateSourceTrigger.PropertyChanged));
+            CurrentMinProperty  = DependencyProperty.Register(nameof(CurrentMin),   typeof(int), owner, new FrameworkPropertyMetadata());
+            CurrentMaxProperty  = DependencyProperty.Register(nameof(CurrentMax),   typeof(int), owner, new FrameworkPropertyMetadata());
+            LastProperty        = DependencyProperty.Register(nameof(Last),         typeof(int), owner, new PropertyMetadata(1));
+            TotalCountProperty  = DependencyProperty.Register(nameof(TotalCount),   typeof(int), owner, new PropertyMetadata(0, new PropertyChangedCallback(OnTotalCountChanged), new CoerceValueCallback(OnTotalCount_Core)));
+            PageSizeProperty    = DependencyProperty.Register(nameof(PageSize),     typeof(int), owner, new PropertyMetadata(PAGE_COUNT));
             PageSizesVisibilityProperty = DependencyProperty.Register(nameof(PageSizesVisibility), typeof(Visibility), owner, new PropertyMetadata(Visibility.Visible, OnPageSizesVisibilityChanged));
-            PageSizesCollectionProperty = DependencyProperty.Register(nameof(PageSizesCollection), typeof(Paging), owner, new PropertyMetadata(null, OnPageSizesCollectionChanged));
+            PageSizesCollectionProperty = DependencyProperty.Register(nameof(PageSizesCollection), typeof(Paging),     owner, new PropertyMetadata(null, OnPageSizesCollectionChanged));
 
-            LanguageTotalProperty = DependencyProperty.Register(nameof(LanguageTotal), typeof(String), owner, new PropertyMetadata(Language_Total));
-            LanguageCountProperty = DependencyProperty.Register(nameof(LanguageCount), typeof(String), owner, new PropertyMetadata(Language_Count));
-            LanguageFirstProperty = DependencyProperty.Register(nameof(LanguageFirst), typeof(String), owner, new PropertyMetadata(Language_Firs));
-            LanguagePreviousProperty = DependencyProperty.Register(nameof(LanguagePrevious), typeof(String), owner, new PropertyMetadata(Language_Prev));
-            LanguageNextProperty = DependencyProperty.Register(nameof(LanguageNext), typeof(String), owner, new PropertyMetadata(Language_Next));
-            LanguageLastProperty = DependencyProperty.Register(nameof(LanguageLast), typeof(String), owner, new PropertyMetadata(Language_Last));
-            LanguageMovePageProperty = DependencyProperty.Register(nameof(LanguageMovePage), typeof(String), owner, new PropertyMetadata(Language_MovePage));
+            LanguageTotalProperty    = DependencyProperty.Register(nameof(LanguageTotal),   typeof(String), owner, new PropertyMetadata(Language_Total));
+            LanguageCountProperty    = DependencyProperty.Register(nameof(LanguageCount),   typeof(String), owner, new PropertyMetadata(Language_Count));
+            LanguageFirstProperty    = DependencyProperty.Register(nameof(LanguageFirst),   typeof(String), owner, new PropertyMetadata(Language_Firs));
+            LanguagePreviousProperty = DependencyProperty.Register(nameof(LanguagePrevious),typeof(String), owner, new PropertyMetadata(Language_Prev));
+            LanguageNextProperty     = DependencyProperty.Register(nameof(LanguageNext),    typeof(String), owner, new PropertyMetadata(Language_Next));
+            LanguageLastProperty     = DependencyProperty.Register(nameof(LanguageLast),    typeof(String), owner, new PropertyMetadata(Language_Last));
+            LanguageMovePageProperty = DependencyProperty.Register(nameof(LanguageMovePage),typeof(String), owner, new PropertyMetadata(Language_MovePage));
         }
         public PagingControl()
         {
@@ -348,7 +386,7 @@ namespace Common.Controls
             this.HasPreviousPage = false;
 
             KeyEnterCommand = new RelayCommand(OnKenEnter);
-            KeyTabCommand = new RelayCommand(OnKenTab);
+            KeyTabCommand   = new RelayCommand(OnKenTab);
         }
         ~PagingControl()
         {
@@ -365,9 +403,12 @@ namespace Common.Controls
 
             try
             {
-                var cboItem = (cbo.SelectedItem as KeyValuePair<String, String>?);
-                if (cboItem == null) return;
-                PageSize = Convert.ToInt32(cboItem.GetValueOrDefault().Key);
+                if (!(cbo.SelectedItem is KeyValuePair<String, String> cboItem))
+                    return;
+                if (Int32.TryParse(cboItem.Key, out int page))
+                    PageSize = page;
+                else
+                    return;
 
                 if (TotalCount > 0)
                     Last = (TotalCount % PageSize) == 0 ? (TotalCount / PageSize) : (TotalCount / PageSize) + 1;
@@ -384,9 +425,12 @@ namespace Common.Controls
 
                 //TxtCurrPage.Text = CurrentPage.ToString();
 
-                PageSizeChanged?.Invoke(PageSize);
+                //PageSizeChanged?.Invoke(PageSize);
+                this.RaiseEvent(new PagingChangedEventArgs(PageSizeChangedEvent, this) { PageSize = PageSize });
             }
-            catch (Exception) { }
+            catch (Exception ex) {
+                Logger.WriteLog(LogTypes.Exception, "", ex);
+            }
         }
 
         private void BtnMove_Click(object sender, RoutedEventArgs e)
@@ -411,7 +455,9 @@ namespace Common.Controls
                 default:
                     break;
             }
-            PageChanged?.Invoke(this, CurrentPage);
+
+            RaiseEvent(new PagingChangedEventArgs(PageChangedEvent, this) { CurrentPage = CurrentPage });
+            //PageChanged?.Invoke(this, CurrentPage);
 
             //this.TxtCurrPage.Text = CurrentPage.ToString();
             SetButtonEnableChanged();
@@ -441,7 +487,7 @@ namespace Common.Controls
 
         //private void TxtCurrPage_PreviewKeyDown(object sender, KeyEventArgs e)
         //{
-        //    var textBox = sender as TMSNumericTextBox;
+        //    var textBox = sender as NumericTextBox;
         //    if (textBox == null) return;
 
         //    if (e.Key == Key.Delete || e.Key == Key.Back) return;
@@ -460,7 +506,7 @@ namespace Common.Controls
 
         //private void TxtCurrPage_PreviewTextInput(object sender, TextCompositionEventArgs e)
         //{
-        //    var textBox = (sender as TMSNumericTextBox);
+        //    var textBox = (sender as NumericTextBox);
         //    if (textBox == null)
         //        return;
 
@@ -506,7 +552,8 @@ namespace Common.Controls
                 if ((First <= OutText) && (OutText <= Last))
                 {
                     CurrentPage = OutText;
-                    PageChanged?.Invoke(this, CurrentPage);
+                    //PageChanged?.Invoke(this, CurrentPage);
+                    RaiseEvent(new PagingChangedEventArgs(PageChangedEvent, this) { CurrentPage = CurrentPage });
 
                     SetButtonEnableChanged();
                 }

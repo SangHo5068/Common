@@ -362,6 +362,46 @@ namespace Common.Utilities
                 pArg = "/select, " + pArg;
             System.Diagnostics.Process.Start("explorer.exe", pArg);
         }
+        /// <summary>
+        /// 폴더 오픈
+        /// </summary>
+        /// <param name="exe"></param>
+        /// <param name="pArg"></param>
+        /// <param name="runas">관리자 권한 실행 여부(true:관리자권한 실행)</param>
+        public static string ExecuteExplorer(string exe = "explorer.exe", string pArg = null, bool runas = false)
+        {
+            var result = string.Empty;
+            try
+            {
+                if (File.Exists(pArg))
+                    pArg = "/select, " + pArg;
+                var processInfo = new System.Diagnostics.ProcessStartInfo(exe)
+                {
+                    WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+                    UseShellExecute = string.IsNullOrEmpty(pArg),
+                    Arguments = pArg,
+                    RedirectStandardInput  = !string.IsNullOrEmpty(pArg),
+                    RedirectStandardOutput = !string.IsNullOrEmpty(pArg),
+                    Verb = runas ? "runas" : null,
+                };
+                var process = new System.Diagnostics.Process {
+                    StartInfo = processInfo
+                };
+                process.Start();
+                //process.WaitForExit();
+                if (!processInfo.UseShellExecute)
+                {
+                    using (var sOut = process.StandardOutput)
+                        result = sOut.ReadToEnd();
+                }
+                //process.Dispose();
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(LogTypes.Exception, "", ex);
+            }
+            return result;
+        }
 
         /// <summary>
         /// 파일을 암호화 하여 내보내기

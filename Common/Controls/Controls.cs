@@ -102,6 +102,87 @@ namespace Common.Controls
         //    e.Handled = true;
         //}
     }
+    public class MainHeader : Control
+    {
+        #region DependencyProperties
+        public static readonly DependencyProperty CloseCommandProperty;
+        public static readonly DependencyProperty HeaderProperty;
+        public static readonly DependencyProperty CornerRadiusProperty;
+
+        public static readonly DependencyProperty ImageProperty;
+        public static readonly DependencyProperty ImageWidthProperty;
+        public static readonly DependencyProperty ImageHeightProperty;
+
+        public static readonly DependencyProperty IsShowMinProperty;
+        public static readonly DependencyProperty IsShowMaxProperty;
+        #endregion //DependencyProperties
+
+        #region Properties
+        public ICommand CloseCommand
+        {
+            get { return (ICommand)GetValue(CloseCommandProperty); }
+            set { SetValue(CloseCommandProperty, value); }
+        }
+
+        public string Header
+        {
+            get { return (string)GetValue(HeaderProperty); }
+            set { SetValue(HeaderProperty, value); }
+        }
+
+        public CornerRadius CornerRadius
+        {
+            get { return (CornerRadius)GetValue(CornerRadiusProperty); }
+            set { SetValue(CornerRadiusProperty, value); }
+        }
+
+        public ImageSource Image
+        {
+            get { return (ImageSource)GetValue(ImageProperty); }
+            set { SetValue(ImageProperty, value); }
+        }
+        public double ImageWidth
+        {
+            get { return (double)GetValue(ImageWidthProperty); }
+            set { SetValue(ImageWidthProperty, value); }
+        }
+        public double ImageHeight
+        {
+            get { return (double)GetValue(ImageHeightProperty); }
+            set { SetValue(ImageHeightProperty, value); }
+        }
+
+        public Visibility IsShowMin
+        {
+            get { return (Visibility)GetValue(IsShowMinProperty); }
+            set { SetValue(IsShowMinProperty, value); }
+        }
+        public Visibility IsShowMax
+        {
+            get { return (Visibility)GetValue(IsShowMaxProperty); }
+            set { SetValue(IsShowMaxProperty, value); }
+        }
+        #endregion //Properties
+
+
+
+        static MainHeader()
+        {
+            Type owner = typeof(MainHeader);
+            CloseCommandProperty = DependencyProperty.Register(nameof(CloseCommand), typeof(ICommand), owner, new PropertyMetadata(null));
+            CornerRadiusProperty = DependencyProperty.Register(nameof(CornerRadius), typeof(CornerRadius), owner, new PropertyMetadata(new CornerRadius()));
+            HeaderProperty = DependencyProperty.Register(nameof(Header), typeof(string), owner, new PropertyMetadata(null));
+            ImageProperty = DependencyProperty.Register(nameof(Image), typeof(ImageSource), owner, new PropertyMetadata(null));
+            ImageWidthProperty = DependencyProperty.Register(nameof(ImageWidth), typeof(double), owner, new PropertyMetadata(36D));
+            ImageHeightProperty = DependencyProperty.Register(nameof(ImageHeight), typeof(double), owner, new PropertyMetadata(36D));
+            IsShowMinProperty = DependencyProperty.Register(nameof(IsShowMin), typeof(Visibility), owner, new PropertyMetadata(Visibility.Visible));
+            IsShowMaxProperty = DependencyProperty.Register(nameof(IsShowMax), typeof(Visibility), owner, new PropertyMetadata(Visibility.Visible));
+        }
+        public MainHeader()
+        {
+
+        }
+    }
 
     public class BorderMainFooter : ContentControl
     {

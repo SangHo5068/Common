@@ -376,6 +376,7 @@ namespace Common.Models
         private double _Width = 1024D;
         private double _Height = 800D;
         private String _Caption = String.Empty;
+        private Visibility _CaptionVisible = Visibility.Visible;
         private Controls.WindowState _WindowState = Controls.WindowState.Closed;
 
         private HorizontalAlignment _HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -409,6 +410,13 @@ namespace Common.Models
             get { return _Caption; }
             set { SetValue(ref _Caption, value); }
         }
+        public virtual Visibility CaptionVisible
+        {
+            get { return _CaptionVisible; }
+            set { SetValue(ref _CaptionVisible, value); }
+        }
+
+
         public virtual Controls.WindowState WindowState
         {
             get { return _WindowState; }

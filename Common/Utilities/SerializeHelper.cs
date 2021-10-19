@@ -427,10 +427,9 @@ namespace Common.Utilities
                 return null;
             }
 
-            DateTime date;
-            if (DateTime.TryParse(s, out date))
+            if (DateTime.TryParse(s, out DateTime date))
             {
-                return date.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                return date.ToString(Defined.DateMinusLFormat);
             }
 
             return null;
@@ -743,6 +742,17 @@ namespace Common.Utilities
                 Logger.WriteLogAndTrace(LogTypes.Exception, "[ReadDataFromXml Error]", ex);
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Json Deserialize
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static dynamic DeserializeByJson(string value)
+        {
+            return JsonConvert.DeserializeObject(value);
         }
 
         /// <summary>

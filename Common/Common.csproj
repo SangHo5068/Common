@@ -155,6 +155,7 @@
       <DependentUpon>PagingControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SearchPanel\SearchPanel.cs" />
+    <Compile Include="Converters\MarkupConverter.cs" />
     <Compile Include="Models\IControlView.cs" />
     <Compile Include="Models\IModule.cs" />
     <Compile Include="Command\AsyncCommand.cs" />
@@ -224,6 +225,7 @@
     <Compile Include="Utilities\Screen\MouseHelper.cs" />
     <Compile Include="Utilities\Screen\NativeMethods.cs" />
     <Compile Include="Utilities\PasswordHelper.cs" />
+    <Compile Include="Utilities\ProcessHandler.cs" />
     <Compile Include="Utilities\SerializeHelper.cs" />
     <Compile Include="Extensions\TreeViewItemExtensions.cs" />
     <Compile Include="Utilities\Screen\SystemInformation.cs" />

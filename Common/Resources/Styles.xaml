@@ -210,6 +210,62 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style TargetType="ctrl:MainHeader">
+        <Setter Property="Background" Value="{DynamicResource Background_Main}" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.White}" />
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:MainHeader}">
+                    <Border CornerRadius="{TemplateBinding CornerRadius}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseLeftButtonDown">
+                                <command:EventToCommand Command="{Binding CommandMouseLeftButtonDown, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" PassEventArgsToCommand="True"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Rounded mask (stretches to fill Grid) -->
+                            <Border Name="mask" Background="{TemplateBinding Background}" CornerRadius="5 0 0 0"/>
+                            <!-- Main Icon content container -->
+                            <StackPanel Margin="0">
+                                <!-- Use a VisualBrush of 'mask' as the opacity mask -->
+                                <StackPanel.OpacityMask>
+                                    <VisualBrush Visual="{Binding ElementName=mask}"/>
+                                </StackPanel.OpacityMask>
+                                <!-- Any content -->
+                                <!--<Image Width="47.5" Height="38" Stretch="Fill" Source="pack://application:,,,/mobiCARE_Cardio_UPLoader;component/Resources/images/mobicare_Cardio.png"/>-->
+                                <Image Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Visibility="{Binding Image, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource ObjectNullToVisibilityConverter}}"
+                                       Width="{TemplateBinding ImageWidth}" Height="{TemplateBinding ImageHeight}"
+                                       Source="{TemplateBinding Image}" />
+                            </StackPanel>
+
+                            <ctrl:TextBlockMainHeader Grid.Column="1" Margin="20,0,5,5" Text="{TemplateBinding Header}" />
+
+                            <ctrl:RightPanel Grid.Column="2" Margin="0" VerticalAlignment="Top">
+                                <ctrl:WindowMinButton Margin="0,0,5,0" Command="{Binding CommandWindowMin, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" CommandParameter="Minimized" Visibility="{TemplateBinding IsShowMin}"/>
+                                <ctrl:WindowMaxButton Margin="2,0,2,0" Command="{Binding CommandWindowMax, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" CommandParameter="Maximized" Visibility="{TemplateBinding IsShowMax}"/>
+                                <!--<ctrl:WindowCloseButton Margin="0,0,0,0" Command="{Binding CommandWindowClose, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}"/>-->
+                                <ctrl:WindowCloseButton Margin="0" Width="40" VerticalAlignment="Stretch" Command="{TemplateBinding CloseCommand}"
+                                                        Style="{DynamicResource CloseButtonStyle}"/>
+                            </ctrl:RightPanel>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style TargetType="ctrl:BorderMainFooter">
         <Setter Property="Background" Value="{DynamicResource Background_MainBorder}" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -512,6 +568,33 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style TargetType="ctrl:RadiusButton" x:Key="RadiusButtonStyle">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Foreground" Value="{StaticResource Foreground_CommonText}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:RadiusButton}">
+                    <Border CornerRadius="{TemplateBinding CornerRadius}" Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid Background="Transparent">
+                            <TextBlock Margin="0,2,0,0" FontFamily="{StaticResource AppFont}" FontWeight="Bold" FontSize="{DynamicResource DefaultFontSize}"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Text="{TemplateBinding Content}"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Disabled}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style TargetType="ctrl:RemoveTextButton">
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -587,6 +670,7 @@
         <Setter Property="MinWidth" Value="55"/>
         <Setter Property="Height" Value="23"/>
         <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -630,6 +714,7 @@
         <Setter Property="MinWidth" Value="50"/>
         <Setter Property="Height" Value="23"/>
         <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -1609,6 +1694,10 @@
                         <Trigger Property="WindowState" Value="Closed">
                             <Setter Property="Visibility" Value="Collapsed" />
                         </Trigger>
+                        <DataTrigger Binding="{Binding CaptionVisible}" Value="Collapsed">
+                            <Setter TargetName="PART_WindowRoot" Property="BorderThickness" Value="0" />
+                            <Setter TargetName="Contents" Property="BorderThickness" Value="0" />
+                        </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

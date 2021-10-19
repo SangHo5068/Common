@@ -41,7 +41,7 @@ namespace Common.Views
         {
             if (this.Content != null && this.DataContext != null)
             {
-                (this.DataContext as BindableAndDisposable).Dispose();
+                (this.DataContext as BindableAndDisposable)?.Dispose();
             }
 
             //팝업창 닫은 후 메인화면이 최소화 되지 않도록 Focus
@@ -172,6 +172,12 @@ namespace Common.Views
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern IntPtr SendMessage(IntPtr hWnd, UInt32 msg, IntPtr wParam, IntPtr lParam);
 
+        protected override void OnInitialized(EventArgs e)
+        {
+            SourceInitialized += OnSourceInitialized;
+            base.OnInitialized(e);
+        }
+
         private HwndSource _hwndSource;
         private void OnSourceInitialized(object sender, EventArgs e)
         {
@@ -181,12 +187,12 @@ namespace Common.Views
         {
             SendMessage(_hwndSource.Handle, 0x112, (IntPtr)(61440 + direction), IntPtr.Zero);
         }
-        protected void OnPreviewMouseMove(object sender, MouseEventArgs e)
+        protected virtual void OnPreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (Mouse.LeftButton != MouseButtonState.Pressed)
                 Cursor = Cursors.Arrow;
         }
-        protected void ResizeRectangle_MouseMove(object sender, MouseEventArgs e)
+        protected virtual void ResizeRectangle_MouseMove(object sender, MouseEventArgs e)
         {
             Rectangle rectangle = sender as Rectangle;
             switch (rectangle.Name)
@@ -219,7 +225,7 @@ namespace Common.Views
                     break;
             }
         }
-        protected void ResizeRectangle_PreviewMouseDown(object sender, MouseEventArgs e)
+        protected virtual void ResizeRectangle_PreviewMouseDown(object sender, MouseEventArgs e)
         {
             Rectangle rectangle = sender as Rectangle;
             switch (rectangle.Name)
@@ -259,12 +265,6 @@ namespace Common.Views
                 default:
                     break;
             }
-        }
-
-        protected override void OnInitialized(EventArgs e)
-        {
-            SourceInitialized += OnSourceInitialized;
-            base.OnInitialized(e);
         }
 
         #endregion //Resize Custom Window

@@ -13,5 +13,13 @@ namespace Common
             // 전역 Event 사용을 위해 Service Locator 에 등록 
             container.RegisterType<IEventAggregator, EventAggregator>();
         }
+
+        public static T GetContainer<T>()
+        {
+            var container = ContainerResolver.GetContainer();
+
+            // 전역 container 요청
+            return container.Resolve<T>();
+        }
     }
 }
