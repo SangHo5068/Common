@@ -6,6 +6,46 @@ namespace Common
     {
         public const string DateSFormat = "yyyy.MM.dd HH:mm:ss";
         public const string DateLFormat = "yyyy.MM.dd HH:mm:ss.fff";
+        public const string DateMinusSFormat = "yyyy-MM-dd HH:mm:ss";
+        public const string DateMinusLFormat = "yyyy-MM-dd HH:mm:ss.fff";
+
+
+
+#if DEBUG
+        /// <summary>
+        /// 빌드 구성 DEBUG(테스트용 버전)
+        /// </summary>
+        public const String BUILD = "T";
+        public static Boolean IsRelease { get; set; } = false;
+#else
+        /// <summary>
+        /// 빌드 구성 RELEASE(배포 버전)
+        /// </summary>
+        public const String BUILD = "R";
+        public static Boolean IsRelease { get; set; } = true;
+#endif
+
+
+
+        private const String VersionFormat = "0.0.{0}";
+        /// <summary>
+        /// Git Commits Number
+        /// </summary>
+        public static String GitCommitNo { get; set; }
+        /// <summary>
+        /// 프로그램 버전 "1.0.{GitCommitNo}"
+        /// </summary>
+        public static String AppVersion
+        {
+            get => String.Format(VersionFormat, GitCommitNo);
+        }
+        /// <summary>
+        /// 프로그램 버전 "1.0.{GitCommitNo}.T"
+        /// </summary>
+        public static String AppBuildVersion
+        {
+            get => String.Format("{0}{1}", AppVersion, IsRelease ? string.Empty : BUILD);
+        }
 
 
         #region Methods
