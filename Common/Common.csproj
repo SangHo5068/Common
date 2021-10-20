@@ -156,6 +156,7 @@
     </Compile>
     <Compile Include="Controls\SearchPanel\SearchPanel.cs" />
     <Compile Include="Converters\MarkupConverter.cs" />
+    <Compile Include="Interop\WinApi.cs" />
     <Compile Include="Models\IControlView.cs" />
     <Compile Include="Models\IModule.cs" />
     <Compile Include="Command\AsyncCommand.cs" />
