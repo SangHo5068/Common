@@ -219,6 +219,10 @@
       <Project>{c4e4116a-6e41-4863-8c77-5e10664a1a4e}</Project>
       <Name>Common.Cultures</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Common.Net\Common.Net.csproj">
+      <Project>{fe1ac6fc-a5e6-4375-bd11-c7016c9f51ae}</Project>
+      <Name>Common.Net</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{0707e28b-6c2e-4a61-9ec6-891a0c9ead18}</Project>
       <Name>Common</Name>
@@ -235,4 +239,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\GitInfo.2.2.0\build\GitInfo.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\GitInfo.2.2.0\build\GitInfo.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PreBuildEvent>copy "$(SolutionDir)App.ini" "$(TargetDir)"</PreBuildEvent>
+  </PropertyGroup>
 </Project>
