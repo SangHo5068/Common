@@ -1,7 +1,7 @@
-﻿using System.ComponentModel;
-using System;
-using System.Windows;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 
 namespace Common.Utilities
 {
@@ -102,16 +102,13 @@ namespace Common.Utilities
 
             if (useMouseLocation)
             {
-                Top = MouseHelper.MousePosition.Y;
-
                 var valueOnNewSize = percentage * Width;
+                Top  = MouseHelper.MousePosition.Y;
                 Left = MouseHelper.MousePosition.X - valueOnNewSize;
             }
 
             SetWindowTop(window);
             SetWindowLeft(window);
         }
-
-
     }
 }

@@ -40,7 +40,13 @@ namespace ServiceBase
         public static string BASEURL => Defined.IsRelease ? ReleURL : TestURL;
         public static string WEBSITE => Defined.IsRelease ? ReleCARDIO_WEBSITE : TestCARDIO_WEBSITE;
 
+        /// <summary>
+        /// Asia/Seoul
+        /// </summary>
         public static string TimeZone { get; set; } = "Asia/Seoul";
+        /// <summary>
+        /// GMT+0900
+        /// </summary>
         public static string GmtCode { get; set; } = "GMT+0900";
 
         private const string UrlPrefix = "{0}mobiCARE/cardio/";

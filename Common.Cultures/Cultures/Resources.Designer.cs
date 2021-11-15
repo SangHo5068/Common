@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Common.Cultures {
+namespace Common.Cultures.Cultures {
     using System;
     
     
@@ -57,6 +57,33 @@ namespace Common.Cultures {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   유저 아이디 입력과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string EnterUserID {
+            get {
+                return ResourceManager.GetString("EnterUserID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   유저 패스워드 입력과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string EnterUserPassword {
+            get {
+                return ResourceManager.GetString("EnterUserPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   실패과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Failure {
+            get {
+                return ResourceManager.GetString("Failure", resourceCulture);
             }
         }
         

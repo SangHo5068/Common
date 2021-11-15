@@ -5,6 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Data;
 
+using Common.Cultures.Cultures;
 using Common.Utilities;
 
 namespace Common.Cultures

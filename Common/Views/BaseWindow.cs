@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Shapes;
+using System.Windows.Media.Animation;
 
 using Common.Command;
 using Common.Notify;
@@ -14,6 +15,22 @@ namespace Common.Views
 {
     public abstract class BaseWindow : Window
     {
+        #region DependencyProperty
+        public static DependencyProperty MonitorPositionProperty = 
+            DependencyProperty.Register(nameof(MonitorPosition), typeof(int), typeof(BaseWindow), new PropertyMetadata(0));
+        #endregion //DependencyProperty
+
+        #region Properties
+        public int MonitorPosition
+        {
+            get => (int)GetValue(MonitorPositionProperty);
+            set => SetValue(MonitorPositionProperty, value);
+        }
+
+        public Storyboard UnloadedStoryboard { get; private set; }
+        public bool IsUnloadedStoryboardBegin { get; private set; } = false;
+        #endregion //Properties
+
         #region ICommand
         public ICommand CommandMouseLeftButtonDown { get; private set; }
         public ICommand CommandMouseLeftDoubleClick { get; private set; }
@@ -32,6 +49,15 @@ namespace Common.Views
             CommandWindowMin = new RelayCommand(OnWindowMin);
             CommandWindowMax = new RelayCommand(OnWindowMax);
             CommandWindowClose = new RelayCommand(OnWindowClose);
+
+            this.Loaded += BaseWindow_Loaded;
+        }
+
+        private void BaseWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            //if (TryFindResource("UnloadedWindow") is Storyboard storyboard)
+            if (Resources["UnloadedWindow"] is Storyboard storyboard)
+                UnloadedStoryboard = storyboard;
         }
 
 
@@ -44,13 +70,30 @@ namespace Common.Views
                 (this.DataContext as BindableAndDisposable)?.Dispose();
             }
 
-            //팝업창 닫은 후 메인화면이 최소화 되지 않도록 Focus
-            if (this.Owner != null)
+            if (UnloadedStoryboard != null && !IsUnloadedStoryboardBegin)
             {
-                this.Owner.Focus();
-                base.OnClosing(e);
+                e.Cancel = true;
+                IsUnloadedStoryboardBegin = true;
             }
 
+            //팝업창 닫은 후 메인화면이 최소화 되지 않도록 Focus
+            if (this.Owner != null)
+                this.Owner.Focus();
+            base.OnClosing(e);
+
+            if (UnloadedStoryboard != null)
+            {
+                var begin = new BeginStoryboard {
+                    Storyboard = UnloadedStoryboard
+                };
+                begin.Storyboard.Completed += (s, _) => {
+                    e.Cancel = false;
+                    this.Close();
+                };
+                begin.Storyboard.Begin(this);
+                //var animation = new DoubleAnimation(0, (Duration)TimeSpan.FromSeconds(0.5));
+                //this.BeginAnimation(UIElement.OpacityProperty, animation);
+            }
         }
         private void OnWindowClose(object obj)
         {
@@ -67,14 +110,15 @@ namespace Common.Views
                 WindowStateHelper.SetWindowMaximized(this);
                 WindowStateHelper.BlockStateChange = true;
 
-                var screen = ScreenFinder.FindAppropriateScreen(this);
-                if (screen != null)
-                {
-                    Top = screen.WorkingArea.Top;
-                    Left = screen.WorkingArea.Left;
-                    Width = screen.WorkingArea.Width;
-                    Height = screen.WorkingArea.Height;
-                }
+                //var screen = ScreenFinder.FindAppropriateScreen(this);
+                //if (screen != null)
+                //{
+                //    Top = screen.WorkingArea.Top;
+                //    Left = screen.WorkingArea.Left;
+                //    Width = screen.WorkingArea.Width;
+                //    Height = screen.WorkingArea.Height;
+                //}
+                ScreenFinder.SetMonitorScreen(this, MonitorPosition);
             }
             else
             {

@@ -38,7 +38,11 @@ namespace ServiceBase
     /// </summary>
     public static class NetworkHelper
     {
+        private const string Http = "http://";
+        private const string Https = "https://";
         private const string UrlPrefix = "{0}/api/";
+
+        private const string LocalHost = "127.0.0.1";
 
         private static bool _IsCluster;
         private static bool _IsHttps;
@@ -103,15 +107,15 @@ namespace ServiceBase
             bool isHttps = IsHttps;
             var val = url;
             var httpStr = GetHttpString(isHttps);
-            val = isHttps ? val.Replace("http://", "https://") : val.Replace("https://", "http://");
+            val = isHttps ? val.Replace(Http, Https) : val.Replace(Https, Http);
 
             if (url.EndsWith("/") == false)
             {
                 val += "/";
             }
 
-            if (url.StartsWith("http://", StringComparison.OrdinalIgnoreCase) == false &&
-                url.StartsWith("https://", StringComparison.OrdinalIgnoreCase) == false)
+            if (url.StartsWith(Http, StringComparison.OrdinalIgnoreCase) == false &&
+                url.StartsWith(Https, StringComparison.OrdinalIgnoreCase) == false)
             {
                 val = httpStr + val;
             }
@@ -171,7 +175,7 @@ namespace ServiceBase
         /// <returns></returns>
         public static string ChangeHttpsUrl(string url, bool isHttps = true)
         {
-            return isHttps ? url.Replace("http://", "https://") : url.Replace("https://", "http://");
+            return isHttps ? url.Replace(Http, Https) : url.Replace(Https, Http);
         }
 
         /// <summary>
@@ -179,7 +183,7 @@ namespace ServiceBase
         /// </summary>
         /// <param name="inputAddress"></param>
         /// <returns></returns>
-        public static string SubstituteGeneralAddress(string inputAddress, string requestUri = "127.0.0.1")
+        public static string SubstituteGeneralAddress(string inputAddress, string requestUri = LocalHost)
         {
             if (string.CompareOrdinal(inputAddress, "*") == 0)
             {
@@ -195,7 +199,7 @@ namespace ServiceBase
         /// <returns></returns>
         public static string GetHttpString(bool isHttps)
         {
-            return isHttps ? "https://" : "http://";
+            return isHttps ? Https : Http;
         }
 
         /// <summary>

@@ -7,6 +7,9 @@
                     xmlns:ctrl="clr-namespace:Common.Controls"
                     xmlns:util="clr-namespace:Common.Utilities"
                     xmlns:view="clr-namespace:Common.Views">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Common;component/Controls/ProgressRing.xaml" />
+    </ResourceDictionary.MergedDictionaries>
 
     <!--#region Converter-->
     <converter:BooleanToVisibilityInvertConverter     x:Key="BooleanToVisibilityInvertConverter"/>
@@ -66,6 +69,15 @@
             <Setter.Value>
                 <ControlTemplate>
                     <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{StaticResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="TextBoxFocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle Margin="5" SnapsToDevicePixels="true" UseLayoutRounding="True" Stretch="Fill" Stroke="{DynamicResource Brush.Red}" StrokeThickness="2" StrokeDashArray="1 2"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -433,7 +445,8 @@
                     <Border x:Name="xBorder" Background="Transparent">
                         <Path Fill="{TemplateBinding Foreground}">
                             <Path.Data>
-                                <PathGeometry Figures="m 9.999999 16.999962 c 0 0 9.999962 0 9.999962 0 0 0 0 2.000006 0 2.000006 0 0 -9.999962 0 -9.999962 0 0 0 0 -2.000006 0 -2.000006 z" FillRule="NonZero" />
+                                <!--<PathGeometry Figures="m 9.999999 16.999962 c 0 0 9.999962 0 9.999962 0 0 0 0 2.000006 0 2.000006 0 0 -9.999962 0 -9.999962 0 0 0 0 -2.000006 0 -2.000006 z" FillRule="NonZero" />-->
+                                <PathGeometry Figures="M20,14H4V10H20" FillRule="NonZero" />
                             </Path.Data>
                         </Path>
                     </Border>
@@ -453,7 +466,8 @@
                     <Border x:Name="xBorder" Background="Transparent">
                         <Path x:Name="xPath" Fill="{TemplateBinding Foreground}">
                             <Path.Data>
-                                <PathGeometry Figures="m 19.999924 9.999942 c 0 0 -9.999962 0 -9.999962 0 0 0 0 10.000026 0 10.000026 0 0 9.999962 0 9.999962 0 0 0 0 -10.000026 0 -10.000026 z m -0.999985 3.00004 c 0 0 0 6.000016 0 6.000016 0 0 -7.999992 0 -7.999992 0 0 0 0 -6.000016 0 -6.000016 0 0 7.999992 0 7.999992 0 z" FillRule="EvenOdd" />
+                                <!--<PathGeometry Figures="m 19.999924 9.999942 c 0 0 -9.999962 0 -9.999962 0 0 0 0 10.000026 0 10.000026 0 0 9.999962 0 9.999962 0 0 0 0 -10.000026 0 -10.000026 z m -0.999985 3.00004 c 0 0 0 6.000016 0 6.000016 0 0 -7.999992 0 -7.999992 0 0 0 0 -6.000016 0 -6.000016 0 0 7.999992 0 7.999992 0 z" FillRule="EvenOdd" />-->
+                                <PathGeometry Figures="M4,4H20V20H4V4M6,8V18H18V8H6Z" FillRule="NonZero" />
                             </Path.Data>
                         </Path>
                     </Border>
@@ -465,7 +479,8 @@
                         <DataTrigger Binding="{Binding Path=(util:WindowStateHelper.IsMaximized), UpdateSourceTrigger=PropertyChanged}" Value="True">
                             <Setter TargetName="xPath" Property="Data">
                                 <Setter.Value>
-                                    <PathGeometry Figures="m 9.999999 19.999999 c 0 0 0 -9.5 0 -9.5 0 0 -1 0 -1 0 0 0 0 10.500001 0 10.500001 0 0 10.5 0 10.5 0 0 0 0 -1.000001 0 -1.000001 0 0 -9.5 0 -9.5 0 z M 21 8.999999 c 0 0 -10 0 -10 0 0 0 0 10.000001 0 10.000001 0 0 10 0 10 0 0 0 0 -10.000001 0 -10.000001 z m -1.000001 3 c 0 0 0 6 0 6 0 0 -8 0 -8 0 0 0 0 -6 0 -6 0 0 8 0 8 0 z" FillRule="EvenOdd" />
+                                    <!--<PathGeometry Figures="m 9.999999 19.999999 c 0 0 0 -9.5 0 -9.5 0 0 -1 0 -1 0 0 0 0 10.500001 0 10.500001 0 0 10.5 0 10.5 0 0 0 0 -1.000001 0 -1.000001 0 0 -9.5 0 -9.5 0 z M 21 8.999999 c 0 0 -10 0 -10 0 0 0 0 10.000001 0 10.000001 0 0 10 0 10 0 0 0 0 -10.000001 0 -10.000001 z m -1.000001 3 c 0 0 0 6 0 6 0 0 -8 0 -8 0 0 0 0 -6 0 -6 0 0 8 0 8 0 z" FillRule="EvenOdd" />-->
+                                    <PathGeometry Figures="M4,8H8V4H20V16H16V20H4V8M16,8V14H18V6H10V8H16M6,12V18H14V12H6Z" FillRule="NonZero" />
                                 </Setter.Value>
                             </Setter>
                         </DataTrigger>
@@ -481,7 +496,8 @@
                     <Border x:Name="xBorder" Background="Transparent">
                         <Path Fill="{TemplateBinding Foreground}">
                             <Path.Data>
-                                <PathGeometry Figures="m 20.000499 11.374249 c 0 0 -1.376 -1.375001 -1.376 -1.375001 0 0 -3.625 3.625001 -3.625 3.625001 0 0 -3.625 -3.625001 -3.625 -3.625001 0 0 -1.375 1.375001 -1.375 1.375001 0 0 3.625 3.625501 3.625 3.625501 0 0 -3.625 3.625 -3.625 3.625 0 0 1.375 1.376 1.375 1.376 0 0 3.625 -3.625501 3.625 -3.625501 0 0 3.625 3.625501 3.625 3.625501 0 0 1.376 -1.376 1.376 -1.376 0 0 -3.625 -3.625 -3.625 -3.625 0 0 3.625 -3.625501 3.625 -3.625501 z" FillRule="NonZero" />
+                                <!--<PathGeometry Figures="m 20.000499 11.374249 c 0 0 -1.376 -1.375001 -1.376 -1.375001 0 0 -3.625 3.625001 -3.625 3.625001 0 0 -3.625 -3.625001 -3.625 -3.625001 0 0 -1.375 1.375001 -1.375 1.375001 0 0 3.625 3.625501 3.625 3.625501 0 0 -3.625 3.625 -3.625 3.625 0 0 1.375 1.376 1.375 1.376 0 0 3.625 -3.625501 3.625 -3.625501 0 0 3.625 3.625501 3.625 3.625501 0 0 1.376 -1.376 1.376 -1.376 0 0 -3.625 -3.625 -3.625 -3.625 0 0 3.625 -3.625501 3.625 -3.625501 z" FillRule="NonZero" />-->
+                                <PathGeometry Figures="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z" FillRule="NonZero" />
                             </Path.Data>
                         </Path>
                     </Border>
@@ -1170,25 +1186,30 @@
                     <Border BorderBrush="{StaticResource Brush_PopupCommon}">
                         <Grid>
                             <TextBlock x:Name="PART_WaterMark"
-                                       Text="{TemplateBinding WaterMark}"
                                        Margin="5,6,0,0"
                                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                                       Text="{TemplateBinding WaterMark}"
+                                       FontSize="{TemplateBinding FontSize}"
                                        FontFamily="{StaticResource AppFont}"
-                                       FontSize="12"
                                        Visibility="{Binding Path=IsChecked, ElementName=xEyeToggle, Converter={StaticResource BooleanToVisibilityInvertConverter}, ConverterParameter=false}"
-                                       Foreground="{Binding Path=Foreground, ElementName=xWaterMarkTextBox}"
-                                       Width="{Binding ElementName=xPasswordBox, Path=ActualWidth}"
-                                       Height="{Binding ElementName=xPasswordBox, Path=ActualHeight}"/>
+                                       Foreground="{DynamicResource Foreground_CommonText}"
+                                       Width="{TemplateBinding ActualWidth}"
+                                       Height="{TemplateBinding ActualHeight}"/>
                             <PasswordBox x:Name="PART_PasswordBox" MinWidth="120" HorizontalAlignment="Stretch"
+                                         Foreground="{TemplateBinding Foreground}"
                                          PasswordChar="{TemplateBinding PasswordChar}"
                                          Visibility="{Binding Path=IsChecked, ElementName=xEyeToggle, Converter={StaticResource BooleanToVisibilityInvertConverter}, ConverterParameter=false}"
                                          util:PasswordHelper.Attach="True"
                                          util:PasswordHelper.Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
-                            <ctrl:WaterMarkTextBox x:Name="xWaterMarkTextBox" WaterMark="{TemplateBinding WaterMark}" Margin="0"
-                                         Visibility="{Binding Path=IsChecked, ElementName=xEyeToggle, Converter={StaticResource BooleanToVisibilityInvertConverter}}"
-                                         Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                         Width="{Binding ElementName=xPasswordBox, Path=ActualWidth}"
-                                         Height="{Binding ElementName=xPasswordBox, Path=ActualHeight}"/>
+                            <ctrl:WaterMarkTextBox x:Name="xWaterMarkTextBox" Margin="0"
+                                                   WaterMark="{TemplateBinding WaterMark}"
+                                                   Foreground="{TemplateBinding Foreground}"
+                                                   Width="{TemplateBinding ActualWidth}"
+                                                   Height="{TemplateBinding ActualHeight}"
+                                                   FontSize="{TemplateBinding FontSize}"
+                                                   FontFamily="{StaticResource AppFont}"
+                                                   Visibility="{Binding Path=IsChecked, ElementName=xEyeToggle, Converter={StaticResource BooleanToVisibilityInvertConverter}}"
+                                                   Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
 
                             <ctrl:RightPanel Margin="0">
                                 <ctrl:EyeToggleButton x:Name="xEyeToggle" Width="16" Height="16" Margin="0,2,2,2"
@@ -1369,26 +1390,35 @@
     </Style>
     <Style TargetType="ctrl:NumericTextBox" BasedOn="{StaticResource TextBoxStyle}"/>
     <Style TargetType="ctrl:WaterMarkTextBox">
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource TextBoxFocusVisual}"/>
         <Setter Property="Background" Value="{DynamicResource Background_PopupCommon}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource Brush_PopupCommon}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Foreground_CommonText}"/>
+        <Setter Property="SelectionBrush" Value="{DynamicResource Brush.Red}"/>
         <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+        <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
         <Setter Property="Height" Value="22"/>
         <Setter Property="Margin" Value="5,0,0,0"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
         <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
         <Setter Property="AllowDrop" Value="True"/>
-        <Setter Property="Foreground" Value="{DynamicResource Foreground_CommonText}"/>
-        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ctrl:WaterMarkTextBox}">
                     <Grid>
-                        <TextBlock x:Name="PART_WaterMark" Text="{TemplateBinding WaterMark}" Margin="5,2"
+                        <TextBlock x:Name="PART_WaterMark"
+                                   Margin="5,6,0,0"
                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                   VerticalAlignment="Center">
+                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                   Text="{TemplateBinding WaterMark}"
+                                   FontSize="{TemplateBinding FontSize}"
+                                   FontFamily="{StaticResource AppFont}"
+                                   Foreground="{DynamicResource Foreground_CommonText}"
+                                   Width="{TemplateBinding ActualWidth}"
+                                   Height="{TemplateBinding ActualHeight}">
                             <TextBlock.Visibility>
                                 <MultiBinding Converter="{StaticResource TextInputToVisibilityConverter}">
                                     <Binding ElementName="PART_TextBox" Path="Text" />
@@ -1396,12 +1426,19 @@
                                 </MultiBinding>
                             </TextBlock.Visibility>
                         </TextBlock>
-                        <ctrl:PopupTextBox x:Name="PART_TextBox" Background="Transparent" Width="{TemplateBinding Width}" Margin="0" MaxLength="{TemplateBinding MaxLength}"
+                        <ctrl:PopupTextBox x:Name="PART_TextBox" Background="Transparent" Margin="0" MaxLength="{TemplateBinding MaxLength}"
                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                           Foreground="{TemplateBinding Foreground}"
+                                           BorderBrush="{TemplateBinding BorderBrush}"
+                                           SelectionBrush="{TemplateBinding SelectionBrush}"
+                                           FontFamily="{TemplateBinding FontFamily}"
+                                           FontSize="{TemplateBinding FontSize}"
+                                           Width="{TemplateBinding ActualWidth}"
+                                           Height="{TemplateBinding ActualHeight}"
                                            Text="{Binding Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"/>
 
-                        <ctrl:RemoveTextButton x:Name="PART_Remove" HorizontalAlignment="Right" Margin="4" Width="12" Height="12" Visibility="Collapsed" />
+                        <ctrl:RemoveTextButton x:Name="PART_Remove" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="4" Width="12" Height="12" Visibility="Collapsed" />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <MultiTrigger>
@@ -1677,14 +1714,107 @@
                                         </ctrl:PopupTextBlockHeader>
 
                                         <ctrl:RightPanel Grid.ColumnSpan="2">
-                                            <ctrl:WindowMinButton Margin="0,-5,5,0" Command="{Binding Path=DataContext.MinWindowCommand, RelativeSource={RelativeSource AncestorType=ctrl:ChildWindow}}" CommandParameter="Minimized"/>
+                                            <!--<ctrl:WindowMinButton Margin="0,-5,5,0" Command="{Binding Path=DataContext.MinWindowCommand, RelativeSource={RelativeSource AncestorType=ctrl:ChildWindow}}" CommandParameter="Minimized"/>-->
                                             <!--<ctrl:WindowMaxButton Margin="2,-5,2,0" Command="{Binding CommandWindowMax, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="Maximized"/>-->
-                                            <ctrl:WindowCloseButton x:Name="CloseButton" Margin="0,0,10,0" HorizontalAlignment="Right"
+                                            <ctrl:WindowCloseButton x:Name="CloseButton" Margin="0" HorizontalAlignment="Right"
                                                                     Command="{Binding Path=DataContext.CloseCommand, RelativeSource={RelativeSource AncestorType=ctrl:ChildWindow}}"/>
                                         </ctrl:RightPanel>
                                     </Grid>
                                 </Border>
                                 <Border Grid.Row="1" x:Name="Contents" Background="{DynamicResource Background_Window}" BorderBrush="{DynamicResource Brush_ChildWindowBorder}" BorderThickness="0,1,0,0">
+                                    <ContentPresenter x:Name="ContentPresenter" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" />
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </Canvas>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="WindowState" Value="Closed">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <DataTrigger Binding="{Binding CaptionVisible}" Value="Collapsed">
+                            <Setter TargetName="PART_WindowRoot" Property="BorderThickness" Value="0" />
+                            <Setter TargetName="Contents" Property="BorderThickness" Value="0" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ctrl:ChildWindow" x:Key="ChildViewStyle">
+        <Setter Property="MinWidth" Value="140"/>
+        <Setter Property="MinHeight" Value="40"/>
+        <Setter Property="Margin" Value="-15"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:ChildWindow}">
+                    <Canvas x:Name="PART_Root"
+                            Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ctrl:ChildWindow}}"
+                            Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ctrl:ChildWindow}}">
+                        <Rectangle Opacity="1"
+                                   Width="{Binding Path=ActualWidth, ElementName=PART_Root}"
+                                   Height="{Binding Path=ActualHeight, ElementName=PART_Root}"
+                                   Fill="#00000000"/>
+                        <!-- Used for drag -->
+                        <Border x:Name="PART_WindowRoot"
+                                MinWidth="{TemplateBinding MinWidth}"
+                                MinHeight="{TemplateBinding MinHeight}"
+                                Width="{TemplateBinding ChildWidth}"
+                                Height="{TemplateBinding ChildHeight}"
+                                BorderThickness="1" 
+                                BorderBrush="{DynamicResource Brush_WindowBorder}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Border x:Name="Header" Background="{DynamicResource Background_Window}" CornerRadius="6 6 0 0">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <ctrl:PopupTextBlockHeader x:Name="xHeader" Foreground="{DynamicResource Brush.Black}" Text="{TemplateBinding Caption}"/>
+                                        <ctrl:PopupTextBlockHeader Grid.Column="1" Margin="5,0,30,0" x:Name="PART_Header"
+                                                   TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" IsTrimmingToolTip="True"
+                                                   Visibility="{Binding Path=Text, RelativeSource={RelativeSource Self}, Converter={StaticResource StringEmptyToVisibilityConverter}}"
+                                                   Text="{TemplateBinding Caption2}">
+                                            <ctrl:PopupTextBlockHeader.Style>
+                                                <Style TargetType="ctrl:PopupTextBlockHeader" BasedOn="{StaticResource PopupTextBlockHeaderStyle}">
+                                                    <Style.Triggers>
+                                                        <MultiTrigger>
+                                                            <MultiTrigger.Conditions>
+                                                                <Condition Property="ctrl:TextBlockService.IsTextTrimmed" Value="True"/>
+                                                                <Condition Property="IsTrimmingToolTip" Value="True"/>
+                                                            </MultiTrigger.Conditions>
+                                                            <Setter Property="ToolTip" Value="{Binding Path=Text, RelativeSource={RelativeSource Self}}"/>
+                                                        </MultiTrigger>
+                                                        <MultiTrigger>
+                                                            <MultiTrigger.Conditions>
+                                                                <Condition Property="ctrl:TextBlockService.IsTextTrimmed" Value="False"/>
+                                                                <Condition Property="IsTrimmingToolTip" Value="True"/>
+                                                            </MultiTrigger.Conditions>
+                                                            <Setter Property="ToolTip" Value="{x:Null}"/>
+                                                        </MultiTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ctrl:PopupTextBlockHeader.Style>
+                                            <ctrl:PopupTextBlockHeader.Width>
+                                                <MultiBinding Converter="{StaticResource WidthConverter}" UpdateSourceTrigger="PropertyChanged">
+                                                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                                    <Binding Path="." ElementName="xHeader"/>
+                                                    <Binding Path="." RelativeSource="{RelativeSource Self}"/>
+                                                </MultiBinding>
+                                            </ctrl:PopupTextBlockHeader.Width>
+                                        </ctrl:PopupTextBlockHeader>
+
+                                        <ctrl:RightPanel Grid.ColumnSpan="2">
+                                            <ctrl:WindowCloseButton x:Name="CloseButton" Margin="0" HorizontalAlignment="Right"
+                                                                    Command="{Binding Path=DataContext.CloseCommand, RelativeSource={RelativeSource AncestorType=ctrl:ChildWindow}}"/>
+                                        </ctrl:RightPanel>
+                                    </Grid>
+                                </Border>
+                                <Border Grid.Row="1" x:Name="Contents" Background="{DynamicResource Background_Window}" BorderBrush="{DynamicResource Brush_ChildWindowBorder}" BorderThickness="0,1,0,0" CornerRadius="0 0 6 6">
                                     <ContentPresenter x:Name="ContentPresenter" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" />
                                 </Border>
                             </Grid>
