@@ -18,6 +18,9 @@ namespace Common.Controls
     {
         #region DependencyProperties
         public static readonly DependencyProperty CloseCommandProperty;
+        public static readonly DependencyProperty CommandWindowMinProperty;
+        public static readonly DependencyProperty CommandWindowMaxProperty;
+
         public static readonly DependencyProperty HeaderProperty;
         public static readonly DependencyProperty CornerRadiusProperty;
 
@@ -34,6 +37,16 @@ namespace Common.Controls
         {
             get { return (ICommand)GetValue(CloseCommandProperty); }
             set { SetValue(CloseCommandProperty, value); }
+        }
+        public ICommand CommandWindowMin
+        {
+            get { return (ICommand)GetValue(CommandWindowMinProperty); }
+            set { SetValue(CommandWindowMinProperty, value); }
+        }
+        public ICommand CommandWindowMax
+        {
+            get { return (ICommand)GetValue(CommandWindowMaxProperty); }
+            set { SetValue(CommandWindowMaxProperty, value); }
         }
 
         public string Header
@@ -82,6 +95,9 @@ namespace Common.Controls
         {
             Type owner = typeof(BorderMainHeader);
             CloseCommandProperty = DependencyProperty.Register(nameof(CloseCommand), typeof(ICommand), owner, new PropertyMetadata(null));
+            CommandWindowMinProperty = DependencyProperty.Register(nameof(CommandWindowMin), typeof(ICommand), owner, new PropertyMetadata(null));
+            CommandWindowMaxProperty = DependencyProperty.Register(nameof(CommandWindowMax), typeof(ICommand), owner, new PropertyMetadata(null));
+
             CornerRadiusProperty = DependencyProperty.Register(nameof(CornerRadius), typeof(CornerRadius), owner, new PropertyMetadata(new CornerRadius()));
             HeaderProperty = DependencyProperty.Register(nameof(Header), typeof(string), owner, new PropertyMetadata(null));
             ImageProperty = DependencyProperty.Register(nameof(Image), typeof(ImageSource), owner, new PropertyMetadata(null));

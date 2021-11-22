@@ -17,7 +17,7 @@ namespace Common.Views
     {
         #region DependencyProperty
         public static DependencyProperty MonitorPositionProperty = 
-            DependencyProperty.Register(nameof(MonitorPosition), typeof(int), typeof(BaseWindow), new PropertyMetadata(0));
+            DependencyProperty.Register(nameof(MonitorPosition), typeof(int), typeof(BaseWindow), new PropertyMetadata(1));
         #endregion //DependencyProperty
 
         #region Properties
