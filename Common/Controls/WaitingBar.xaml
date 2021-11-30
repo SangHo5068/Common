@@ -150,15 +150,20 @@
             </Grid.Visibility>
             <Grid.RowDefinitions>
                 <RowDefinition />
+                <RowDefinition Height="10" />
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" x:Name="xMessageBox" Margin="5,0" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"
+            <TextBlock Grid.Row="0" x:Name="xMessageBox" Margin="5,0" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Center"
+                       FontWeight="Bold"
+                       FontSize="{Binding FontSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
                        Foreground="{Binding EasingColorStart, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
-                       Text="{Binding Message, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"/>
-            <TextBlock Grid.Row="1" x:Name="xSubMessageBox" Margin="15,0" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10"
+                       Text="{Binding Message, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, FallbackValue=Message}"/>
+
+            <TextBlock Grid.Row="2" x:Name="xSubMessageBox" Margin="15,0" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                       FontSize="{Binding SubFontSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
                        Foreground="{Binding EasingColorStart, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
-                       Text="{Binding SubMessage, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"/>
+                       Text="{Binding SubMessage, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, FallbackValue=SubMessage}"/>
         </Grid>
     </Grid>
 </UserControl>

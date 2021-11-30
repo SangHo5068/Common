@@ -80,6 +80,15 @@
         </GradientBrush.GradientStops>
     </LinearGradientBrush>
 
+    <LinearGradientBrush x:Key="Background.Window.Main.Button" StartPoint="1,0" EndPoint="1,1">
+        <GradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FF004F60" Offset="0.0"/>
+                <GradientStop Color="#FF350039" Offset="1.0"/>
+            </GradientStopCollection>
+        </GradientBrush.GradientStops>
+    </LinearGradientBrush>
+
     <SolidColorBrush x:Key="Brush.White" Color="{StaticResource Color_White}"/>
     <SolidColorBrush x:Key="Brush.Black" Color="{StaticResource Color_Black}"/>
     <SolidColorBrush x:Key="Brush.Blue"  Color="{StaticResource Color_Blue}"/>
@@ -224,7 +233,7 @@
 
     <SolidColorBrush x:Key="Background_PopupButtonCommon" Color="#FF717881"/>
     <SolidColorBrush x:Key="Background_PopupButtonOver" Color="#FF7C8897"/>
-    <SolidColorBrush x:Key="Background_PopupButtonPress" Color="#FF7C8897"/>
+    <SolidColorBrush x:Key="Background_PopupButtonPress" Color="#FF7C7797"/>
     <SolidColorBrush x:Key="Background_PopupDisabled" Color="#FFDEDEDE"/>
     <SolidColorBrush x:Key="Background_PopupFocus" Color="#FF577dda"/>
 

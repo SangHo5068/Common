@@ -278,9 +278,57 @@ namespace Common.Controls
     public class CommonButton : Button { }
     public class PopupCommonButton : Button { }
 
-    public class WindowMinButton : Button { }
-    public class WindowMaxButton : Button { }
-    public class WindowCloseButton : Button { }
+    public class InitialButton : Button { }
+    public class IconButton : Button
+    {
+        #region DependencyProperty
+        public static readonly DependencyProperty CornerRadiusProperty;
+        public static readonly DependencyProperty IconProperty;
+        public static readonly DependencyProperty IconWidthProperty;
+        public static readonly DependencyProperty IconHeightProperty;
+        #endregion //DependencyProperty
+
+        #region Property
+
+        #region CornerRadius
+        /// <summary>
+        /// CornerRadius
+        /// </summary>
+        public CornerRadius CornerRadius
+        {
+            get { return (CornerRadius)GetValue(CornerRadiusProperty); }
+            set { SetValue(CornerRadiusProperty, value); }
+        }
+
+        public ImageSource Icon
+        {
+            get { return (ImageSource)GetValue(IconProperty); }
+            set { SetValue(IconProperty, value); }
+        }
+        public double IconWidth
+        {
+            get { return (double)GetValue(IconWidthProperty); }
+            set { SetValue(IconWidthProperty, value); }
+        }
+        public double IconHeight
+        {
+            get { return (double)GetValue(IconHeightProperty); }
+            set { SetValue(IconHeightProperty, value); }
+        }
+        #endregion //CornerRadius
+
+        #endregion //Property
+
+        static IconButton()
+        {
+            Type owner = typeof(IconButton);
+            CornerRadiusProperty = DependencyProperty.Register(nameof(CornerRadius), typeof(CornerRadius), owner, new PropertyMetadata(default));
+
+            IconProperty       = DependencyProperty.Register(nameof(Icon), typeof(ImageSource), owner, new PropertyMetadata(null));
+            IconWidthProperty  = DependencyProperty.Register(nameof(IconWidth), typeof(double), owner, new PropertyMetadata(32D));
+            IconHeightProperty = DependencyProperty.Register(nameof(IconHeight), typeof(double), owner, new PropertyMetadata(32D));
+        }
+    }
 
     public class LogoutButton : Button { }
     public class RadiusButton : Button
@@ -315,8 +363,13 @@ namespace Common.Controls
             DefaultStyleKeyProperty.OverrideMetadata(typeof(RemoveTextButton), new FrameworkPropertyMetadata(typeof(RemoveTextButton)));
         }
     }
-    public class InitialButton : Button { }
     public class SearchButton : Button { }
+
+    #region Window Button
+    public class WindowMinButton : Button { }
+    public class WindowMaxButton : Button { }
+    public class WindowCloseButton : Button { }
+    #endregion //Window Button
 
     #region Paging
     public class PagingCommon : Button { }

@@ -204,6 +204,7 @@
                             </Grid.ColumnDefinitions>
 
                             <Image Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Margin="10 0 0 0"
                                    Visibility="{Binding Image, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource ObjectNullToVisibilityConverter}}"
                                    Width="{TemplateBinding ImageWidth}" Height="{TemplateBinding ImageHeight}"
                                    Source="{TemplateBinding Image}" />
@@ -509,6 +510,53 @@
                             <Setter TargetName="xBorder" Property="Background" Value="LightPink"/>
                         </Trigger>
                     </ControlTemplate.Triggers>-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ctrl:IconButton">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Background" Value="{DynamicResource Background_SearchButton}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush_SearchButtonOuter}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Foreground_SearchText}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="Margin" Value="5,0,0,0"/>
+        <Setter Property="MinWidth" Value="25"/>
+        <Setter Property="Height" Value="24"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:IconButton}">
+                    <Border x:Name="border" CornerRadius="{TemplateBinding CornerRadius}" BorderThickness="1" SnapsToDevicePixels="True" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
+                        <Border x:Name="Inner" CornerRadius="{TemplateBinding CornerRadius}" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource Brush_SearchButtonInner}">
+                            <ctrl:HorizonPanel Margin="5,0" HorizontalAlignment="Center">
+                                <Image Stretch="Fill" Width="{TemplateBinding IconWidth}" Height="{TemplateBinding IconHeight}"
+                                       Source="{TemplateBinding Icon}"/>
+                                <ContentPresenter x:Name="contentPresenter" Margin="3,0,0,0" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </ctrl:HorizonPanel>
+                        </Border>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background"  TargetName="border" Value="{DynamicResource Background_SearchButtonOver}"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Brush_SearchButtonOuterOver}"/>
+                            <Setter Property="BorderBrush" TargetName="Inner" Value="{DynamicResource Brush_SearchButtonInnerOver}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background"  TargetName="border" Value="{DynamicResource Background_SearchButtonOver}"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Brush_SearchButtonOuterOver}"/>
+                            <Setter Property="Margin"      TargetName="Inner" Value="1 1 0 0"/>
+                            <Setter Property="BorderBrush" TargetName="Inner" Value="{DynamicResource Brush_SearchButtonInnerOver}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" TargetName="border" Value="0.8"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
