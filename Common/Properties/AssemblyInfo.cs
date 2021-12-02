@@ -42,10 +42,10 @@ using System.Runtime.InteropServices;
 
 //[assembly: AssemblyVersion(ThisAssembly.Git.SemVer.Major + "." + ThisAssembly.Git.SemVer.Minor + "." + ThisAssembly.Git.SemVer.Patch)]
 //[assembly: AssemblyFileVersion(ThisAssembly.Git.SemVer.Major + "." + ThisAssembly.Git.SemVer.Minor + "." + ThisAssembly.Git.SemVer.Patch)]
-//[assembly: AssemblyInformationalVersion(
-//  ThisAssembly.Git.SemVer.Major + "." +
-//  ThisAssembly.Git.SemVer.Minor + "." +
-//  ThisAssembly.Git.SemVer.Patch + "-" +
-//  ThisAssembly.Git.Branch + "+" +
-//  ThisAssembly.Git.Commit)]
+[assembly: AssemblyInformationalVersion(
+  ThisAssembly.Git.SemVer.Major + "." +
+  ThisAssembly.Git.SemVer.Minor + "." +
+  ThisAssembly.Git.SemVer.Patch + "-" +
+  ThisAssembly.Git.Branch + "+" +
+  ThisAssembly.Git.Commit)]
 //// i..e ^: 1.0.2-main+c218617
