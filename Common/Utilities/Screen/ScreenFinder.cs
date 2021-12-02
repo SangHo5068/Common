@@ -74,20 +74,46 @@ namespace Common.Utilities
                 allScreens.First(f => f.DeviceName.Contains(monitorPosition.ToString())) : allScreens.First();
         }
 
-        public static void SetMonitorScreen(Window window, int position)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="window"></param>
+        /// <param name="position">모니터 포지션</param>
+        /// <param name="isHideTaskbar">작업표시줄 표시여부(True:숨김, False:표시)</param>
+        public static void SetMonitorScreen(Window window, int position, bool isHideTaskbar = true)
         {
             if (window != null)
             {
                 var screen = FindCurrentScreen(position);
                 if (screen != null)
                 {
+                    var winTaskbarHeight = isHideTaskbar ? GetTaskBarHeight(screen) : 0; //윈도우 작업표시줄 높이
+
                     window.Top    = screen.WorkingArea.Top;
                     window.Left   = screen.WorkingArea.Left;
                     window.Width  = screen.WorkingArea.Width;
-                    window.Height = screen.WorkingArea.Height;
+                    window.Height = screen.WorkingArea.Height + winTaskbarHeight; // Window Taskbar Height
                     //window.WindowState = WindowState.Maximized;
+                    //window.Topmost = true; // Window FullScreen and Window Taskbar Hide
                 }
             }
+        }
+
+        /// <summary>
+        /// 윈도우 작업표시줄 높이
+        /// </summary>
+        /// <returns></returns>
+        private static int GetTaskBarHeight(Screen screen)
+        {
+            //var PSH = SystemParameters.PrimaryScreenHeight;
+            //var PSBH = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height;
+            var PSH = screen.Bounds.Height;
+            var PSBH = screen.Bounds.Height;
+            var ratio = PSH / PSBH;
+            //var TaskBarHeight = PSBH - System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height;
+            var TaskBarHeight = PSBH - screen.WorkingArea.Height;
+            TaskBarHeight *= Math.Round(ratio);
+            return (int)TaskBarHeight;
         }
     }
 }

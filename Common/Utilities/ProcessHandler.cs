@@ -152,7 +152,7 @@ namespace Common.Utilities
             return processes;
         }
 
-        public static void remoteProcessKill(string computerName, string userName, string pword, string processName)
+        public static void RemoteProcessKill(string computerName, string userName, string pword, string processName)
         {
             var connectoptions = new ConnectionOptions();
             connectoptions.Username = userName;
@@ -173,11 +173,19 @@ namespace Common.Utilities
             }
         }
 
-        public static void localProcessKill(string processName)
+        public static void LocalProcessKill(string processName)
         {
             foreach (Process p in Process.GetProcessesByName(processName))
             {
-                p.Kill();
+                try
+                {
+                    Logger.WriteLog(LogTypes.Info, String.Format("ProcessName : {0}, ProcessID : {1}", p.ProcessName, p.Id));
+                    //p.Close();
+                    p.Kill();
+                }
+                catch (Exception ex) {
+                    Logger.WriteLog(LogTypes.Exception, "", ex);
+                }
             }
         }
     }

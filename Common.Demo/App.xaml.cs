@@ -14,6 +14,8 @@ using Common.Interop;
 
 using Common.Utilities;
 
+using Culture = Common.Cultures.Cultures.Resources;
+
 namespace Common.Demo
 {
     /// <summary>
@@ -128,10 +130,10 @@ namespace Common.Demo
 
         private void ResourceProvider_DataChanged(object sender, EventArgs e)
         {
-            Logger.WriteLogAndTrace(LogTypes.Info, string.Format("ObjectDataProvider.DataChanged event. fetching culturename property for new culture [{0}]", Cultures.Resources.Culture));
-            Logger.WriteLogAndTrace(LogTypes.Info, string.Format("DataChanged event.  Language [{0}]", Cultures.Resources.Language));
+            Logger.WriteLogAndTrace(LogTypes.Info, string.Format("ObjectDataProvider.DataChanged event. fetching culturename property for new culture [{0}]", Culture.Culture));
+            Logger.WriteLogAndTrace(LogTypes.Info, string.Format("DataChanged event.  Language [{0}]", Culture.Language));
 
-            var culture = Cultures.Resources.Culture;
+            var culture = Culture.Culture;
             INIHelper.WriteIniValue(AppDefined.LanguageSession, "Language", culture.Name, IniPath);
             Settings.Default.DefaultCulture = culture.Name;
         }

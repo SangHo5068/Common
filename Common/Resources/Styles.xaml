@@ -119,7 +119,7 @@
         <Setter Property="WindowStyle" Value="None" />
         <Setter Property="ResizeMode" Value="CanResizeWithGrip" />
         <Setter Property="AllowsTransparency" Value="True" />
-        <!--<Setter Property="SnapsToDevicePixels" Value="True" />-->
+        <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Window}">

@@ -60,7 +60,8 @@ namespace Common.Notify
         private static void OnLoaded(object sender, RoutedEventArgs e)
         {
             var loadedAction = GetLoadedAction((FrameworkElement)sender);
-            loadedAction?.Loaded<FrameworkElement>((FrameworkElement)sender);
+            if (sender is FrameworkElement element && element.Visibility == Visibility.Visible)
+                loadedAction?.Loaded<FrameworkElement>(element);
         }
 
 

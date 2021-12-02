@@ -10,6 +10,8 @@ using Common.Command;
 using Common.Models;
 using Common.Utilities;
 
+using Culture = Common.Cultures.Cultures.Resources;
+
 namespace Common.Demo
 {
     public class StartAppViewModel : BaseViewModel
@@ -58,7 +60,7 @@ namespace Common.Demo
             // 전역 인스턴스 생성
             _ = AppDefined.Instance;
 
-            Header = Cultures.Resources.Starting;
+            Header = Culture.Starting;
             StartingMessage = Header + "...";
             IsWaiting = true;
 

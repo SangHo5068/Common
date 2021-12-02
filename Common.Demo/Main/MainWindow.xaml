@@ -9,7 +9,7 @@
                      xmlns:command="clr-namespace:Common.Command;assembly=Common"
                      xmlns:local="clr-namespace:Common.Demo"
                      mc:Ignorable="d"
-                     Style="{StaticResource MainWindowStyle}"
+                     Style="{DynamicResource MainWindowStyle}"
                      Title="{Binding Header, UpdateSourceTrigger=PropertyChanged}"
                      MinHeight="768" MinWidth="1024"
                      Height="800" Width="1280"
@@ -17,11 +17,7 @@
                      ShowInTaskbar="True"
                      d:DataContext="{d:DesignInstance local:MainWindowViewModel}">
     <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Common;component/Resources/Styles.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        
     </Window.Resources>
     <Window.DataContext>
         <local:MainWindowViewModel />
