@@ -1,0 +1,9 @@
+set datevar=%DATE:~6,4%%DATE:~2,2%%DATE:~0,2%
+findstr /v PostBuildEvent $(ProjectDir)Setup.vdproj | findstr ProductVersion >$(ProjectDir)version.txt
+set /p var=<$(ProjectDir)version.txt
+set var=%var:"=%
+set var=%var: =%
+set var=%var:.=.%
+for /f "tokens=1,2 delims=:" %%i in ("%var%") do @echo %%j >$(ProjectDir)version.txt
+set /p realvar=<$(ProjectDir)version.txt
+rename "$(ProjectDir)$(Configuration)\Setup.msi" "Setup-%datevar%-%realvar%.msi"

@@ -1,0 +1,46 @@
+https://www.generacodice.com/en/articolo/2550127/How+to+include+version+number+in+VS+Setup+Project+output+filename
+
+일부 주의 사항:
+MySetupProjectName.vdproj 프로젝트 파일의 이름으로 변경되어야 한다.
+이 항목을 변경하지 않으면 빌드 오류가 발생함:
+'PostBuildEvent' failed with error code '1' 그리고 Output 창은 어떤 파일을 표시하는지 보여준다. FINDSTR 열 수 없었다.
+
+단계별 설명:
+FINDSTR /B /R /C:" *\"ProductVersion\"" $(ProjectDir)MySetupProjectName.vdproj
+
+이것이 그 것을 찾아낸다. "ProductVersion" = "8:x.y.z.etc" 프로젝트 파일에서 줄을 긋다
+FOR /F "tokens=2 delims== " %%V IN (...) DO ... %%~nxV ...
+
+이것은 구문 분석하는데 사용된다. x.y.z.etc 위와 같은 결과로부터 분리하다
+$(BuiltOuputPath)
+
+이것은 빌드 후 이벤트 명령줄의 "매크로스"에 나와 있는 것과 같은 원래의 출력 경로다.
+FOR %%I IN (...) DO ... %%~nI-%%~nxV%%~xI
+
+이것은 문자열을 변환하는 데 사용된다. foo.msi 로 foo-x.y.z.etc.msi.
+REN "$(BuiltOuputPath)" ...
+
+출력 경로의 이름을 새 이름으로 바꾸기만 하면 된다.
+FOR ... DO FOR .. DO REN ...
+
+한 줄에 이렇게 쓰여 있어서 오류로 인해 빌드가 깨끗하게 깨진다.
+
+
+ex 1)
+set datevar=%DATE:~0,4%%DATE:~5,2%%DATE:~8,2%
+findstr /v PostBuildEvent $(ProjectDir)Setup.vdproj | findstr ProductVersion>$(ProjectDir)version.txt
+set /p var=<$(ProjectDir)version.txt
+set var=%var:"=%
+set var=%var: =%
+set var=%var:.=.%
+for /f "tokens=1,2 delims=:" %%i in ("%var%") do @echo %%j>$(ProjectDir)version.txt
+set /p realvar=<$(ProjectDir)version.txt
+rename "$(ProjectDir)$(Configuration)\Setup.msi" "Setup-%datevar%-%realvar%.msi"
+
+
+ex 2)
+set datevar=%DATE:~0,4%%DATE:~5,2%%DATE:~8,2%
+FOR /F "tokens=2 delims== " %%V IN ('FINDSTR /B /R /C:" *\"ProductVersion\"" "$(ProjectDir)Setup.vdproj"') DO FOR %%I IN ("$(BuiltOuputPath)") DO REN "$(BuiltOuputPath)" "%%~nI-%datevar%-%%~nxV%%~xI"
+
+
+
