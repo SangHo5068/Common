@@ -28,12 +28,23 @@ namespace ServiceBase
 
         [Display(Name = "Account/{0}")]
         user,
+
+        [Display(Name = "Measurement/{0}")]
+        measurement,
+
+        [Display(Name = "Room/{0}")]
+        room,
+
+        [Display(Name = "VCall/{0}")]
+        vcall,
     }
 
     public class ServiceUrl
     {
-        public const string TestURL = "https://www.testapi.seerscardio.com/";
-        public const string ReleURL = "https://www.apirelease.seerscardio.com/";
+        //public const string TestURL = "https://www.testapi.seerscardio.com/";
+        //public const string ReleURL = "https://www.apirelease.seerscardio.com/";
+        public const string TestURL = "https://www.ht-release-api.mobicareconsole.com/";
+        public const string ReleURL = "https://www.ht-release-api.mobicareconsole.com/";
         public const string TestCARDIO_WEBSITE = "https://www.testweb.seerscardio.com/";
         public const string ReleCARDIO_WEBSITE = "https://www.seerscardio.com/";
 
@@ -49,7 +60,8 @@ namespace ServiceBase
         /// </summary>
         public static string GmtCode { get; set; } = "GMT+0900";
 
-        private const string UrlPrefix = "{0}mobiCARE/cardio/";
+        //private const string UrlPrefix = "{0}mobiCARE/cardio/";
+        private const string UrlPrefix = "{0}mobiCAREConsole/API/";
 
         #region url
 
@@ -71,6 +83,42 @@ namespace ServiceBase
         public const string Login = "Login";
 
         #endregion //User
+
+        #region Measurement
+
+        /// <summary>
+        /// 환자 측정 정보 리스트
+        /// <BaseURL>/API/Measurement/SelectMeasurementInfoList
+        /// </summary>
+        public const string SelectMeasurementInfoList = "SelectMeasurementInfoList";
+
+        /// <summary>
+        /// 환자 측정 정보 상세
+        /// <BaseURL>/API/Measurement/SelectMeasurementInfoList
+        /// </summary>
+        public const string SelectMeasurementInfoDetail = "SelectMeasurementInfoDetail";
+
+        #endregion //Measurement
+
+        #region Room
+
+        /// <summary>
+        /// 영상 통화 방 생성. 요청 생성자 ID필수
+        /// <BaseURL>/API/Room/CreateRoom
+        /// </summary>
+        public const string CreateRoom = "CreateRoom";
+
+        #endregion //Room
+
+        #region VCall
+
+        /// <summary>
+        /// 화상통화 요청
+        /// <BaseURL>/API/VCall/CreateVCall
+        /// </summary>
+        public const string CreateVCall = "CreateVCall";
+
+        #endregion //VCall
 
         #endregion //url
 

@@ -7,7 +7,7 @@ using System.Windows.Data;
 
 namespace Common.Controls
 {
-    public enum ButtonArrowType : byte
+    public enum ButtonArrowTypes : byte
     {
         Down,
         Up,
@@ -166,24 +166,28 @@ namespace Common.Controls
 
     public class ArrowRepeatButton : RepeatButton
     {
-        private static readonly DependencyProperty ButtonArrowTypeProperty =
-            DependencyProperty.Register("ButtonArrowType", typeof(ButtonArrowType), typeof(ArrowRepeatButton), new FrameworkPropertyMetadata(ButtonArrowType.Down));
-        private static readonly DependencyProperty IsCornerCtrlCornerProperty =
-            DependencyProperty.Register("IsCornerCtrlCorner", typeof(IsCornerCtrlCorner), typeof(ArrowRepeatButton), new FrameworkPropertyMetadata(new IsCornerCtrlCorner(false, true, true, false)));
+        public static readonly DependencyProperty ButtonArrowTypeProperty;
+        public static readonly DependencyProperty IsCornerCtrlCornerProperty;
 
-        static ArrowRepeatButton()
+
+        public ButtonArrowTypes ButtonArrowType
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(ArrowRepeatButton), new FrameworkPropertyMetadata(typeof(ArrowRepeatButton)));
-        }
-        public ButtonArrowType ButtonArrowType
-        {
-            get { return (ButtonArrowType)GetValue(ButtonArrowTypeProperty); }
+            get { return (ButtonArrowTypes)GetValue(ButtonArrowTypeProperty); }
             set { SetValue(ButtonArrowTypeProperty, value); }
         }
         public IsCornerCtrlCorner IsCornerCtrlCorner
         {
             get { return (IsCornerCtrlCorner)GetValue(IsCornerCtrlCornerProperty); }
             set { SetValue(IsCornerCtrlCornerProperty, value); }
+        }
+
+
+        static ArrowRepeatButton()
+        {
+            Type owner = typeof(ArrowRepeatButton);
+            DefaultStyleKeyProperty.OverrideMetadata(owner, new FrameworkPropertyMetadata(owner));
+            ButtonArrowTypeProperty = DependencyProperty.Register("ButtonArrowType", typeof(ButtonArrowTypes), owner, new FrameworkPropertyMetadata(ButtonArrowTypes.Down));
+            IsCornerCtrlCornerProperty = DependencyProperty.Register("IsCornerCtrlCorner", typeof(IsCornerCtrlCorner), owner, new FrameworkPropertyMetadata(new IsCornerCtrlCorner(false, true, true, false)));
         }
     }
 }
