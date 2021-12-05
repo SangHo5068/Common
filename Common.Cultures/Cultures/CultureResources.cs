@@ -11,7 +11,7 @@ using Common.Utilities;
 namespace Common.Cultures
 {
     /// <summary>
-    /// Wraps up XAML access to instance of mobiCARE.Properties.Resources, list of available cultures, and method to change culture
+    /// Wraps up XAML access to instance of Properties.Resources, list of available cultures, and method to change culture
     /// </summary>
     public class CultureResources
     {
@@ -29,7 +29,7 @@ namespace Common.Cultures
         private static readonly List<CultureInfo> pSupportedCultures = new List<CultureInfo>();
 
         /// <summary>
-        /// The Resources ObjectDataProvider uses this method to get an instance of the mobiCARE.Properties.Resources class
+        /// The Resources ObjectDataProvider uses this method to get an instance of the Properties.Resources class
         /// </summary>
         /// <returns></returns>
         public Resources GetResourceInstance()
@@ -68,7 +68,6 @@ namespace Common.Cultures
                 {
                     try
                     {
-                        //string name = path + "mobiCARE_Cardio_UPLoader";
                         string name = Assembly.GetExecutingAssembly().GetName().Name;
                         //see if this directory corresponds to a valid culture name
                         DirectoryInfo dirinfo = new DirectoryInfo(dir);

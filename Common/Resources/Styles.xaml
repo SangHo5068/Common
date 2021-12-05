@@ -260,7 +260,6 @@
                                     <VisualBrush Visual="{Binding ElementName=mask}"/>
                                 </StackPanel.OpacityMask>
                                 <!-- Any content -->
-                                <!--<Image Width="47.5" Height="38" Stretch="Fill" Source="pack://application:,,,/mobiCARE_Cardio_UPLoader;component/Resources/images/mobicare_Cardio.png"/>-->
                                 <Image Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center"
                                        Visibility="{Binding Image, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource ObjectNullToVisibilityConverter}}"
                                        Width="{TemplateBinding ImageWidth}" Height="{TemplateBinding ImageHeight}"
