@@ -179,6 +179,36 @@
     <!--#endregion WindowStyle-->
 
     <!--#region Borders-->
+    <Style TargetType="ctrl:BorderContentHeader">
+        <Setter Property="Background" Value="{DynamicResource Background_Main}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:BorderContentHeader}">
+                    <Border CornerRadius="{TemplateBinding CornerRadius}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Content="{TemplateBinding Content}"/>
+                            <ctrl:RightPanel Grid.Column="1">
+                                <ctrl:WindowMinButton Margin="0,0,5,0" Command="{Binding CommandWindowMin, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" CommandParameter="Minimized" Visibility="{TemplateBinding IsShowMin}"/>
+                                <ctrl:WindowMaxButton Margin="2,0,2,0" Command="{Binding CommandWindowMax, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" CommandParameter="Maximized" Visibility="{TemplateBinding IsShowMax}"/>
+                                <ctrl:WindowCloseButton Margin="0,0,0,0" Command="{Binding CommandWindowClose, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}"/>
+                            </ctrl:RightPanel>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style TargetType="ctrl:BorderMainHeader">
         <Setter Property="Background" Value="{DynamicResource Background_MainBorder}" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -220,6 +250,33 @@
                                 <ctrl:WindowMaxButton Margin="2,0,2,0" Command="{TemplateBinding CommandWindowMax}" CommandParameter="Maximized" Visibility="{TemplateBinding IsShowMax}"/>
                                 <ctrl:WindowCloseButton Margin="0,0,0,0" Command="{TemplateBinding CloseCommand}"/>
                             </ctrl:RightPanel>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ctrl:BorderMainFooter">
+        <Setter Property="Background" Value="{DynamicResource Background_MainBorder}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:BorderMainFooter}">
+                    <Border CornerRadius="{TemplateBinding CornerRadius}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Image Width="24" Height="24" Stretch="Fill"
+                                   Visibility="{Binding Image, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource ObjectNullToVisibilityConverter}}"
+                                   Source="{TemplateBinding Image}" />
+                            <ContentPresenter Grid.Column="1" Content="{TemplateBinding Content}"
+                                              HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                         </Grid>
                     </Border>
                 </ControlTemplate>
@@ -275,33 +332,6 @@
                                 <ctrl:WindowCloseButton Margin="0" Width="40" VerticalAlignment="Stretch" Command="{TemplateBinding CloseCommand}"
                                                         Style="{DynamicResource CloseButtonStyle}"/>
                             </ctrl:RightPanel>
-                        </Grid>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style TargetType="ctrl:BorderMainFooter">
-        <Setter Property="Background" Value="{DynamicResource Background_MainBorder}" />
-        <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ctrl:BorderMainFooter}">
-                    <Border CornerRadius="{TemplateBinding CornerRadius}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
-                        <Grid Margin="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-
-                            <Image Width="24" Height="24" Stretch="Fill"
-                                   Visibility="{Binding Image, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource ObjectNullToVisibilityConverter}}"
-                                   Source="{TemplateBinding Image}" />
-                            <ContentPresenter Grid.Column="1" Content="{TemplateBinding Content}"
-                                              HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                         </Grid>
                     </Border>
                 </ControlTemplate>

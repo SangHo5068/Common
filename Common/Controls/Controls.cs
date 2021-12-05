@@ -200,6 +200,51 @@ namespace Common.Controls
         }
     }
 
+    public class BorderContentHeader : ContentControl
+    {
+        #region DependencyProperties
+        public static readonly DependencyProperty CloseCommandProperty;
+        public static readonly DependencyProperty CornerRadiusProperty;
+
+        public static readonly DependencyProperty IsShowMinProperty;
+        public static readonly DependencyProperty IsShowMaxProperty;
+        #endregion //DependencyProperties
+
+        #region Properties
+        public ICommand CloseCommand
+        {
+            get { return (ICommand)GetValue(CloseCommandProperty); }
+            set { SetValue(CloseCommandProperty, value); }
+        }
+        public CornerRadius CornerRadius
+        {
+            get { return (CornerRadius)GetValue(CornerRadiusProperty); }
+            set { SetValue(CornerRadiusProperty, value); }
+        }
+
+        public Visibility IsShowMin
+        {
+            get { return (Visibility)GetValue(IsShowMinProperty); }
+            set { SetValue(IsShowMinProperty, value); }
+        }
+        public Visibility IsShowMax
+        {
+            get { return (Visibility)GetValue(IsShowMaxProperty); }
+            set { SetValue(IsShowMaxProperty, value); }
+        }
+        #endregion //Properties
+
+
+
+        static BorderContentHeader()
+        {
+            Type owner = typeof(BorderContentHeader);
+            CloseCommandProperty = DependencyProperty.Register(nameof(CloseCommand), typeof(ICommand), owner, new PropertyMetadata(null));
+            CornerRadiusProperty = DependencyProperty.Register(nameof(CornerRadius), typeof(CornerRadius), owner, new PropertyMetadata(new CornerRadius()));
+            IsShowMinProperty = DependencyProperty.Register(nameof(IsShowMin), typeof(Visibility), owner, new PropertyMetadata(Visibility.Visible));
+            IsShowMaxProperty = DependencyProperty.Register(nameof(IsShowMax), typeof(Visibility), owner, new PropertyMetadata(Visibility.Visible));
+        }
+    }
     public class BorderMainFooter : ContentControl
     {
         #region DependencyProperties
