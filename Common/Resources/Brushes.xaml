@@ -105,15 +105,32 @@
     <SolidColorBrush x:Key="Brushes.Gray08" Color="#FFB8B8B8" />
     <SolidColorBrush x:Key="Brushes.Gray09" Color="#FFB9B9B9" />
     <SolidColorBrush x:Key="Brushes.Gray10" Color="#FFC0C0C0" />
+    <SolidColorBrush x:Key="Brushes.Gray11" Color="#FF404F56" />
     
     <SolidColorBrush x:Key="Brushes.Accent" Color="{StaticResource MahApps.Colors.Accent}" options:Freeze="True" />
 
-    <SolidColorBrush x:Key="Brushes.ThemeBackground" Color="#FFFFFFFF" />
-    <SolidColorBrush x:Key="Brushes.ThemeForeground" Color="#FF000000" />
-    
+    <SolidColorBrush x:Key="Brushes.Dashboard.Background.Main" Color="#FF343434" />
+
+    <SolidColorBrush x:Key="Brushes.Dashboard.Patient.Value1" Color="#FF00FF34" />
+    <SolidColorBrush x:Key="Brushes.Dashboard.Patient.Value2" Color="#FF00FFFF" />
+    <SolidColorBrush x:Key="Brushes.Dashboard.Patient.Value3" Color="#FFFFFF00" />
+    <SolidColorBrush x:Key="Brushes.Dashboard.Patient.Value4" Color="#FFFF4984" />
+
+    <LinearGradientBrush x:Key="Brushes.Dashboard.Patient.Alarm" StartPoint="1,0" EndPoint="1,1">
+        <GradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFDD0075" Offset="0.0"/>
+                <GradientStop Color="#FFCD0000" Offset="1.0"/>
+            </GradientStopCollection>
+        </GradientBrush.GradientStops>
+    </LinearGradientBrush>
+
     <SolidColorBrush x:Key="Brushes.Main.Foreground" Color="#FF888888" />
     <SolidColorBrush x:Key="Brushes.Main.Foreground.Status" Color="#FF007A94" />
     <SolidColorBrush x:Key="Brushes.Main.Foreground.Status1" Color="#FF000000" />
+
+    <SolidColorBrush x:Key="Brushes.Theme.Background" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="Brushes.Theme.Foreground" Color="#FF000000" />
 
     <SolidColorBrush x:Key="Brush_Common" Color="#FFA3ABB6"/>
     <SolidColorBrush x:Key="Brush_CloseButtonOver" Color="#FF545960"/>

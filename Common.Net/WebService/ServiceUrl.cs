@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 using Common;
+using Common.Converters;
 
 namespace ServiceBase
 {
@@ -39,16 +40,34 @@ namespace ServiceBase
         vcall,
     }
 
+    public enum ServerDomain
+    {
+        [Display(Name = "VCall/{0}")]
+        HConnect,
+        [Display(Name = "https://www.ht-release-api.mobicareconsole.com/")]
+        Home,
+        [Display(Name = "https://www.smarter-release-api.mobicareconsole.com/")]
+        SmartER
+    }
+
     public class ServiceUrl
     {
-        //public const string TestURL = "https://www.testapi.seerscardio.com/";
-        //public const string ReleURL = "https://www.apirelease.seerscardio.com/";
         public const string TestURL = "https://www.ht-release-api.mobicareconsole.com/";
         public const string ReleURL = "https://www.ht-release-api.mobicareconsole.com/";
+
         public const string TestCARDIO_WEBSITE = "https://www.testweb.seerscardio.com/";
         public const string ReleCARDIO_WEBSITE = "https://www.seerscardio.com/";
 
-        public static string BASEURL => Defined.IsRelease ? ReleURL : TestURL;
+        //public static string BASEURL => Defined.IsRelease ? ReleURL : TestURL;
+        public static ServerDomain BASE_DOMAIN { get; set; } = ServerDomain.Home;
+        public static string GetBaseUrl(ServerDomain domain)
+        {
+            var converter = new EnumToDisplayConverter();
+            var value = converter.Convert(domain, typeof(ServerDomain), null, null);
+            return value.ToString();
+        }
+        public static string BASEURL => GetBaseUrl(BASE_DOMAIN);
+        public static string BASEURL_WS => GetBaseUrl(BASE_DOMAIN).Replace("https://www.", "wss://") + "mobiCAREConsole/";
         public static string WEBSITE => Defined.IsRelease ? ReleCARDIO_WEBSITE : TestCARDIO_WEBSITE;
 
         /// <summary>

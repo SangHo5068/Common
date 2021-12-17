@@ -77,18 +77,93 @@ namespace Common.Interop
             return comNum;
         }
 
+        public static string GetUSBComPortNum(string vid, string pid)
+        {
+            var comNum = string.Empty;
+            var format = string.Empty;
+            if (!string.IsNullOrEmpty(vid + pid))
+                format = string.Format("VID_{0}&PID_{1}", vid, pid);
+            try
+            {
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(@"SELECT * FROM WIN32_SerialPort"))
+                {
+                    using (ManagementObjectCollection managements = searcher.Get())
+                    {
+                        foreach (ManagementObject manObj in managements)
+                        {
+                            var caption = manObj["Caption"]?.ToString();
+                            var pnpid = manObj["PNPDeviceID"]?.ToString();
+                            var deviceid = manObj["DeviceID"]?.ToString();
+                            //var hwid = manObj["HardwareID"] as string[];
+                            if (string.IsNullOrEmpty(caption))
+                                continue;
+                            if (!caption.Contains("(COM"))
+                                continue;
+                            //var pnp = manObj["PNPDeviceID"] == null ? string.Empty : manObj["PNPDeviceID"].ToString();
+                            //if (string.IsNullOrEmpty(pnp) || !pnp.Contains(format))
+                            //    continue;
+                            comNum = manObj["DeviceID"].ToString();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLogAndTrace(LogTypes.Exception, "", ex);
+            }
+            return comNum;
+        }
+
+        private const string vidPattern = @"VID_([0-9A-F]{4})";
+        private const string pidPattern = @"PID_([0-9A-F]{4})";
+        struct ComPort // custom struct with our desired values
+        {
+            public string name;
+            public string vid;
+            public string pid;
+            public string description;
+        }
+        private static List<ComPort> GetSerialPorts(string vid, string pid)
+        {
+            using (var searcher = new ManagementObjectSearcher("SELECT * FROM WIN32_SerialPort"))
+            {
+                var ports = searcher.Get().Cast<ManagementBaseObject>().ToList();
+                var list = ports.Select(p =>
+                {
+                    var c = new ComPort {
+                        name = p.GetPropertyValue("DeviceID").ToString(),
+                        vid = p.GetPropertyValue("PNPDeviceID").ToString(),
+                        description = p.GetPropertyValue("Caption").ToString()
+                    };
+                    Match mVID = Regex.Match(c.vid, vidPattern, RegexOptions.IgnoreCase);
+                    Match mPID = Regex.Match(c.vid, pidPattern, RegexOptions.IgnoreCase);
+                    if (mVID.Success)
+                        c.vid = mVID.Groups[1].Value;
+                    if (mPID.Success)
+                        c.pid = mPID.Groups[1].Value;
+                    return c;
+                }).ToList();
+                //if we want to find one device
+                ComPort com = list.FindLast(c => c.vid.Equals(vid) && c.pid.Equals(pid));
+                //or if we want to extract all devices with specified values:
+                List<ComPort> coms = list.FindAll(c => c.vid.Equals(vid) && c.pid.Equals(pid));
+                return coms;
+            }
+        }
+
         /// <summary>
         /// 장치 정보를 레지스트리에서 가져온다.
         /// </summary>
         /// <param name="VID"></param>
         /// <param name="PID"></param>
         /// <returns></returns>
-        public static List<string> GetRegistryComPortNames(String VID, String PID)
+        public static List<string> GetRegistryComPortNames(String VID, String PID, String deviceID = null)
         {
             List<string> comports = new List<string>();
             try
             {
-                String pattern = String.Format("^VID_{0}.PID_{1}", VID, PID);
+                var device_ids = deviceID?.Split(new char[] { '\\' });
+                var pattern = String.Format("^VID_{0}.PID_{1}", VID, PID);
                 Regex _rx = new Regex(pattern, RegexOptions.IgnoreCase);
 
                 RegistryKey rk1 = Registry.LocalMachine;
@@ -99,8 +174,11 @@ namespace Common.Interop
                     RegistryKey rk3 = rk2.OpenSubKey(s3);
                     foreach (String s in rk3.GetSubKeyNames())
                     {
-                        if (_rx.Match(s).Success)
+                        if (_rx.Match(s).Success && s.Contains(VID) && s.Contains(PID))
                         {
+                            if (device_ids != null && device_ids.Length > 2 && s.ToLower().Contains(device_ids.Last().ToLower()))
+                                continue;
+
                             RegistryKey rk4 = rk3.OpenSubKey(s);
                             foreach (String s2 in rk4.GetSubKeyNames())
                             {
@@ -148,8 +226,11 @@ namespace Common.Interop
                     {
                         Logger.WriteLogAndTrace(LogTypes.Info, "----- DEVICE -----");
                         //var model = device.GetPropertyValue("Model")?.ToString();
+                        var deviceID = device.GetPropertyValue("DeviceID")?.ToString();
                         var dev = new DeviceInfo(model, device.Properties) {
-                            ComNum = GetRegistryComPortNames(vid, pid)?.FirstOrDefault()
+                            ComNum = GetRegistryComPortNames(vid, pid, deviceID)?.FirstOrDefault()
+                            //ComNum = GetUSBComPortNum(vid, pid)
+                            //ComNum = GetSerialPorts(vid, pid)?.LastOrDefault().name
                         };
                         devices.Add(dev);
                         //device.Dispose();
