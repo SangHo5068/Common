@@ -173,4 +173,12 @@
     <value>성공</value>
     <comment>성공</comment>
   </data>
+  <data name="ToolHeader_MainMenu" xml:space="preserve">
+    <value>주요메뉴</value>
+    <comment>주요메뉴</comment>
+  </data>
+  <data name="ToolHeader_ToolBar" xml:space="preserve">
+    <value>툴바</value>
+    <comment>툴바</comment>
+  </data>
 </root>
