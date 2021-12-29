@@ -27,7 +27,7 @@ namespace Common
 
 
 
-        private const String VersionFormat = "0.0.{0}";
+        private const String VersionFormat = "2.0.{0}";
         /// <summary>
         /// Git Commits Number
         /// </summary>
@@ -47,6 +47,11 @@ namespace Common
             get => String.Format("{0}{1}", AppVersion, IsRelease ? string.Empty : BUILD);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public const String EtcName = "퀀텀스타";
+        public static string AppName { get { return AppDomain.CurrentDomain.FriendlyName; } }
 
         #region Methods
 

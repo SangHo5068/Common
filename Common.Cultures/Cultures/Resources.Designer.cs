@@ -185,5 +185,23 @@ namespace Common.Cultures.Cultures {
                 return ResourceManager.GetString("Success", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   주요메뉴과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string ToolHeader_MainMenu {
+            get {
+                return ResourceManager.GetString("ToolHeader_MainMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   툴바과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string ToolHeader_ToolBar {
+            get {
+                return ResourceManager.GetString("ToolHeader_ToolBar", resourceCulture);
+            }
+        }
     }
 }
