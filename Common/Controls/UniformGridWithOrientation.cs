@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls.Primitives;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 
 namespace Common.Controls
 {
     public class UniformGridWithOrientation : UniformGrid
     {
-        #region Orientation (Dependency Property)
+        #region Dependency
+
+        #region Orientation
         public static readonly DependencyProperty OrientationProperty =
             DependencyProperty.Register("Orientation", typeof(System.Windows.Controls.Orientation), typeof(UniformGridWithOrientation),
                 new FrameworkPropertyMetadata(
@@ -33,7 +31,70 @@ namespace Common.Controls
             get { return (System.Windows.Controls.Orientation)GetValue(OrientationProperty); }
             set { SetValue(OrientationProperty, value); }
         }
-        #endregion
+        #endregion //Orientation
+
+        #region DataOrder
+        public static readonly DependencyProperty DataOrderProperty =
+            DependencyProperty.Register("DataOrder", typeof(System.Windows.Controls.Orientation), typeof(UniformGridWithOrientation),
+                new FrameworkPropertyMetadata(
+                    System.Windows.Controls.Orientation.Vertical,
+                    FrameworkPropertyMetadataOptions.AffectsMeasure),
+                new ValidateValueCallback(UniformGridWithOrientation.IsValidDataOrder));
+
+        internal static bool IsValidDataOrder(object o)
+        {
+            var orientation = (System.Windows.Controls.Orientation)o;
+            if (orientation != System.Windows.Controls.Orientation.Horizontal)
+            {
+                return (orientation == System.Windows.Controls.Orientation.Vertical);
+            }
+            return true;
+        }
+
+        public System.Windows.Controls.Orientation DataOrder
+        {
+            get { return (System.Windows.Controls.Orientation)GetValue(DataOrderProperty); }
+            set { SetValue(DataOrderProperty, value); }
+        }
+        #endregion //Orientation
+
+        #endregion //Dependency
+
+
+        private int _columns;
+        private int _rows;
+
+
+
+
+        protected override Size ArrangeOverride(Size arrangeSize)
+        {
+            Rect finalRect = new Rect(0.0, 0.0, arrangeSize.Width / ((double)this._columns), arrangeSize.Height / ((double)this._rows));
+            double height = finalRect.Height;
+            double numX = arrangeSize.Height - 1.0;
+            double yPos = arrangeSize.Height - height;
+            finalRect.X += finalRect.Width * this.FirstColumn;
+
+            //TODO
+            finalRect.Y += yPos;
+
+            foreach (UIElement element in base.InternalChildren)
+            {
+                element.Arrange(finalRect);
+                if (element.Visibility != Visibility.Collapsed)
+                {
+
+                    // Sortierung von unten links nach oben links
+                    finalRect.X += finalRect.Width;
+                    if (finalRect.X >= arrangeSize.Width)
+                    {
+                        finalRect.Y -= height;
+                        finalRect.X = 0;
+                    }
+                }
+            }
+            return arrangeSize;
+        }
 
         protected override Size MeasureOverride(Size constraint)
         {
@@ -112,37 +173,5 @@ namespace Common.Controls
                 }
             }
         }
-
-        protected override Size ArrangeOverride(Size arrangeSize)
-        {
-            Rect finalRect = new Rect(0.0, 0.0, arrangeSize.Width / ((double)this._columns), arrangeSize.Height / ((double)this._rows));
-            double height = finalRect.Height;
-            double numX = arrangeSize.Height - 1.0;
-            double yPos = arrangeSize.Height - height;
-            finalRect.X += finalRect.Width * this.FirstColumn;
-
-            //TODO
-            finalRect.Y += yPos;
-
-            foreach (UIElement element in base.InternalChildren)
-            {
-                element.Arrange(finalRect);
-                if (element.Visibility != Visibility.Collapsed)
-                {
-
-                    // Sortierung von unten links nach oben links
-                    finalRect.X += finalRect.Width;
-                    if (finalRect.X >= arrangeSize.Width)
-                    {
-                        finalRect.Y -= height;
-                        finalRect.X = 0;
-                    }
-                }
-            }
-            return arrangeSize;
-        }
-
-        private int _columns;
-        private int _rows;
     }
 }

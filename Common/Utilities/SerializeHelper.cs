@@ -13,6 +13,7 @@ using System.Xml.Serialization;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace Common.Utilities
 {
@@ -764,6 +765,22 @@ namespace Common.Utilities
         public static T DeserializeByJson<T>(string value)
         {
             return JsonConvert.DeserializeObject<T>(value);
+        }
+
+        /// <summary>
+        /// Json Deserialize Camel
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <param name="valueType"></param>
+        /// <returns></returns>
+        public static object DeserializeByJsonCamel(string value, Type valueType)
+        {
+            // Add this somewhere in your project, most likely in Startup.cs
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+            return JsonConvert.DeserializeObject(value, valueType);
         }
 
         /// <summary>

@@ -71,6 +71,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="websocket-sharp, Version=1.0.2.32519, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Projects\H-Connect\Dashboard\Dashboard\packages\WebSocketSharp-NonPreRelease.1.0.0\lib\net35\websocket-sharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,6 +81,13 @@
     <Compile Include="WebService\ServiceArgs.cs" />
     <Compile Include="WebService\ServiceRequest.cs" />
     <Compile Include="WebService\ServiceUrl.cs" />
+    <Compile Include="WebSocket\Stomp\IStompClient.cs" />
+    <Compile Include="WebSocket\Stomp\StompCommand.cs" />
+    <Compile Include="WebSocket\Stomp\StompConnectionState.cs" />
+    <Compile Include="WebSocket\Stomp\StompMessage.cs" />
+    <Compile Include="WebSocket\Stomp\StompMessageSerializer.cs" />
+    <Compile Include="WebSocket\Stomp\StompWebsocketClient.cs" />
+    <Compile Include="WebSocket\Stomp\Subscriber.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -89,6 +99,7 @@
       <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)packages\GitInfo.2.2.0\build\GitInfo.targets" Condition="Exists('$(SolutionDir)packages\GitInfo.2.2.0\build\GitInfo.targets')" />
 </Project>

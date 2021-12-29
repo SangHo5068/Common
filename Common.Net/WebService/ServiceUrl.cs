@@ -30,6 +30,9 @@ namespace ServiceBase
         [Display(Name = "Account/{0}")]
         user,
 
+        [Display(Name = "Manager/{0}")]
+        Manager,
+
         [Display(Name = "Measurement/{0}")]
         measurement,
 
@@ -42,7 +45,7 @@ namespace ServiceBase
 
     public enum ServerDomain
     {
-        [Display(Name = "VCall/{0}")]
+        [Display(Name = "https://www.ht-release-api.mobicareconsole.com/")]
         HConnect,
         [Display(Name = "https://www.ht-release-api.mobicareconsole.com/")]
         Home,
@@ -59,7 +62,7 @@ namespace ServiceBase
         public const string ReleCARDIO_WEBSITE = "https://www.seerscardio.com/";
 
         //public static string BASEURL => Defined.IsRelease ? ReleURL : TestURL;
-        public static ServerDomain BASE_DOMAIN { get; set; } = ServerDomain.Home;
+        public static ServerDomain BASE_DOMAIN { get; set; } = ServerDomain.SmartER;
         public static string GetBaseUrl(ServerDomain domain)
         {
             var converter = new EnumToDisplayConverter();
@@ -67,7 +70,7 @@ namespace ServiceBase
             return value.ToString();
         }
         public static string BASEURL => GetBaseUrl(BASE_DOMAIN);
-        public static string BASEURL_WS => GetBaseUrl(BASE_DOMAIN).Replace("https://www.", "wss://") + "mobiCAREConsole/";
+        public static string BASEURL_WS => GetBaseUrl(BASE_DOMAIN).Replace("https://www.", "wss://") + "mobiCAREConsole/ws";
         public static string WEBSITE => Defined.IsRelease ? ReleCARDIO_WEBSITE : TestCARDIO_WEBSITE;
 
         /// <summary>
@@ -102,6 +105,22 @@ namespace ServiceBase
         public const string Login = "Login";
 
         #endregion //User
+
+        #region Manager
+
+        /// <summary>
+        /// 병동의 병실 조회
+        /// <BaseURL>/API/Manager/SelectSickRoom
+        /// </summary>
+        public const string SelectSickRoom = "SelectSickRoom";
+
+        /// <summary>
+        /// 병실의 병상 조회
+        /// <BaseURL>/API/Manager/SelectSickBed
+        /// </summary>
+        public const string SelectSickBed = "SelectSickBed";
+
+        #endregion //Manager
 
         #region Measurement
 

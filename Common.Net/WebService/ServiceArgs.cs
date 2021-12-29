@@ -130,7 +130,7 @@ namespace ServiceBase
             : this()
         {
             Url = url;
-            AuthToken = token;
+            AuthToken = token ?? ServiceRequest.Instance.AuthToken;
         }
 
         #endregion //Construct
