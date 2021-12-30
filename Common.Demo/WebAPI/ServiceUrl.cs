@@ -1,27 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-using Common;
 using Common.Converters;
 
-namespace ServiceBase
+namespace Common.Demo
 {
-    public enum ResponseCode
-    {
-        [Display(Name = "Succeed")]
-        Succeed = 200,
-        [Display(Name = "Created")]
-        Created = 201,
-        [Display(Name = "Unauthorized")]
-        Unauthorized = 401,
-        [Display(Name = "Forbidden")]
-        Forbidden = 403,
-        [Display(Name = "Not Found")]
-        Not_Found = 404,
-        [Display(Name = "Internal Server Error")]
-        ISE = 500,
-    }
-
     public enum ServiceUrls
     {
         [Display(Name = "Util/{0}")]

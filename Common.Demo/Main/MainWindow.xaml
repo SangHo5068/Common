@@ -3,10 +3,11 @@
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                      xmlns:baseview="clr-namespace:Common.Views;assembly=Common"
                      xmlns:basectrl="clr-namespace:Common.Controls;assembly=Common"
                      xmlns:command="clr-namespace:Common.Command;assembly=Common"
+                     xmlns:noti="clr-namespace:Common.Notify;assembly=Common"
                      xmlns:local="clr-namespace:Common.Demo"
                      mc:Ignorable="d"
                      Style="{DynamicResource MainWindowStyle}"
@@ -15,7 +16,9 @@
                      Height="800" Width="1280"
                      WindowStartupLocation="CenterScreen"
                      ShowInTaskbar="True"
-                     d:DataContext="{d:DesignInstance local:MainWindowViewModel}">
+                     d:DataContext="{d:DesignInstance local:MainWindowViewModel}"
+                     noti:LoadedBindings.LoadedEnabled="True"
+                     noti:LoadedBindings.LoadedAction="{Binding LoadAction}">
     <Window.Resources>
         
     </Window.Resources>
@@ -24,8 +27,9 @@
     </Window.DataContext>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="MouseLeftButtonDown">
-            <command:EventToCommand PassEventArgsToCommand="True"
-                                    Command="{Binding CommandMouseLeftButtonDown, RelativeSource={RelativeSource AncestorType=baseview:BaseWindow}}"/>
+            <!--<command:EventToCommand PassEventArgsToCommand="True"-->
+            <i:InvokeCommandAction PassEventArgsToCommand="True"
+                                   Command="{Binding CommandMouseLeftButtonDown, RelativeSource={RelativeSource AncestorType=baseview:BaseWindow}}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
     

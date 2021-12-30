@@ -87,12 +87,19 @@ namespace Common.Models
 
 
         private DelegateLoadedAction _loadAction = null;
-        public DelegateLoadedAction LoadAction
+        public virtual DelegateLoadedAction LoadAction
         {
             get
             {
                 return _loadAction ?? (_loadAction = new DelegateLoadedAction((s) => {
-                    View = s as FrameworkElement;
+                    //View = s as FrameworkElement;
+                    ///// do your window initialization here
+                    //InitialData(InnerParams);
+                    if (!(s is FrameworkElement view))
+                        return;
+                    if (view.Visibility == Visibility.Collapsed)
+                        return;
+
                     /// do your window initialization here
                     InitialData(InnerParams);
                 }));

@@ -80,7 +80,6 @@
     <Compile Include="WebService\NetworkHelper.cs" />
     <Compile Include="WebService\ServiceArgs.cs" />
     <Compile Include="WebService\ServiceRequest.cs" />
-    <Compile Include="WebService\ServiceUrl.cs" />
     <Compile Include="WebSocket\Stomp\IStompClient.cs" />
     <Compile Include="WebSocket\Stomp\StompCommand.cs" />
     <Compile Include="WebSocket\Stomp\StompConnectionState.cs" />

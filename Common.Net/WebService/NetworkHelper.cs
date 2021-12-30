@@ -257,39 +257,39 @@ namespace ServiceBase
             }
         }
 
-        /// <summary>
-        /// Service url format을 반환하는 메서드.
-        /// </summary>
-        /// <example>"http://{0}:{1}/rest/data/{2}"</example>
-        /// <param name="serviceType"></param>
-        /// <param name="contract"></param>
-        /// <param name="startIndex"></param>
-        /// <returns></returns>
-        public static string GetServiceUrlFormat(ServiceUrls serviceType, string contract, params object[] param)
-        {
-            var returnContract = contract;
-            var queryStrings = contract.Split(new[] { "?" }, StringSplitOptions.RemoveEmptyEntries);
-            if (queryStrings.Length > 1) // has querystring.
-            {
-                var keys = queryStrings[1].Split(new[] { "&" }, StringSplitOptions.RemoveEmptyEntries);
-                var index = 0;
-                foreach (var key in keys)
-                {
-                    string value = param[index++].ToString();
-                    returnContract = returnContract.Replace(key, $"{value}");
-                }
-                returnContract = returnContract.Replace("?", "");
-                returnContract = returnContract.Replace("&", "/");
-            }
+        ///// <summary>
+        ///// Service url format을 반환하는 메서드.
+        ///// </summary>
+        ///// <example>"http://{0}:{1}/rest/data/{2}"</example>
+        ///// <param name="serviceType"></param>
+        ///// <param name="contract"></param>
+        ///// <param name="startIndex"></param>
+        ///// <returns></returns>
+        //public static string GetServiceUrlFormat(ServiceUrls serviceType, string contract, params object[] param)
+        //{
+        //    var returnContract = contract;
+        //    var queryStrings = contract.Split(new[] { "?" }, StringSplitOptions.RemoveEmptyEntries);
+        //    if (queryStrings.Length > 1) // has querystring.
+        //    {
+        //        var keys = queryStrings[1].Split(new[] { "&" }, StringSplitOptions.RemoveEmptyEntries);
+        //        var index = 0;
+        //        foreach (var key in keys)
+        //        {
+        //            string value = param[index++].ToString();
+        //            returnContract = returnContract.Replace(key, $"{value}");
+        //        }
+        //        returnContract = returnContract.Replace("?", "");
+        //        returnContract = returnContract.Replace("&", "/");
+        //    }
 
-            var converter = new Common.Converters.EnumToDisplayConverter();
-            var format = converter.Convert(serviceType, typeof(ServiceUrls), null, null).ToString();
-            var service = string.Format(format, serviceType);
-            var servicePrefix = string.Format("{0}/", service);
+        //    var converter = new Common.Converters.EnumToDisplayConverter();
+        //    var format = converter.Convert(serviceType, typeof(ServiceUrls), null, null).ToString();
+        //    var service = string.Format(format, serviceType);
+        //    var servicePrefix = string.Format("{0}/", service);
 
-            return string.Concat(UrlPrefix, servicePrefix, returnContract);
-            //return string.Concat(UrlPrefix, returnContract);
-        }
+        //    return string.Concat(UrlPrefix, servicePrefix, returnContract);
+        //    //return string.Concat(UrlPrefix, returnContract);
+        //}
 
         ///// <summary>
         ///// Service url format을 반환하는 메서드.

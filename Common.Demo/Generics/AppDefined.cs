@@ -16,6 +16,28 @@ namespace Common.Demo
 
 
         #region Properties
+        private const String VersionFormat = "1.0.{0}";
+        /// <summary>
+        /// Git Commits Number
+        /// </summary>
+        public static String GitCommitNo { get; set; }
+        /// <summary>
+        /// 프로그램 버전 "1.0.{GitCommitNo}"
+        /// </summary>
+        public static String AppVersion
+        {
+            get => String.Format(VersionFormat, GitCommitNo);
+        }
+        /// <summary>
+        /// 프로그램 버전 "1.0.{GitCommitNo}.T"
+        /// </summary>
+        public static String AppBuildVersion
+        {
+            get => String.Format("{0}{1}", AppVersion, Defined.IsRelease ? string.Empty : Defined.BUILD);
+        }
+
+
+
         /// <summary>
         /// App 세션
         /// </summary>
@@ -31,9 +53,14 @@ namespace Common.Demo
 
 
         /// <summary>
+        /// 
+        /// </summary>
+        public const String EtcName = "";
+        /// <summary>
         /// 프로그램 이름
         /// </summary>
-        public const String AppName = "Common.Demo";
+        //public const String AppName = "Common.Demo";
+        public static String AppName { get { return AppDomain.CurrentDomain.FriendlyName; } }
         /// <summary>
         /// 실행 파일 경로
         /// </summary>

@@ -20,6 +20,7 @@ namespace Common.Demo
         private string _pw;
         private string _ProductVersion;
         private string _StartingMessage;
+        private string _Copyright;
 
 
         #region Properties
@@ -45,6 +46,12 @@ namespace Common.Demo
             get => _StartingMessage;
             set => SetValue(ref _StartingMessage, value);
         }
+
+        public string Copyright
+        {
+            get => _Copyright;
+            set => SetValue(ref _Copyright, value);
+        }
         #endregion //Properties
 
         #region ICommand
@@ -64,7 +71,7 @@ namespace Common.Demo
             StartingMessage = Header + "...";
             IsWaiting = true;
 
-            InitialData();
+            //InitialData();
         }
 
 
@@ -99,7 +106,7 @@ namespace Common.Demo
                 PW = INIHelper.ReadIniValue(AppDefined.LoginSession, nameof(PW), "", App.IniPath);
 
 
-                Defined.GitCommitNo = ThisAssembly.Git.Commits;
+                AppDefined.GitCommitNo = ThisAssembly.Git.Commits;
 
                 //Assembly _asm = Assembly.LoadFile(fileName);
                 var _asm = Assembly.GetExecutingAssembly();
@@ -109,7 +116,7 @@ namespace Common.Demo
 
                 INIHelper.WriteIniValue(AppDefined.AppSession, "Commits", ThisAssembly.Git.Commits, App.IniPath);
 
-                ProductVersion = Defined.AppBuildVersion;
+                ProductVersion = AppDefined.AppBuildVersion;
 
                 var version = Assembly.GetExecutingAssembly().GetName().Version;
                 Logger.WriteLog(LogTypes.Info, string.Format("StartApp\tProductVersion : {0}", ProductVersion));

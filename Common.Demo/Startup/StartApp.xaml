@@ -6,12 +6,16 @@
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      xmlns:basectrl="clr-namespace:Common.Controls;assembly=Common"
                      xmlns:baseview="clr-namespace:Common.Views;assembly=Common"
+                     xmlns:noti="clr-namespace:Common.Notify;assembly=Common"
                      xmlns:local="clr-namespace:Common.Demo"
                      mc:Ignorable="d"
                      Style="{DynamicResource StartAppWindowStyle}"
                      WindowStartupLocation="CenterScreen"
                      ShowInTaskbar="True"
-                     Height="400" Width="400">
+                     Height="400" Width="400"
+                     d:DataContext="{d:DesignInstance local:StartAppViewModel}"
+                     noti:LoadedBindings.LoadedEnabled="True"
+                     noti:LoadedBindings.LoadedAction="{Binding LoadAction}">
     <Window.Resources>
         <Style TargetType="Border" x:Key="InputBorderStyle">
             <Setter Property="BorderBrush" Value="{DynamicResource Brush_Common}"/>
@@ -154,7 +158,7 @@
                             <TextBlock Grid.Row="3" Grid.ColumnSpan="3" Style="{DynamicResource TextBlockVersionStyle}"
                                        Text="{Binding ProductVersion, StringFormat={}Version {0}, UpdateSourceTrigger=PropertyChanged}"/>
                             <TextBlock Grid.Row="4" Grid.ColumnSpan="3" Style="{DynamicResource TextBlockCopyrightStyle}"
-                                       Text="Copyright © 2019 Seers Technology. All RIGHT RESERVED"/>
+                                       Text="{Binding Path=Copyright, StringFormat={}Copyright © 2019 {0} Technology. All RIGHT RESERVED}"/>
 
                             <basectrl:WaitingBar Grid.RowSpan="5" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.8" d:IsHidden="True" Panel.ZIndex="10"
                                          Visibility="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityInvertConverter}, UpdateSourceTrigger=PropertyChanged}"

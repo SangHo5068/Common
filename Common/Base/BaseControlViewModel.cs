@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 
 using Common.Command;
@@ -245,6 +246,22 @@ namespace Common.Base
         #endregion //Define
 
 
+        private DelegateLoadedAction _loadAction = null;
+        public virtual DelegateLoadedAction LoadAction
+        {
+            get
+            {
+                return _loadAction ?? (_loadAction = new DelegateLoadedAction((s) => {
+                    if (!(s is FrameworkElement view))
+                        return;
+                    if (view.Visibility == Visibility.Collapsed)
+                        return;
+
+                    /// do your window initialization here
+                    InitData(internalData);
+                }));
+            }
+        }
         public virtual List<IModule> GetSubmodules()
         {
             return new List<IModule>();
