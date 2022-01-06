@@ -219,6 +219,7 @@
     <Compile Include="Utilities\FindResources.cs" />
     <Compile Include="Utilities\GetMethodInfoStrings.cs" />
     <Compile Include="Utilities\GitHelper.cs" />
+    <Compile Include="Utilities\GridHelpers.cs" />
     <Compile Include="Utilities\HashHelper.cs" />
     <Compile Include="Converters\ImageConverter.cs" />
     <Compile Include="Utilities\IpAddressHelper.cs" />
