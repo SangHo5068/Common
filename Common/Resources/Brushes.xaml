@@ -132,6 +132,43 @@
     <SolidColorBrush x:Key="Brushes.Theme.Background" Color="#FFFFFFFF" />
     <SolidColorBrush x:Key="Brushes.Theme.Foreground" Color="#FF000000" />
 
+    <SolidColorBrush x:Key="Brushes.Combo.Arrow.Fill" Color="#FF000000"/>
+    <SolidColorBrush x:Key="Brushes.Combo.Foreground" Color="#FF585858"/>
+    <SolidColorBrush x:Key="Brushes.Combo.Background" Color="White"/>
+    <SolidColorBrush x:Key="Brushes.Combo.Border" Color="#FFB1B4BA"/>
+    <SolidColorBrush x:Key="Brushes.Combo.Disabled" Color="#FF999999"/>
+    <SolidColorBrush x:Key="Brushes.Combo.PopupDisabled" Color="#FFDEDEDE"/>
+    <SolidColorBrush x:Key="Brushes.Combo.ButtonFocus" Color="#FF577dda"/>
+
+    <SolidColorBrush x:Key="Brushes.ComboItem.Border" Color="#FFDADADA"/>
+    <SolidColorBrush x:Key="Brushes.ComboItem.Background" Color="#FFEDEDED"/>
+    <SolidColorBrush x:Key="Brushes.ComboItem.Background.Over" Color="#FFE0E0E0"/>
+    <SolidColorBrush x:Key="Brushes.ComboItem.Background.Select" Color="#FF7797D1"/>
+    <SolidColorBrush x:Key="Brushes.ComboItem.Border.Select" Color="#FF577DDF"/>
+    <SolidColorBrush x:Key="Brushes.ComboItem.Foreground" Color="White"/>
+
+    <SolidColorBrush x:Key="Brushes.Scroll.Arrow" Color="#FF494D5B"/>
+    <SolidColorBrush x:Key="Brushes.Scroll.Arrow.Over" Color="#FF606679"/>
+    <SolidColorBrush x:Key="Brushes.Scroll.Arrow.Press" Color="#FF191B1F"/>
+    <SolidColorBrush x:Key="Brushes.Scroll.Fill" Color="White"/>
+    <SolidColorBrush x:Key="Brushes.Scroll.Background" Color="#FFCCCDCE"/>
+    <SolidColorBrush x:Key="Brushes.Scroll.Background.Over" Color="#FFA4AAB3"/>
+    <SolidColorBrush x:Key="Brushes.Scroll.Background.Over1" Color="#FF9E9FA2"/>
+    <LinearGradientBrush x:Key="Brushes.Scroll.Background.Press" EndPoint="1,0" StartPoint="0,0">
+        <GradientStop Color="#FFFAFAFB" Offset="1"/>
+        <GradientStop Color="#FFE4E4E4" Offset="0"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="Brushes.Scroll.Background.Inner" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFF3F4F4" Offset="0"/>
+        <GradientStop Color="#FFFBFCFC" Offset="1"/>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="Brushes.ScrollBar.Background.Press" Color="#FF474747"/>
+    <SolidColorBrush x:Key="Brushes.ScrollBar.Background" Color="#FFF4F4F4"/>
+    <SolidColorBrush x:Key="Brushes.ScrollBar.Border" Color="#FFEBEBEB"/>
+    
+    <SolidColorBrush x:Key="Brushes.Toggle.Foreground" Color="#FF999999"/>
+
     <SolidColorBrush x:Key="Brush_Common" Color="#FFA3ABB6"/>
     <SolidColorBrush x:Key="Brush_CloseButtonOver" Color="#FF545960"/>
     <SolidColorBrush x:Key="Brush_MinMaxButtonOver" Color="#FFB3B3B8"/>
