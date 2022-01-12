@@ -124,6 +124,14 @@
             </GradientStopCollection>
         </GradientBrush.GradientStops>
     </LinearGradientBrush>
+    <LinearGradientBrush x:Key="Brushes.Dashboard.Patient.LeadOff" StartPoint="1,0" EndPoint="1,1">
+        <GradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FF0D0075" Offset="0.0"/>
+                <GradientStop Color="#FF0000FF" Offset="1.0"/>
+            </GradientStopCollection>
+        </GradientBrush.GradientStops>
+    </LinearGradientBrush>
 
     <SolidColorBrush x:Key="Brushes.Main.Foreground" Color="#FF888888" />
     <SolidColorBrush x:Key="Brushes.Main.Foreground.Status" Color="#FF007A94" />

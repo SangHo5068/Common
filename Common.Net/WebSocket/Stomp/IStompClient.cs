@@ -18,6 +18,6 @@ namespace Common.Net.Stomp
 
         void Connect(IDictionary<string, string> headers);
         void Send(object body, string destination, IDictionary<string, string> headers);
-        void Subscribe<T>(string topic, IDictionary<string, string> headers, EventHandler<T> handler);
+        void Subscribe<T>(string topic, IDictionary<string, string> headers, int subIndex, EventHandler<T> handler);
     }
 }
