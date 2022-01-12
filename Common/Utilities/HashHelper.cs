@@ -187,8 +187,8 @@ namespace Common.Utilities
         public readonly string Key;
         byte[] _bSkey = new byte[8];
 
-        public int AES = 1;
-        public int DES = 2;
+        public const int AES = 1;
+        public const int DES = 2;
 
 
 

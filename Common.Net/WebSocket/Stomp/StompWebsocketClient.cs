@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 using Common.Utilities;
+
+using ServiceBase;
 
 using WebSocketSharp;
 
@@ -17,34 +20,60 @@ namespace Common.Net.Stomp
         // todo: implement this
 #pragma warning disable CS0067 // Событие "StompWebsocketClient.OnOpen" никогда не используется.
         public event EventHandler OnOpen;
+        //{
+        //    add { socket.OnOpen += value; }
+        //    remove { socket.OnOpen -= value; }
+        //}
 #pragma warning restore CS0067 // Событие "StompWebsocketClient.OnOpen" никогда не используется.
 #pragma warning disable CS0067 // Событие "StompWebsocketClient.OnClose" никогда не используется.
         public event EventHandler<CloseEventArgs> OnClose;
+        //{
+        //    add { socket.OnClose += value; }
+        //    remove { socket.OnClose -= value; }
+        //}
 #pragma warning restore CS0067 // Событие "StompWebsocketClient.OnClose" никогда не используется.
 #pragma warning disable CS0067 // Событие "StompWebsocketClient.OnError" никогда не используется.
         public event EventHandler<ErrorEventArgs> OnError;
+        //{
+        //    add { socket.OnError += value; }
+        //    remove { socket.OnError -= value; }
+        //}
 #pragma warning restore CS0067 // Событие "StompWebsocketClient.OnError" никогда не используется.
 
         private readonly WebSocket socket;
+        private readonly Thread HeartBeatThread;
         private readonly StompMessageSerializer stompSerializer = new StompMessageSerializer();
 
         private readonly IDictionary<string, Subscriber> subscribers = new Dictionary<string, Subscriber>();
+
+        public const int KeepAliveTime = 10000;
+        //public const string TokenKey = "SX-Auth-Token";
+        public string Token { get; private set; }
+
 
         public StompConnectionState State { get; private set; } = Closed;
 
         public Dictionary<string, Subscriber> Subscribers => (Dictionary<string, Subscriber>)subscribers;
 
 
+
         public StompWebsocketClient(string url)
         {
             socket = new WebSocket(url);
             //socket.OnOpen += Socket_OnOpen;
+
+            HeartBeatThread = new Thread(KeepAlive) {
+                IsBackground = true
+            };
         }
         public StompWebsocketClient(string url, System.Security.Authentication.SslProtocols sslProtocols)
             : this(url)
         {
             socket.SslConfiguration.EnabledSslProtocols = sslProtocols;
         }
+
+
+
 
         public void Connect(IDictionary<string, string> headers)
         {
@@ -58,7 +87,15 @@ namespace Common.Net.Stomp
 
             // todo: check response
             socket.OnMessage += HandleMessage;
+            socket.OnClose += Socket_OnClose;
+            socket.OnError += Socket_OnError;
+
+            if (headers.ContainsKey(ServiceRequest.SXAuthToken))
+                Token = headers[ServiceRequest.SXAuthToken];
+
             State = Open;
+
+            HeartBeatThread.Start();
 
             socket.SendAsync(send, new Action<bool>((s) => {
                 var aa = s.ToString();
@@ -80,27 +117,49 @@ namespace Common.Net.Stomp
             socket.Send(stompSerializer.Serialize(connectMessage));
         }
 
-        public void Subscribe<T>(string topic, IDictionary<string, string> headers, EventHandler<T> handler)
+        public void Subscribe<T>(string topic, IDictionary<string, string> headers, int subIndex, EventHandler<T> handler)
         {
             if (State != Open)
                 throw new InvalidOperationException("The current state of the connection is not Open.");
 
             try
             {
-                headers.Add("id", "sub-0"); // todo: study and implement
+                headers.Add("id", $"sub-{subIndex}"); // todo: study and implement
                 headers.Add("destination", topic);
                 var subscribeMessage = new StompMessage(StompCommand.Subscribe, headers);
                 var msg = stompSerializer.Serialize(subscribeMessage);
+                Logger.WriteLogAndTrace(LogTypes.Interface, msg.TrimEnd());
                 socket.Send(msg);
-                // todo: check response
-                // todo: implement advanced topic
-                var sub = new Subscriber((sender, body) => handler(this, (T)body), typeof(T));
-                subscribers.Add(topic, sub);
+
+                if (!subscribers.ContainsKey(topic))
+                {
+                    var sub = new Subscriber((sender, body) => handler(this, (T)body), typeof(T));
+                    subscribers.Add(topic, sub);
+                }
             }
             catch (Exception ex)
             {
-                throw ex;
+                Logger.WriteLogAndTrace(LogTypes.Exception, "", ex);
             }
+        }
+
+        public bool UnSubscribe(string code)
+        {
+            try
+            {
+                if (subscribers.ContainsKey(code))
+                {
+                    var sub = subscribers[code];
+                    subscribers.Remove(code);
+                    Logger.WriteLogAndTrace(LogTypes.Interface, $"UnSubscribe : {code}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLogAndTrace(LogTypes.Exception, "", ex);
+                return false;
+            }
+            return true;
         }
 
         public void Dispose()
@@ -110,13 +169,69 @@ namespace Common.Net.Stomp
 
             State = Closed;
             ((IDisposable)socket).Dispose();
-            Socket_OnStatus(this, EventArgs.Empty);
+            //Socket_OnStatus(this, EventArgs.Empty);
+
             // todo: unsubscribe
+            subscribers.Clear();
+
+            HeartBeatThread?.Abort();
+        }
+
+
+        private void KeepAlive()
+        {
+            try
+            {
+                while (socket != null && State == StompConnectionState.Open)
+                {
+                    Thread.Sleep(KeepAliveTime);
+
+                    if (socket != null && State == StompConnectionState.Open)
+                    {
+                        try
+                        {
+                            if (string.IsNullOrEmpty(Token))
+                                continue;
+
+                            var headers = new Dictionary<string, string> {
+                                { ServiceRequest.SXAuthToken, Token },
+                                { "clientKeyName", "DATA_01" },
+                                { "connType", 2.ToString() }
+                            };
+                            var subscribeMessage = new StompMessage(StompCommand.Send, headers);
+                            var msg = stompSerializer.Serialize(subscribeMessage);
+                            Console.WriteLine("Socket heart-beat : " + msg);
+                            socket.Send(msg);
+                        }
+                        catch (Exception e)
+                        {
+                            if (e.Message == "You can stop!")
+                                return;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLogAndTrace(LogTypes.Exception, "", ex);
+            }
+            //Console.WriteLine("Finally got this bastard.");
+            Logger.WriteLogAndTrace(LogTypes.Interface, "Finally got this bastard.");
         }
 
         private void Socket_OnStatus(object sender, EventArgs e)
         {
             OnOpen?.Invoke(this, e);
+        }
+
+        private void Socket_OnError(object sender, ErrorEventArgs e)
+        {
+            OnError?.Invoke(this, e);
+        }
+
+        private void Socket_OnClose(object sender, CloseEventArgs e)
+        {
+            OnClose?.Invoke(this, e);
         }
 
 
@@ -140,7 +255,7 @@ namespace Common.Net.Stomp
             }
             catch (Exception ex)
             {
-                Logger.WriteLog(LogTypes.Exception, "", ex);
+                Logger.WriteLogAndTrace(LogTypes.Exception, messageEventArgs.Data, ex);
             }
         }
     }
