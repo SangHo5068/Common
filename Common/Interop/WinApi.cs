@@ -1,18 +1,18 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Management;
-using System.Runtime.InteropServices;
-
-using Common.Utilities;
-using Common.Notify;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.ComponentModel;
-using System.Threading;
-using System.IO.Ports;
-using Microsoft.Win32;
+using System.Linq;
+using System.Management;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
+
+using Common.Notify;
+using Common.Utilities;
+
+using Microsoft.Win32;
 
 namespace Common.Interop
 {
@@ -116,39 +116,66 @@ namespace Common.Interop
 
         private const string vidPattern = @"VID_([0-9A-F]{4})";
         private const string pidPattern = @"PID_([0-9A-F]{4})";
-        struct ComPort // custom struct with our desired values
+        public struct ComPort // custom struct with our desired values
         {
             public string name;
             public string vid;
             public string pid;
             public string description;
+            public PropertyDataCollection properties;
         }
-        private static List<ComPort> GetSerialPorts(string vid, string pid)
+        public static async System.Threading.Tasks.Task<List<DeviceInfo>> GetSerialPorts(string vid, string pid)
         {
-            using (var searcher = new ManagementObjectSearcher("SELECT * FROM WIN32_SerialPort"))
-            {
-                var ports = searcher.Get().Cast<ManagementBaseObject>().ToList();
-                var list = ports.Select(p =>
+            var devices = new List<DeviceInfo>();
+            await System.Threading.Tasks.Task.Run(() => {
+                //WIN32_SerialPort
+                using (var searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PnPEntity WHERE Caption LIKE '%Serial Port%'"))
                 {
-                    var c = new ComPort {
-                        name = p.GetPropertyValue("DeviceID").ToString(),
-                        vid = p.GetPropertyValue("PNPDeviceID").ToString(),
-                        description = p.GetPropertyValue("Caption").ToString()
-                    };
-                    Match mVID = Regex.Match(c.vid, vidPattern, RegexOptions.IgnoreCase);
-                    Match mPID = Regex.Match(c.vid, pidPattern, RegexOptions.IgnoreCase);
-                    if (mVID.Success)
-                        c.vid = mVID.Groups[1].Value;
-                    if (mPID.Success)
-                        c.pid = mPID.Groups[1].Value;
-                    return c;
-                }).ToList();
-                //if we want to find one device
-                ComPort com = list.FindLast(c => c.vid.Equals(vid) && c.pid.Equals(pid));
-                //or if we want to extract all devices with specified values:
-                List<ComPort> coms = list.FindAll(c => c.vid.Equals(vid) && c.pid.Equals(pid));
-                return coms;
-            }
+                    var ports = searcher.Get().Cast<ManagementBaseObject>().ToList();
+                    var list = ports.Select(p =>
+                    {
+                        try
+                        {
+                            var deviceID    = p.GetPropertyValue("DeviceID")?.ToString();
+                            var pnpDeviceID = p.GetPropertyValue("PNPDeviceID")?.ToString();
+                            Match mVID = Regex.Match(pnpDeviceID, vidPattern, RegexOptions.IgnoreCase);
+                            Match mPID = Regex.Match(pnpDeviceID, pidPattern, RegexOptions.IgnoreCase);
+                            
+                            if (mVID.Success && mPID.Success)
+                            {
+                                var c = new ComPort
+                                {
+                                    name = deviceID,
+                                    vid = vid,
+                                    description = p.GetPropertyValue("Caption")?.ToString(),
+                                    properties = p.Properties
+                                };
+                                c.vid = mVID.Groups[1].Value;
+                                c.pid = mPID.Groups[1].Value;
+                                return c;
+                            }
+                            return new ComPort();
+                        }
+                        catch (Exception)
+                        {
+                            return new ComPort();
+                        }
+                    }).ToList();
+                    list.ForEach(c => {
+                        if (c.vid != null && c.vid.Equals(vid) && c.pid != null && c.pid.Equals(pid))
+                        {
+                            var dev = new DeviceInfo(String.Empty, c.properties);
+                            dev.ComNum = dev.Name.Replace("USB Serial Port(", "").Replace(")", "");
+                            devices.Add(dev);
+                        }
+                    });
+                    //or if we want to extract all devices with specified values:
+                    //var coms = list.FindAll(c => c.vid != null && c.vid.Equals(vid) && c.pid != null && c.pid.Equals(pid));
+                    ////if we want to find one device
+                    //var com = list.FindLast(c => c.vid.Equals(vid) && c.pid.Equals(pid));
+                }
+            });
+            return devices;
         }
 
         /// <summary>
