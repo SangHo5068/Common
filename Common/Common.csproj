@@ -152,6 +152,10 @@
     <Compile Include="Controls\ColorPicker\ColorUtils.cs" />
     <Compile Include="Controls\ColorPicker\HsvControl.cs" />
     <Compile Include="Controls\ColorPicker\SpectrumSlider.cs" />
+    <Compile Include="Controls\MultiComboBox.cs" />
+    <Compile Include="Controls\MultiSelectComboBox.xaml.cs">
+      <DependentUpon>MultiSelectComboBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PaggingControl\PagingControl.xaml.cs">
       <DependentUpon>PagingControl.xaml</DependentUpon>
     </Compile>
@@ -225,6 +229,7 @@
     <Compile Include="Utilities\IpAddressHelper.cs" />
     <Compile Include="Utilities\KeysEnter.cs" />
     <Compile Include="Utilities\LogManager.cs" />
+    <Compile Include="Utilities\PropertyHelper.cs" />
     <Compile Include="Utilities\RegistryHelper.cs" />
     <Compile Include="Utilities\Screen\ScreenFinder.cs" />
     <Compile Include="Utilities\Screen\Screen.cs" />
@@ -247,6 +252,10 @@
   <ItemGroup />
   <ItemGroup>
     <Page Include="Controls\ColorPicker\ColorPicker_Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\MultiSelectComboBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
