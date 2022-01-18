@@ -114,7 +114,12 @@ namespace Common.Net.Stomp
             headers.Add("content-type", "application/json;charset=UTF-8");
             headers.Add("content-length", Encoding.UTF8.GetByteCount(jsonPayload).ToString());
             var connectMessage = new StompMessage(StompCommand.Send, jsonPayload, headers);
-            socket.Send(stompSerializer.Serialize(connectMessage));
+            var msg = stompSerializer.Serialize(connectMessage);
+            socket.Send(msg);
+
+#if DEBUG
+            Logger.WriteLogAndTrace(LogTypes.Interface, msg.TrimEnd());
+#endif
         }
 
         public void Subscribe<T>(string topic, IDictionary<string, string> headers, int subIndex, EventHandler<T> handler)
@@ -128,7 +133,9 @@ namespace Common.Net.Stomp
                 headers.Add("destination", topic);
                 var subscribeMessage = new StompMessage(StompCommand.Subscribe, headers);
                 var msg = stompSerializer.Serialize(subscribeMessage);
+#if DEBUG
                 Logger.WriteLogAndTrace(LogTypes.Interface, msg.TrimEnd());
+#endif
                 socket.Send(msg);
 
                 if (!subscribers.ContainsKey(topic))
@@ -151,7 +158,9 @@ namespace Common.Net.Stomp
                 {
                     var sub = subscribers[code];
                     subscribers.Remove(code);
+#if DEBUG
                     Logger.WriteLogAndTrace(LogTypes.Interface, $"UnSubscribe : {code}");
+#endif
                 }
             }
             catch (Exception ex)
@@ -215,8 +224,10 @@ namespace Common.Net.Stomp
             {
                 Logger.WriteLogAndTrace(LogTypes.Exception, "", ex);
             }
+#if DEBUG
             //Console.WriteLine("Finally got this bastard.");
             Logger.WriteLogAndTrace(LogTypes.Interface, "Finally got this bastard.");
+#endif
         }
 
         private void Socket_OnStatus(object sender, EventArgs e)

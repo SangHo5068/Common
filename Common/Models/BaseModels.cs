@@ -97,6 +97,7 @@ namespace Common.Models
                     //InitialData(InnerParams);
                     if (!(s is FrameworkElement view))
                         return;
+                    _View = _View ?? view;
                     if (view.Visibility == Visibility.Collapsed)
                         return;
 
