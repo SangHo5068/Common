@@ -20,6 +20,7 @@
     <converter:EnumToVisibleConverter               x:Key="EnumToVisibleConverter"/>
     <converter:EnumToCollapsedConverter             x:Key="EnumToCollapsedConverter"/>
     <converter:EnumToDisplayConverter               x:Key="EnumToDisplayConverter"/>
+    <converter:NullToBooleanConverter               x:Key="NullToBooleanConverter"/>
     <converter:ObjectNullToVisibilityConverter      x:Key="ObjectNullToVisibilityConverter"/>
     <converter:StringEmptyToVisibilityConverter     x:Key="StringEmptyToVisibilityConverter"/>
     <converter:StringToImageConverter               x:Key="StringToImageConverter"/>

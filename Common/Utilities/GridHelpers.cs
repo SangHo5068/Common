@@ -41,8 +41,7 @@ namespace Common.Utilities
             grid.RowDefinitions.Clear();
 
             for (int i = 0; i < (int)e.NewValue; i++)
-                grid.RowDefinitions.Add(
-                    new RowDefinition() { Height = GridLength.Auto });
+                grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
 
             SetStarRows(grid);
         }
@@ -83,8 +82,7 @@ namespace Common.Utilities
             grid.ColumnDefinitions.Clear();
 
             for (int i = 0; i < (int)e.NewValue; i++)
-                grid.ColumnDefinitions.Add(
-                    new ColumnDefinition() { Width = GridLength.Auto });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
 
             SetStarColumns(grid);
         }
@@ -163,27 +161,37 @@ namespace Common.Utilities
 
         private static void SetStarColumns(Grid grid)
         {
-            string[] starColumns =
-                GetStarColumns(grid).Split(',');
-
-            for (int i = 0; i < grid.ColumnDefinitions.Count; i++)
+            try
             {
-                if (starColumns.Contains(i.ToString()))
-                    grid.ColumnDefinitions[i].Width =
-                        new GridLength(1, GridUnitType.Star);
+                var starColumn = GetStarColumns(grid);
+                var starColumns = starColumn.Split(',');
+
+                for (int i = 0; i < grid.ColumnDefinitions.Count; i++)
+                {
+                    if (starColumn == "*" || starColumns.Contains(i.ToString()))
+                        grid.ColumnDefinitions[i].Width = new GridLength(1, GridUnitType.Star);
+                }
+            }
+            catch (Exception ex)
+            {
             }
         }
 
         private static void SetStarRows(Grid grid)
         {
-            string[] starRows =
-                GetStarRows(grid).Split(',');
-
-            for (int i = 0; i < grid.RowDefinitions.Count; i++)
+            try
             {
-                if (starRows.Contains(i.ToString()))
-                    grid.RowDefinitions[i].Height =
-                        new GridLength(1, GridUnitType.Star);
+                var starRow = GetStarRows(grid);
+                var starRows = starRow.Split(',');
+
+                for (int i = 0; i < grid.RowDefinitions.Count; i++)
+                {
+                    if (starRow == "*" || starRows.Contains(i.ToString()))
+                        grid.RowDefinitions[i].Height = new GridLength(1, GridUnitType.Star);
+                }
+            }
+            catch (Exception ex)
+            {
             }
         }
     }
