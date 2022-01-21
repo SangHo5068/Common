@@ -174,6 +174,7 @@ namespace Common.Utilities
             }
             catch (Exception ex)
             {
+                Logger.WriteLog(LogTypes.Exception, "", ex);
             }
         }
 
@@ -192,6 +193,7 @@ namespace Common.Utilities
             }
             catch (Exception ex)
             {
+                Logger.WriteLog(LogTypes.Exception, "", ex);
             }
         }
     }
