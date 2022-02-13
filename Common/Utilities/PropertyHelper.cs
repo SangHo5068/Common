@@ -205,7 +205,8 @@ namespace Common.Utilities
             foreach (Data.DataColumn c in row.Table.Columns)
             {
                 // find the property for the column
-                PropertyInfo p = item.GetType().GetProperty(c.ColumnName);
+                //PropertyInfo p = item.GetType().GetProperty(c.ColumnName);
+                PropertyInfo p = item.GetType().GetProperties().FirstOrDefault(f => f.Name.ToLower() == c.ColumnName.ToLower());
 
                 // if exists, set the value
                 if (p != null && row[c] != DBNull.Value)

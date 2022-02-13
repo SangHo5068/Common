@@ -55,12 +55,12 @@
                                 </Grid>
                             </ControlTemplate>
                         </ToggleButton.Template>
-                         </ToggleButton>
-                        <Popup Name="Popup"
-                               Placement="Bottom"
-                               AllowsTransparency="True"
-                               Focusable="False" IsOpen="{TemplateBinding IsDropDownOpen}"
-                               PopupAnimation="Slide">
+                    </ToggleButton>
+                    <Popup Name="Popup"
+                           Placement="Bottom"
+                           AllowsTransparency="True"
+                           Focusable="False" IsOpen="{TemplateBinding IsDropDownOpen}"
+                           PopupAnimation="Slide">
                         <Grid Name="DropDown"
                               SnapsToDevicePixels="True"
                               MinWidth="{TemplateBinding ActualWidth}"

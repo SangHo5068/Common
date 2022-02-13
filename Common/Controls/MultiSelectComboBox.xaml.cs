@@ -25,15 +25,15 @@ namespace Common.Controls
         #region Dependency Properties
 
         public static readonly DependencyProperty ItemsSourceProperty =
-             DependencyProperty.Register("ItemsSource", typeof(Dictionary<string, object>), typeof(MultiSelectComboBox), new FrameworkPropertyMetadata(null,
-        new PropertyChangedCallback(MultiSelectComboBox.OnItemsSourceChanged)));
+            DependencyProperty.Register("ItemsSource", typeof(Dictionary<string, object>), typeof(MultiSelectComboBox),
+                new FrameworkPropertyMetadata(null, new PropertyChangedCallback(MultiSelectComboBox.OnItemsSourceChanged)));
 
         public static readonly DependencyProperty SelectedItemsProperty =
-         DependencyProperty.Register("SelectedItems", typeof(Dictionary<string, object>), typeof(MultiSelectComboBox), new FrameworkPropertyMetadata(null,
-     new PropertyChangedCallback(MultiSelectComboBox.OnSelectedItemsChanged)));
+            DependencyProperty.Register("SelectedItems", typeof(Dictionary<string, object>), typeof(MultiSelectComboBox),
+                new FrameworkPropertyMetadata(null,new PropertyChangedCallback(MultiSelectComboBox.OnSelectedItemsChanged)));
 
         public static readonly DependencyProperty TextProperty =
-           DependencyProperty.Register("Text", typeof(string), typeof(MultiSelectComboBox), new UIPropertyMetadata(string.Empty));
+            DependencyProperty.Register("Text", typeof(string), typeof(MultiSelectComboBox), new UIPropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty DefaultTextProperty =
             DependencyProperty.Register("DefaultText", typeof(string), typeof(MultiSelectComboBox), new UIPropertyMetadata(string.Empty));
