@@ -4,8 +4,10 @@ namespace Common
 {
     public static class Defined
     {
+        public const string DateFormat = "yyyy.MM.dd";
         public const string DateSFormat = "yyyy.MM.dd HH:mm:ss";
         public const string DateLFormat = "yyyy.MM.dd HH:mm:ss.fff";
+        public const string DateMinusFormat = "yyyy-MM-dd";
         public const string DateMinusSFormat = "yyyy-MM-dd HH:mm:ss";
         public const string DateMinusLFormat = "yyyy-MM-dd HH:mm:ss.fff";
 
