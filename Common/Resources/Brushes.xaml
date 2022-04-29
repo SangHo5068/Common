@@ -187,6 +187,8 @@
     <SolidColorBrush x:Key="Brush_DeviceRectProcess" Color="#FFE3758A"/>
     <SolidColorBrush x:Key="Brush_DeviceRectComplate" Color="#FF6AAFAE"/>
 
+    <SolidColorBrush x:Key="Brush_GridOuter" Color="#FF243355"/>
+
     <SolidColorBrush x:Key="Brush_Login" Color="#FF515186"/>
 
     <SolidColorBrush x:Key="Brush_ListViewBorder" Color="#FFD0DDE0"/>

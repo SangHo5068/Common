@@ -14,6 +14,7 @@
     <!--#region Converter-->
     <converter:BooleanToVisibilityInvertConverter   x:Key="BooleanToVisibilityInvertConverter"/>
     <converter:BooleanToVisibilityConverter         x:Key="BooleanToVisibilityConverter"/>
+    <converter:BooleanToVisibilityConverter         x:Key="BoolToVisibilityConverter"/>
     <converter:BooleanToReverseConverter            x:Key="BooleanToReverseConverter"/>
     <converter:EnumToBooleanConverter               x:Key="EnumToBooleanConverter" />
     <converter:EnumToBooleanReverseConverter        x:Key="EnumToBooleanReverseConverter" />
