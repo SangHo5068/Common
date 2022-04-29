@@ -239,6 +239,7 @@
                                 <ctrl:WindowMaxButton Margin="2,0,2,0" Command="{Binding CommandWindowMax, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" CommandParameter="Maximized" Visibility="{TemplateBinding IsShowMax}"/>
                                 <ctrl:WindowCloseButton Margin="0,0,0,0" Command="{Binding CommandWindowClose, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}"/>-->
                                 <!--<ctrl:WindowCloseButton Margin="0,0,0,0" Command="{TemplateBinding CloseCommand}"/>-->
+                                <ctrl:LogoutButton Margin="0,0,0,0" Command="{TemplateBinding CommandLogout}" Visibility="{TemplateBinding IsShowLogout}" Height="40" Width="40" HorizontalAlignment="Right" VerticalAlignment="Center" ToolTip="Logout"/>
                                 <ctrl:WindowMinButton Margin="0,0,5,0" Command="{TemplateBinding CommandWindowMin}" CommandParameter="Minimized" Visibility="{TemplateBinding IsShowMin}"/>
                                 <ctrl:WindowMaxButton Margin="2,0,2,0" Command="{TemplateBinding CommandWindowMax}" CommandParameter="Maximized" Visibility="{TemplateBinding IsShowMax}"/>
                                 <ctrl:WindowCloseButton Margin="0,0,0,0" Command="{TemplateBinding CloseCommand}"/>

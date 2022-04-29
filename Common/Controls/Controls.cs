@@ -21,6 +21,7 @@ namespace Common.Controls
     {
         #region DependencyProperties
         public static readonly DependencyProperty CloseCommandProperty;
+        public static readonly DependencyProperty CommandLogoutProperty;
         public static readonly DependencyProperty CommandWindowMinProperty;
         public static readonly DependencyProperty CommandWindowMaxProperty;
 
@@ -31,6 +32,7 @@ namespace Common.Controls
         public static readonly DependencyProperty ImageWidthProperty;
         public static readonly DependencyProperty ImageHeightProperty;
 
+        public static readonly DependencyProperty IsShowLogoutProperty;
         public static readonly DependencyProperty IsShowMinProperty;
         public static readonly DependencyProperty IsShowMaxProperty;
         #endregion //DependencyProperties
@@ -40,6 +42,11 @@ namespace Common.Controls
         {
             get { return (ICommand)GetValue(CloseCommandProperty); }
             set { SetValue(CloseCommandProperty, value); }
+        }
+        public ICommand CommandLogout
+        {
+            get { return (ICommand)GetValue(CommandLogoutProperty); }
+            set { SetValue(CommandLogoutProperty, value); }
         }
         public ICommand CommandWindowMin
         {
@@ -80,6 +87,11 @@ namespace Common.Controls
             set { SetValue(ImageHeightProperty, value); }
         }
 
+        public Visibility IsShowLogout
+        {
+            get { return (Visibility)GetValue(IsShowLogoutProperty); }
+            set { SetValue(IsShowLogoutProperty, value); }
+        }
         public Visibility IsShowMin
         {
             get { return (Visibility)GetValue(IsShowMinProperty); }
@@ -98,6 +110,7 @@ namespace Common.Controls
         {
             Type owner = typeof(BorderMainHeader);
             CloseCommandProperty = DependencyProperty.Register(nameof(CloseCommand), typeof(ICommand), owner, new PropertyMetadata(null));
+            CommandLogoutProperty = DependencyProperty.Register(nameof(CommandLogout), typeof(ICommand), owner, new PropertyMetadata(null));
             CommandWindowMinProperty = DependencyProperty.Register(nameof(CommandWindowMin), typeof(ICommand), owner, new PropertyMetadata(null));
             CommandWindowMaxProperty = DependencyProperty.Register(nameof(CommandWindowMax), typeof(ICommand), owner, new PropertyMetadata(null));
 
@@ -106,6 +119,8 @@ namespace Common.Controls
             ImageProperty = DependencyProperty.Register(nameof(Image), typeof(ImageSource), owner, new PropertyMetadata(null));
             ImageWidthProperty = DependencyProperty.Register(nameof(ImageWidth), typeof(double), owner, new PropertyMetadata(36D));
             ImageHeightProperty = DependencyProperty.Register(nameof(ImageHeight), typeof(double), owner, new PropertyMetadata(36D));
+
+            IsShowLogoutProperty = DependencyProperty.Register(nameof(IsShowLogout), typeof(Visibility), owner, new PropertyMetadata(Visibility.Collapsed));
             IsShowMinProperty = DependencyProperty.Register(nameof(IsShowMin), typeof(Visibility), owner, new PropertyMetadata(Visibility.Visible));
             IsShowMaxProperty = DependencyProperty.Register(nameof(IsShowMax), typeof(Visibility), owner, new PropertyMetadata(Visibility.Visible));
         }
