@@ -314,6 +314,15 @@ namespace Common.Extensions
         {
             return values.TryGetValue(key, out var value) ? value : defaultValue;
         }
+
+        public static Dictionary<TKey, TValue>CloneDictionaryCloningValues<TKey, TValue>
+            (Dictionary<TKey, TValue> original) where TValue : ICloneable
+        {
+            var ret = new Dictionary<TKey, TValue>(original.Count, original.Comparer);
+            foreach (KeyValuePair<TKey, TValue> entry in original)
+                ret.Add(entry.Key, (TValue)entry.Value.Clone());
+            return ret;
+        }
     }
 
     /// <summary>
