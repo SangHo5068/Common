@@ -176,6 +176,10 @@
     <SolidColorBrush x:Key="Brushes.ScrollBar.Border" Color="#FFEBEBEB"/>
     
     <SolidColorBrush x:Key="Brushes.Toggle.Foreground" Color="#FF999999"/>
+    <LinearGradientBrush x:Key="Brushes.Scroll.Border" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFF3F4F4" Offset="0"/>
+        <GradientStop Color="#FFFBFCFC" Offset="1"/>
+    </LinearGradientBrush>
 
     <SolidColorBrush x:Key="Brush_Common" Color="#FFA3ABB6"/>
     <SolidColorBrush x:Key="Brush_CloseButtonOver" Color="#FF545960"/>
