@@ -117,6 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Change" xml:space="preserve">
+    <value>변경</value>
+    <comment>변경</comment>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>비밀번호&amp;#10;   변경</value>
+    <comment>비밀번호 변경</comment>
+  </data>
   <data name="EnterUserID" xml:space="preserve">
     <value>유저 아이디 입력</value>
     <comment>유저 아이디 입력</comment>
@@ -148,6 +156,18 @@
   <data name="Login" xml:space="preserve">
     <value>로그인</value>
     <comment>로그인</comment>
+  </data>
+  <data name="LoginToYourAccount" xml:space="preserve">
+    <value>사용자 로그인</value>
+    <comment>사용자 로그인</comment>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>비밀번호</value>
+    <comment>비밀번호</comment>
+  </data>
+  <data name="Plant" xml:space="preserve">
+    <value>공장</value>
+    <comment>공장</comment>
   </data>
   <data name="ProgramEnd" xml:space="preserve">
     <value>프로그램 종료</value>

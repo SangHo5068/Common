@@ -61,6 +61,24 @@ namespace Common.Cultures.Cultures {
         }
         
         /// <summary>
+        ///   변경과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Change {
+            get {
+                return ResourceManager.GetString("Change", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   비밀번호&amp;#10;   변경과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string ChangePassword {
+            get {
+                return ResourceManager.GetString("ChangePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   유저 아이디 입력과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string EnterUserID {
@@ -129,6 +147,33 @@ namespace Common.Cultures.Cultures {
         public static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   사용자 로그인과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string LoginToYourAccount {
+            get {
+                return ResourceManager.GetString("LoginToYourAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   비밀번호과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   공장과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Plant {
+            get {
+                return ResourceManager.GetString("Plant", resourceCulture);
             }
         }
         
