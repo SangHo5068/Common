@@ -61,17 +61,13 @@ namespace Common.Utilities
 
         private static string GetMD5(string text)
         {
-            byte[] hashValue;
-            byte[] message = Cryptography.CurrentEncoding.GetBytes(text);
-
             MD5 hashString = new MD5CryptoServiceProvider();
             string hex = "";
 
-            hashValue = hashString.ComputeHash(message);
+            byte[] message = Cryptography.CurrentEncoding.GetBytes(text);
+            byte[] hashValue = hashString.ComputeHash(message);
             foreach (byte x in hashValue)
-            {
                 hex += String.Format("{0:x2}", x);
-            }
             return hex;
         }
 
@@ -85,39 +81,27 @@ namespace Common.Utilities
 
             hashValue = hashString.ComputeHash(message);
             foreach (byte x in hashValue)
-            {
                 hex += String.Format("{0:x2}", x);
-            }
             return hex;
         }
 
         private static string GetSHA256(string text)
         {
-            byte[] hashValue;
-            byte[] message = Cryptography.CurrentEncoding.GetBytes(text);
-
-            SHA256Managed hashString = new SHA256Managed();
-            string hex = "";
-
-            hashValue = hashString.ComputeHash(message);
-            foreach (byte x in hashValue)
-            {
-                hex += String.Format("{0:x2}", x);
-            }
-            return hex;
+            var message = Cryptography.CurrentEncoding.GetBytes(text);
+            return GetSHA256(message);
+            //var hashValue = hashString.ComputeHash(message);
+            //foreach (byte x in hashValue)
+            //    hex += String.Format("{0:x2}", x);
+            //return hex;
         }
 
         public static string GetSHA256(byte[] buff)
         {
-            byte[] hashValue;
-            SHA256Managed hashString = new SHA256Managed();
-            string hex = "";
-
-            hashValue = hashString.ComputeHash(buff);
+            var hex = string.Empty;
+            var hashString = new SHA256Managed();
+            var hashValue = hashString.ComputeHash(buff);
             foreach (byte x in hashValue)
-            {
                 hex += String.Format("{0:x2}", x);
-            }
             return hex;
         }
 
@@ -131,9 +115,7 @@ namespace Common.Utilities
 
             hashValue = hashString.ComputeHash(message);
             foreach (byte x in hashValue)
-            {
                 hex += String.Format("{0:x2}", x);
-            }
             return hex;
         }
 
@@ -150,15 +132,13 @@ namespace Common.Utilities
                 return string.Empty;
 
             string hex = string.Empty;
-            byte[] hashValue;
+            //byte[] hashValue;
             using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
-                SHA256Managed hashString = new SHA256Managed();
-                hashValue = hashString.ComputeHash(fs);
+                var hashString = new SHA256Managed();
+                var hashValue  = hashString.ComputeHash(fs);
                 foreach (byte x in hashValue)
-                {
                     hex += String.Format("{0:x2}", x);
-                }
             }
 
             return hex;

@@ -40,10 +40,10 @@ namespace Common.Controls
 
         public const string Language_Total = "Total";
         public const string Language_Count = "Count";
-        public const string Language_Firs = "Firs";
-        public const string Language_Prev = "Prev";
-        public const string Language_Next = "Next";
-        public const string Language_Last = "Last";
+        public const string Language_Firs  = "Firs";
+        public const string Language_Prev  = "Prev";
+        public const string Language_Next  = "Next";
+        public const string Language_Last  = "Last";
         public const string Language_MovePage = "MovePage";
         #endregion //Const
 
@@ -267,6 +267,7 @@ namespace Common.Controls
         {
             //this.TxtCurrPage.Text = p2.ToString();
             //SetBtnEnableChanged();
+            SetButtonEnableChanged();
         }
         #endregion //CurrentPage
 

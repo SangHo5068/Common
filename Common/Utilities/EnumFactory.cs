@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Data;
@@ -92,6 +93,35 @@ namespace Common.Utilities
             try
             {
                 var enumList = Enum.GetValues(type).OfType<Enum>();
+                if (all)
+                    enumDictionary.Add("All");
+                foreach (var item in enumList)
+                {
+                    if (param.Any(a => a.Equals(item)))
+                        continue;
+                    enumDictionary.Add(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(LogTypes.Exception, "", ex);
+            }
+            return enumDictionary;
+        }
+
+        /// <summary>
+        /// 열거형 데이터에서 param을 제외한 컬렉션을 추가한다.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="all">All 추가 여부(Default : false)</param>
+        /// <param name="param">제외 할 열거형 데이터</param>
+        /// <returns></returns>
+        public static List<Object> GetEnumeratorExceptEnum(Type type, bool all = false, params Enum[] param)
+        {
+            var enumDictionary = new List<Object>();
+            try
+            {
+                var enumList = Enum.GetValues(type);
                 if (all)
                     enumDictionary.Add("All");
                 foreach (var item in enumList)

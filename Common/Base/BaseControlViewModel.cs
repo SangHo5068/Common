@@ -269,8 +269,8 @@ namespace Common.Base
         }
         public virtual void BeginInit() { }
         public virtual void EndInit() { }
-        protected virtual void LoadData(object parameter) { }
         public virtual void ReLoadData(object parameter) { }
+        protected virtual void LoadData(object parameter) { }
         protected virtual void InitData(object parameter) { }
         protected virtual void SaveData() { }
         protected override void DisposeManaged()
