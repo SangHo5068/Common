@@ -50,8 +50,8 @@
                                       Min="{Binding Path=CurrentMin}"
                                       Max="{Binding Path=CurrentMax}">
                     <local:NumericTextBox.InputBindings>
-                        <KeyBinding Key="Enter" Command="{Binding Path=KeyEnterCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
-                        <KeyBinding Key="Tab" Command="{Binding Path=KeyTabCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
+                        <KeyBinding Key="Enter" Command="{Binding Path=KeyEnterCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=base:BaseUserControl}}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
+                        <KeyBinding Key="Tab"   Command="{Binding Path=KeyTabCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=base:BaseUserControl}}"   CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
                     </local:NumericTextBox.InputBindings>
                 </local:NumericTextBox>
                 <local:PagingTextBlock Text="/" Foreground="{DynamicResource Foreground_PageText2}" Margin="5,1,0,0"/>

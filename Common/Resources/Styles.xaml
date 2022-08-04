@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
                     xmlns:converter="clr-namespace:Common.Converters"
                     xmlns:command="clr-namespace:Common.Command"
@@ -16,11 +16,16 @@
     <converter:BooleanToVisibilityConverter         x:Key="BooleanToVisibilityConverter"/>
     <converter:BooleanToVisibilityConverter         x:Key="BoolToVisibilityConverter"/>
     <converter:BooleanToReverseConverter            x:Key="BooleanToReverseConverter"/>
+    <converter:ContainsToBooleanConverter           x:Key="ContainsToBooleanConverter"/>
+    <converter:ContainsToBooleanReverseConverter    x:Key="ContainsToBooleanReverseConverter"/>
     <converter:EnumToBooleanConverter               x:Key="EnumToBooleanConverter" />
     <converter:EnumToBooleanReverseConverter        x:Key="EnumToBooleanReverseConverter" />
     <converter:EnumToVisibleConverter               x:Key="EnumToVisibleConverter"/>
     <converter:EnumToCollapsedConverter             x:Key="EnumToCollapsedConverter"/>
     <converter:EnumToDisplayConverter               x:Key="EnumToDisplayConverter"/>
+    <converter:EnumToDescriptionConverter           x:Key="EnumToDescriptionConverter"/>
+    <converter:HeightConverter                      x:Key="HeightConverter"/>
+    <converter:NullToUnsetValueConverter            x:Key="NullToUnsetValueConverter"/>
     <converter:NullToBooleanConverter               x:Key="NullToBooleanConverter"/>
     <converter:ObjectNullToVisibilityConverter      x:Key="ObjectNullToVisibilityConverter"/>
     <converter:StringEmptyToVisibilityConverter     x:Key="StringEmptyToVisibilityConverter"/>
@@ -251,33 +256,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style TargetType="ctrl:BorderMainFooter">
-        <Setter Property="Background" Value="{DynamicResource Background_MainBorder}" />
-        <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ctrl:BorderMainFooter}">
-                    <Border CornerRadius="{TemplateBinding CornerRadius}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
-                        <Grid Margin="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-
-                            <Image Width="24" Height="24" Stretch="Fill"
-                                   Visibility="{Binding Image, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource ObjectNullToVisibilityConverter}}"
-                                   Source="{TemplateBinding Image}" />
-                            <ContentPresenter Grid.Column="1" Content="{TemplateBinding Content}"
-                                              HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                        </Grid>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
     <Style TargetType="ctrl:MainHeader">
         <Setter Property="Background" Value="{DynamicResource Background_Main}" />
         <Setter Property="Foreground" Value="{DynamicResource Brush.White}" />
@@ -292,7 +270,7 @@
                     <Border CornerRadius="{TemplateBinding CornerRadius}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseLeftButtonDown">
-                                <command:EventToCommand Command="{Binding CommandMouseLeftButtonDown, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" PassEventArgsToCommand="True"/>
+                                <command:EventToCommand Command="{Binding CommandMouseLeftDoubleClick, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" PassEventArgsToCommand="True"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
 
@@ -321,12 +299,39 @@
                             <ctrl:TextBlockMainHeader Grid.Column="1" Margin="20,0,5,5" Text="{TemplateBinding Header}" />
 
                             <ctrl:RightPanel Grid.Column="2" Margin="0" VerticalAlignment="Top">
-                                <ctrl:WindowMinButton Margin="0,0,5,0" Command="{Binding CommandWindowMin, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" CommandParameter="Minimized" Visibility="{TemplateBinding IsShowMin}"/>
-                                <ctrl:WindowMaxButton Margin="2,0,2,0" Command="{Binding CommandWindowMax, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" CommandParameter="Maximized" Visibility="{TemplateBinding IsShowMax}"/>
+                                <ctrl:WindowMinButton Margin="0 3 5 0" Command="{Binding CommandWindowMin, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" CommandParameter="Minimized" Visibility="{TemplateBinding IsShowMin}"/>
+                                <ctrl:WindowMaxButton Margin="2 3 2 0" Command="{Binding CommandWindowMax, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" CommandParameter="Maximized" Visibility="{TemplateBinding IsShowMax}"/>
                                 <!--<ctrl:WindowCloseButton Margin="0,0,0,0" Command="{Binding CommandWindowClose, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}"/>-->
-                                <ctrl:WindowCloseButton Margin="0" Width="40" VerticalAlignment="Stretch" Command="{TemplateBinding CloseCommand}"
+                                <ctrl:WindowCloseButton Margin="0 -3 0 0" Width="40" VerticalAlignment="Stretch" Command="{TemplateBinding CloseCommand}"
                                                         Style="{DynamicResource CloseButtonStyle}"/>
                             </ctrl:RightPanel>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ctrl:BorderMainFooter">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:BorderMainFooter}">
+                    <Border CornerRadius="{TemplateBinding CornerRadius}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Image Width="24" Height="24" Stretch="Fill"
+                                   Visibility="{Binding Image, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource ObjectNullToVisibilityConverter}}"
+                                   Source="{TemplateBinding Image}" />
+                            <ContentPresenter Grid.Column="1" Content="{TemplateBinding Content}"
+                                              HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                         </Grid>
                     </Border>
                 </ControlTemplate>
@@ -525,7 +530,7 @@
                         <Path Fill="{TemplateBinding Foreground}">
                             <Path.Data>
                                 <!--<PathGeometry Figures="m 20.000499 11.374249 c 0 0 -1.376 -1.375001 -1.376 -1.375001 0 0 -3.625 3.625001 -3.625 3.625001 0 0 -3.625 -3.625001 -3.625 -3.625001 0 0 -1.375 1.375001 -1.375 1.375001 0 0 3.625 3.625501 3.625 3.625501 0 0 -3.625 3.625 -3.625 3.625 0 0 1.375 1.376 1.375 1.376 0 0 3.625 -3.625501 3.625 -3.625501 0 0 3.625 3.625501 3.625 3.625501 0 0 1.376 -1.376 1.376 -1.376 0 0 -3.625 -3.625 -3.625 -3.625 0 0 3.625 -3.625501 3.625 -3.625501 z" FillRule="NonZero" />-->
-                                <PathGeometry Figures="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z" FillRule="NonZero" />
+                                <PathGeometry Figures="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z" FillRule="EvenOdd" />
                             </Path.Data>
                         </Path>
                     </Border>
@@ -591,35 +596,61 @@
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="Foreground" Value="{StaticResource Foreground_Logout}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Foreground_Logout}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ctrl:LogoutButton}">
-                    <Grid Background="#00000000">
+                    <ControlTemplate.Resources>
+                        <Style TargetType="Image">
+                            <Setter Property="Width" Value="20" />
+                            <Setter Property="Height" Value="20" />
+                            <Setter Property="Stretch" Value="UniformToFill" />
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="2,0,0,0" />
+                            <Setter Property="Foreground" Value="{DynamicResource Foreground_Logout}" />
+                            <Setter Property="FontFamily" Value="{DynamicResource AppFont}" />
+                            <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}" />
+                            <Setter Property="FontWeight" Value="Bold" />
+                            <Setter Property="HorizontalAlignment" Value="Stretch" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </ControlTemplate.Resources>
+                    <Grid x:Name="xGrid" Background="#00000000">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="14"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="{TemplateBinding Width}"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <Image x:Name="normal" Height="14" Source="../Resources/Images/Logout.png" Stretch="Fill" Width="12"/>
-                        <Image x:Name="over" Height="14" Source="../Resources/Images/logout_black_18dp.png" Stretch="Fill" Width="12" Opacity="0"/>
-
-                        <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Margin="2,0,0,0" x:Name="txt" Text="{TemplateBinding Content}" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{TemplateBinding Foreground}" FontFamily="Dotum" FontWeight="Bold" FontSize="{DynamicResource DefaultFontSize}"/>
+                        <!--<Image x:Name="normal" Source="pack://application:,,,/Common;component/Resources/Images/icon_logout1.png"/>-->
+                        <!--<Image x:Name="over" Opacity="0" Source="pack://application:,,,/Common;component/Resources/Images/icon_logout1_over.png"/>-->
+                        <Path x:Name="xPath" Fill="{TemplateBinding Foreground}" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center"
+                              Stretch="Uniform" RenderTransformOrigin="0.5,0.5">
+                            <Path.Data>
+                                <PathGeometry Figures="M-46 647.017v-50.034c0-1.414 1.15-2.564 2.564-2.564h17.699v-3h-17.699c-3.073 0-5.564 2.491-5.564 5.564v50.034 c0 3.073 2.491 5.564 5.564 5.564h17.699v-3h-17.699C-44.85 649.582-46 648.431-46 647.017z
+                                                       M3.692 621.049l-27.209-12.558c-0.433-0.197-0.95-0.08-1.252 0.293c-0.304 0.373-0.314 0.902-0.025 1.285l7.823 10.431 h-19.997v3h19.996l-7.822 10.43c-0.289 0.383-0.278 0.915 0.023 1.285c0.203 0.253 0.507 0.389 0.814 0.389 c0.149 0 0.297-0.031 0.437-0.096L3.69 622.949c0.373-0.172 0.609-0.542 0.609-0.95C4.299 621.591 4.063 621.22 3.692 621.049z" FillRule="EvenOdd" />
+                            </Path.Data>
+                        </Path>
+                        <TextBlock Grid.Column="1" x:Name="txt" Text="{TemplateBinding Content}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="xGrid" Value="{DynamicResource Background_HamburgerButtonOver}"/>
                             <Setter Property="Foreground" TargetName="txt" Value="{DynamicResource Brush.White}"/>
-                            <Setter Property="Opacity" TargetName="over" Value="1"/>
-                            <Setter Property="Opacity" TargetName="normal" Value="0"/>
+                            <Setter Property="Fill" TargetName="xPath" Value="{DynamicResource Brush.White}"/>
+                            <!--<Setter Property="Opacity" TargetName="over" Value="1"/>
+                            <Setter Property="Opacity" TargetName="normal" Value="0"/>-->
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter Property="Foreground" TargetName="txt" Value="{DynamicResource Brush.White}"/>
-                            <Setter Property="Opacity" TargetName="normal" Value="0"/>
-                            <Setter Property="Opacity" TargetName="over" Value="1"/>
+                            <!--<Setter Property="Opacity" TargetName="normal" Value="0"/>
+                            <Setter Property="Opacity" TargetName="over" Value="1"/>-->
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Foreground" Value="#FF838383"/>
-                            <Setter Property="Opacity" TargetName="normal" Value="0.5"/>
+                            <!--<Setter Property="Opacity" TargetName="normal" Value="0.5"/>-->
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -762,7 +793,7 @@
         <Setter Property="VerticalAlignment" Value="Stretch"/>
         <Setter Property="Margin" Value="5,0,0,0"/>
         <Setter Property="MinWidth" Value="55"/>
-        <Setter Property="Height" Value="23"/>
+        <Setter Property="Height" Value="25"/>
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
         <Setter Property="Cursor" Value="Hand"/>
@@ -806,7 +837,7 @@
         <Setter Property="VerticalAlignment" Value="Stretch"/>
         <Setter Property="Margin" Value="5,0,0,0"/>
         <Setter Property="MinWidth" Value="50"/>
-        <Setter Property="Height" Value="23"/>
+        <Setter Property="Height" Value="25"/>
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
         <Setter Property="Cursor" Value="Hand"/>
@@ -905,9 +936,11 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" TargetName="root" Value="{DynamicResource Background_PageButtonOver}"/>
+                            <Setter Property="BorderBrush" TargetName="root" Value="{DynamicResource Background_PageButtonOver}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter Property="Background" TargetName="root" Value="{DynamicResource Background_PageButtonOver}"/>
+                            <Setter Property="BorderBrush" TargetName="root" Value="{DynamicResource Background_PageButtonOver}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity" TargetName="root" Value="0.5"/>
@@ -1347,6 +1380,39 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    <Style TargetType="PasswordBox" x:Key="PasswordBoxLoginStyle">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}" />
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="PasswordChar" Value="●"/>
+        <Setter Property="Height" Value="24"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type PasswordBox}">
+                    <Border BorderThickness="0" BorderBrush="{StaticResource Brush_PopupCommon}">
+                        <Microsoft_Windows_Themes:ListBoxChrome x:Name="Bd" BorderThickness="0"
+                                                            RenderMouseOver="{TemplateBinding IsMouseOver}" RenderFocused="{TemplateBinding IsKeyboardFocusWithin}" SnapsToDevicePixels="true">
+                            <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </Microsoft_Windows_Themes:ListBoxChrome>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="true">
+                <Setter Property="ToolTip" Value="{Binding (Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Self}}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
     <Style TargetType="PasswordBox" x:Key="BasePassWord">
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="FontFamily" Value="{DynamicResource AppFont}" />
@@ -1386,7 +1452,7 @@
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="AllowDrop" Value="False"/>
         <Setter Property="PasswordChar" Value="●"/>
         <Setter Property="Height" Value="24"/>
         <Setter Property="Template">
@@ -1395,24 +1461,32 @@
                     <Border BorderBrush="{StaticResource Brush_PopupCommon}">
                         <Grid>
                             <TextBlock x:Name="PART_WaterMark"
-                                       Margin="5,6,0,0"
+                                       Margin="5,6,0,0" Focusable="False"
                                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                                        Text="{TemplateBinding WaterMark}"
                                        FontSize="{TemplateBinding FontSize}"
                                        FontFamily="{StaticResource AppFont}"
                                        Visibility="{Binding Path=IsChecked, ElementName=xEyeToggle, Converter={StaticResource BooleanToVisibilityInvertConverter}, ConverterParameter=false}"
-                                       Foreground="{DynamicResource Foreground_CommonText}"
+                                       Foreground="{Binding Path=Foreground, ElementName=xWaterMarkTextBox}"
                                        Width="{TemplateBinding ActualWidth}"
                                        Height="{TemplateBinding ActualHeight}"/>
                             <PasswordBox x:Name="PART_PasswordBox" MinWidth="120" HorizontalAlignment="Stretch"
                                          Foreground="{TemplateBinding Foreground}"
+                                         Style="{DynamicResource PasswordBoxLoginStyle}"
+                                         BorderThickness="{TemplateBinding BorderThickness}"
+                                         Focusable="{TemplateBinding Focusable}"
+                                         TabIndex="{TemplateBinding TabIndex}"
+                                         IsTabStop="True"
                                          PasswordChar="{TemplateBinding PasswordChar}"
                                          Visibility="{Binding Path=IsChecked, ElementName=xEyeToggle, Converter={StaticResource BooleanToVisibilityInvertConverter}, ConverterParameter=false}"
                                          util:PasswordHelper.Attach="True"
                                          util:PasswordHelper.Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
                             <ctrl:WaterMarkTextBox x:Name="xWaterMarkTextBox" Margin="0"
                                                    WaterMark="{TemplateBinding WaterMark}"
-                                                   Foreground="{TemplateBinding Foreground}"
+                                                   BorderThickness="{TemplateBinding BorderThickness}"
+		                                           Focusable="{TemplateBinding Focusable}"
+		                                           TabIndex="{TemplateBinding TabIndex}"
+		                                           IsTabStop="{TemplateBinding IsTabStop}"
                                                    Width="{TemplateBinding ActualWidth}"
                                                    Height="{TemplateBinding ActualHeight}"
                                                    FontSize="{TemplateBinding FontSize}"
@@ -1421,9 +1495,9 @@
                                                    Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
 
                             <ctrl:RightPanel Margin="0">
-                                <ctrl:EyeToggleButton x:Name="xEyeToggle" Width="16" Height="16" Margin="0,2,2,2"
+                                <ctrl:EyeToggleButton x:Name="xEyeToggle" Width="16" Height="16" Margin="0,2,2,2" Focusable="False" IsTabStop="False"
                                                       HorizontalAlignment="Right" VerticalAlignment="Center" />
-                                <ctrl:RemoveTextButton x:Name="PART_Remove" Margin="4" Width="12" Visibility="Collapsed" />
+                                <ctrl:RemoveTextButton x:Name="PART_Remove" Margin="4" Width="12" Visibility="Collapsed" Focusable="False" IsTabStop="False"/>
                             </ctrl:RightPanel>
                         </Grid>
                     </Border>
@@ -1610,22 +1684,19 @@
         <Setter Property="Margin" Value="5,0,0,0"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
         <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
         <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
-        <Setter Property="AllowDrop" Value="True"/>
+        <Setter Property="AllowDrop" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ctrl:WaterMarkTextBox}">
                     <Grid>
                         <TextBlock x:Name="PART_WaterMark"
-                                   Margin="5,6,0,0"
+                                   Margin="5,6,0,0" Focusable="False"
                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                   VerticalAlignment="Center"
                                    Text="{TemplateBinding WaterMark}"
-                                   FontSize="{TemplateBinding FontSize}"
-                                   FontFamily="{StaticResource AppFont}"
-                                   Foreground="{DynamicResource Foreground_CommonText}"
                                    Width="{TemplateBinding ActualWidth}"
                                    Height="{TemplateBinding ActualHeight}">
                             <TextBlock.Visibility>
@@ -1638,11 +1709,10 @@
                         <ctrl:PopupTextBox x:Name="PART_TextBox" Background="Transparent" Margin="0" MaxLength="{TemplateBinding MaxLength}"
                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                           Foreground="{TemplateBinding Foreground}"
-                                           BorderBrush="{TemplateBinding BorderBrush}"
-                                           SelectionBrush="{TemplateBinding SelectionBrush}"
-                                           FontFamily="{TemplateBinding FontFamily}"
-                                           FontSize="{TemplateBinding FontSize}"
+                                           Focusable="{TemplateBinding Focusable}"
+                                           TabIndex="{TemplateBinding TabIndex}"
+                                           IsTabStop="True"
+                                           BorderThickness="{TemplateBinding BorderThickness}"
                                            Width="{TemplateBinding ActualWidth}"
                                            Height="{TemplateBinding ActualHeight}"
                                            Text="{Binding Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"/>
@@ -2225,8 +2295,12 @@
                             </ItemsControl>
                             <Grid x:Name="PART_SEARCHBUTTON_AREA" HorizontalAlignment="Stretch">
                                 <ctrl:RightPanel x:Name="BtnPanel" Orientation="Horizontal" VerticalAlignment="Bottom" Background="{x:Null}" Margin="2">
-                                    <ctrl:InitialButton Command="{Binding InitialCommand}" Content="{Binding LanguageInitialize, FallbackValue=Initialize}" IsEnabled="{Binding IsEnabled, ElementName=BtnSearch}" Visibility="{TemplateBinding Property=VisibilityInitial}"/>
-                                    <ctrl:SearchButton x:Name="BtnSearch" Command="{Binding SearchCommand}" Content="{Binding LanguageSearch, FallbackValue=Search}" IsEnabled="{Binding IsEnabledSearching}"/>
+                                    <ctrl:InitialButton Content="{Binding LanguageInitialize, FallbackValue=Initialize}" IsEnabled="{Binding IsEnabled, ElementName=BtnSearch}" Visibility="{TemplateBinding Property=VisibilityInitial}"
+                                                        Command="{Binding InitialCommand}"
+                                                        CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ctrl:SearchPanel}}}"/>
+                                    <ctrl:SearchButton x:Name="BtnSearch" Content="{Binding LanguageSearch, FallbackValue=Search}" IsEnabled="{Binding IsEnabledSearching}"
+                                                       Command="{Binding SearchCommand}"
+                                                       CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ctrl:SearchPanel}}}"/>
                                 </ctrl:RightPanel>
                             </Grid>
                         </Grid>
@@ -2322,10 +2396,12 @@
                                 BorderBrush="{DynamicResource Brush_WindowBorder}">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <Border x:Name="Header" Background="{DynamicResource Background_Header}">
+                                <Border x:Name="Header" Height="30"
+                                        Background="{DynamicResource Background_Header}"
+                                        Visibility="{Binding CaptionVisible}">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
@@ -2625,10 +2701,10 @@
                             </Border>
                             <ctrl:MessageBorder Grid.Row="2" x:Name="PART_Button" Visibility="Collapsed" CornerRadius="0,0,5,5">
                                 <ctrl:MessagePanel>
-                                    <ctrl:CommonButton x:Name="PART_YesButton" Visibility="Collapsed" Content="{TemplateBinding YesButtonContent}" Width="58"/>
-                                    <ctrl:CommonButton x:Name="PART_NoButton" Visibility="Collapsed" Content="{TemplateBinding NoButtonContent}" Width="58"/>
-                                    <ctrl:CommonButton x:Name="PART_OkButton" Visibility="Collapsed" Content="{TemplateBinding OkButtonContent}" Width="58"/>
-                                    <ctrl:CommonButton x:Name="PART_CancelButton" Visibility="Collapsed" Content="{TemplateBinding CancelButtonContent}" IsCancel="True" MinWidth="58"/>
+                                    <ctrl:CommonButton Margin="5 0" x:Name="PART_YesButton" Visibility="Collapsed" Content="{TemplateBinding YesButtonContent}" Width="58"/>
+                                    <ctrl:CommonButton Margin="5 0" x:Name="PART_NoButton" Visibility="Collapsed" Content="{TemplateBinding NoButtonContent}" Width="58"/>
+                                    <ctrl:CommonButton Margin="5 0" x:Name="PART_OkButton" Visibility="Collapsed" Content="{TemplateBinding OkButtonContent}" Width="58"/>
+                                    <ctrl:CommonButton Margin="5 0" x:Name="PART_CancelButton" Visibility="Collapsed" Content="{TemplateBinding CancelButtonContent}" IsCancel="True" MinWidth="58"/>
                                 </ctrl:MessagePanel>
                             </ctrl:MessageBorder>
                         </Grid>

@@ -321,8 +321,28 @@ namespace Common.Converters
         {
             if (value == null || string.IsNullOrEmpty(value.ToString()))
                 return DependencyProperty.UnsetValue;
-            IEnumerable<Attribute> customAttributes = value.GetType().GetField(value.ToString()).GetCustomAttributes(false).Cast<Attribute>();
-            return !(customAttributes.FirstOrDefault(attribute => attribute is DisplayAttribute) is DisplayAttribute displayAttribute) ? Enum.GetName(value.GetType(), value) : displayAttribute.Name;
+            var attributes = value.GetType().GetField(value.ToString()).GetCustomAttributes(false).Cast<Attribute>();
+            if (!(attributes.FirstOrDefault(attribute => attribute is DisplayAttribute) is DisplayAttribute displayAttribute))
+            	return Enum.GetName(value.GetType(), value);
+            return displayAttribute.Name;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    
+    public class EnumToDescriptionConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value == null || string.IsNullOrEmpty(value.ToString()))
+                return DependencyProperty.UnsetValue;
+            var attributes = value.GetType().GetField(value.ToString()).GetCustomAttributes(false).Cast<Attribute>();
+            if (!(attributes.FirstOrDefault() is EnumFactory.DisplayAttribute display))
+                return Enum.GetName(value.GetType(), value);
+            return display.Description;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -604,10 +624,7 @@ namespace Common.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
-                return Visibility.Collapsed;
-            else
-                return Visibility.Visible;
+            return value == null ? Visibility.Collapsed : (object)Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

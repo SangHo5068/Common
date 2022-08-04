@@ -380,6 +380,7 @@ namespace Common.Utilities
                     WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
                     UseShellExecute = string.IsNullOrEmpty(pArg),
                     Arguments = pArg,
+                    CreateNoWindow = true,
                     RedirectStandardInput  = !string.IsNullOrEmpty(pArg),
                     RedirectStandardOutput = !string.IsNullOrEmpty(pArg),
                     Verb = runas ? "runas" : null,

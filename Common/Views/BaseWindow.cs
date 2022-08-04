@@ -193,6 +193,8 @@ namespace Common.Views
                 e.Handled = true;
                 return;
             }
+
+            this.Title_MouseLeftButtonDown(this, e);
         }
 
         #endregion //WindowAction

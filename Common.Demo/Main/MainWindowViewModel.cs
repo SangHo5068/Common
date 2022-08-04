@@ -58,8 +58,6 @@ namespace Common.Demo
         public MainWindowViewModel()
         {
             Header = "WPF Demo App";
-
-            //InitData(null);
         }
 
 
@@ -164,7 +162,7 @@ namespace Common.Demo
                         var subscribe = "subscribe";
                         var name = data.Name;
                         var topic = string.Format("/topic/public/{0}/{1}", subscribe, name);
-                        client.Subscribe<SubscribeDataInfo>(topic, new Dictionary<string, string>(), GetSubscribeData);
+                        client.Subscribe<SubscribeDataInfo>(topic, new Dictionary<string, string>(), 0, GetSubscribeData);
                     }
                 }
                 Logger.WriteLog(LogTypes.Info, String.Format("Websocket Open : {0}", client.State));
