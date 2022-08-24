@@ -65,5 +65,20 @@ namespace Common.Utilities
             }
             return IPAddress.None;
         }
+
+        public static string GetClientIP()
+        {
+            string result = string.Empty;
+            IPHostEntry hostEntry = Dns.GetHostEntry(Dns.GetHostName());
+            for (int i = 0; i < hostEntry.AddressList.Length; i++)
+            {
+                if (hostEntry.AddressList[i].AddressFamily == AddressFamily.InterNetwork)
+                {
+                    result = hostEntry.AddressList[i].ToString();
+                    break;
+                }
+            }
+            return result;
+        }
     }
 }

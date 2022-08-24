@@ -669,10 +669,13 @@
                     <Border CornerRadius="{TemplateBinding CornerRadius}" Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid Background="Transparent">
-                            <TextBlock Margin="0,2,0,0" FontFamily="{StaticResource AppFont}" FontWeight="Bold" FontSize="{DynamicResource DefaultFontSize}"
-                                       Foreground="{TemplateBinding Foreground}"
-                                       HorizontalAlignment="Center" VerticalAlignment="Center"
-                                       Text="{TemplateBinding Content}"/>
+                            <ContentPresenter Margin="0,2,0,0"
+                                              TextBlock.FontFamily="{StaticResource AppFont}"
+                                              TextBlock.FontWeight="Bold"
+                                              TextBlock.FontSize="{TemplateBinding FontSize}"
+                                              TextBlock.Foreground="{TemplateBinding Foreground}"
+                                              HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              Content="{TemplateBinding Content}"/>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
