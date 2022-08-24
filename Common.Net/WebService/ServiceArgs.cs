@@ -110,7 +110,6 @@ namespace ServiceBase
     public class RequestParameter
     {
         #region Properties
-
         /// <summary>
         /// Gets or sets the url.
         /// </summary>
@@ -132,6 +131,7 @@ namespace ServiceBase
         public System.Net.ICredentials Credentials { get; set; }
 
         public string AuthToken { get; set; }
+        public string APIRoute { get; set; }
         #endregion //Properties
 
 
@@ -143,11 +143,12 @@ namespace ServiceBase
             // 기본을 UTF-8로 설정한다.
             this.EncodingOption = CharacterSetEncodingOption.UTF8;
         }
-        public RequestParameter(string url, string token = null)
+        public RequestParameter(string url, string route = null, string token = null)
             : this()
         {
             Url = url;
             AuthToken = token ?? ServiceRequest.Instance.AuthToken;
+            APIRoute  = route?.ToUpper();
         }
 
         #endregion //Construct
@@ -163,5 +164,8 @@ namespace ServiceBase
         public virtual string Message { get; set; }
         public virtual string RemoteIp { get; set; }
         public virtual string AccessToken { get; set; }
+
+        public virtual int Index { get; set; }
+        public virtual int TotalCount { get; set; }
     }
 }

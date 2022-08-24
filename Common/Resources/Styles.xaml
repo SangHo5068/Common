@@ -2722,6 +2722,46 @@
     <!--#endregion MessageBox-->
 
     <!--#region MultiComboBox-->
+    <Style TargetType="{x:Type ComboBoxItem}" x:Key="MultiComboBoxItemStyle">
+        <Setter Property="IsSelected" Value="{Binding Path=DataContext.IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Name="border" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBoxItem}}, Path=ActualWidth}">
+                        <Grid Margin="2,1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="xCheckBox" Focusable="false" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DataContext.Key, Converter={StaticResource ZeroToCollapsedConverter}}"
+                                      Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Foreground}"
+                                      BorderBrush="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Control}}, Path=Foreground}"
+                                      IsChecked="{Binding Path=DataContext.IsSelected, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"/>
+                            <ContentPresenter Grid.Column="1" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBoxItem}}, Path=ActualWidth}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DataContext.Value}"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource Brushes.ComboItem.Background}"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Brushes.ComboItem.Border}"/>
+                        </Trigger>
+                        <!--<Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" TargetName="border" Value="{DynamicResource Brushes.ComboItem.BackgroundSelect}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Brushes.ComboItem.BorderSelect}"/>
+                            </Trigger>-->
+                        <DataTrigger Binding="{Binding Path=IsChecked, ElementName=xCheckBox}" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource Brushes.ComboItem.Background.Select}"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Brushes.ComboItem.Border.Select}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Brushes.ComboItem.Foreground}"/>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style TargetType="{x:Type ctrl:PopupMultiComboBox}">
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
@@ -2735,6 +2775,7 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="1"/>
         <Setter Property="IsTabStop" Value="True" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource MultiComboBoxItemStyle}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ctrl:PopupMultiComboBox}">
@@ -2820,46 +2861,6 @@
                             <Setter Property="Canvas.Top" TargetName="OpaqueRect" Value="{Binding VerticalOffset, ElementName=DropDownScrollViewer}"/>
                             <Setter Property="Canvas.Left" TargetName="OpaqueRect" Value="{Binding HorizontalOffset, ElementName=DropDownScrollViewer}"/>
                         </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style TargetType="{x:Type ComboBoxItem}">
-        <Setter Property="IsSelected" Value="{Binding Path=DataContext.IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Border Name="border" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBoxItem}}, Path=ActualWidth}">
-                        <Grid Margin="2,1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="20" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <CheckBox x:Name="xCheckBox" Focusable="false" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DataContext.Key, Converter={StaticResource ZeroToCollapsedConverter}}"
-                                      Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Foreground}"
-                                      BorderBrush="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Control}}, Path=Foreground}"
-                                      IsChecked="{Binding Path=DataContext.IsSelected, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"/>
-                            <ContentPresenter Grid.Column="1" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                              Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBoxItem}}, Path=ActualWidth}"
-                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DataContext.Value}"/>
-                        </Grid>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" TargetName="border" Value="{DynamicResource Brushes.ComboItem.Background}"/>
-                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Brushes.ComboItem.Border}"/>
-                        </Trigger>
-                        <!--<Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" TargetName="border" Value="{DynamicResource Brushes.ComboItem.BackgroundSelect}"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Brushes.ComboItem.BorderSelect}"/>
-                            </Trigger>-->
-                        <DataTrigger Binding="{Binding Path=IsChecked, ElementName=xCheckBox}" Value="True">
-                            <Setter Property="Background" TargetName="border" Value="{DynamicResource Brushes.ComboItem.Background.Select}"/>
-                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Brushes.ComboItem.Border.Select}"/>
-                            <Setter Property="Foreground" Value="{DynamicResource Brushes.ComboItem.Foreground}"/>
-                        </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

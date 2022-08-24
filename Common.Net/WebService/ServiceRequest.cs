@@ -4,9 +4,9 @@ using System.IO.Compression;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 
 using Common.Utilities;
+
 
 namespace ServiceBase
 {
@@ -17,6 +17,9 @@ namespace ServiceBase
     {
         public const string POST = "POST";
         public const string GET  = "GET";
+
+        public const string ContentType = "application/{0};charset={1}";
+        public const string Multipart   = "multipart/form-data";
 
         public const string SXClientIP  = "SX-Client-IP";
         public const string SXAPIRoute  = "SX-API-ROUTE";
@@ -54,7 +57,7 @@ namespace ServiceBase
             ClientIP = localIP;
 
             ServicePointManager.Expect100Continue = true;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
         }
 
@@ -88,35 +91,33 @@ namespace ServiceBase
         /// <param name="callback">CallBack Action</param>
         /// <param name="isHttps"></param>
         /// <param name="application">JSON</param>
-        public static Task BeginRequest(RequestParameter parameter, string method = POST, Action<RequestEventArgs> callback = null,
-            bool isHttps = IS_HTTPS, string application = "json")
+        public static void BeginRequest(RequestParameter parameter, Action<RequestEventArgs> callback = null,
+            string method = POST, bool isHttps = IS_HTTPS, string application = "json")
         {
-            return Task.Run(() => {
-                try
-                {
-                    var req = RequestMakeAndToken(parameter, method, isHttps);
-                    if (req == null)
-                        return;
+            try
+            {
+                var req = RequestMakeAndToken(parameter, method, isHttps);
+                if (req == null)
+                    return;
 
-                    req.Timeout = callback == null ? 5000 : 100000;
+                req.Timeout = callback == null ? 5000 : 100000;
 
-                    if (method == POST)
-                    {
-                        var content = GetEncodingOption(parameter.EncodingOption).GetBytes(parameter.PostMessage);
-                        req.ContentLength = content.Length;
-                        req.BeginGetRequestStream(RequestCallback, new object[] { req, callback, content });
-                    }
-                    // GET
-                    else
-                    {
-                        req.BeginGetResponse(ReceiveCallback, new object[] { req, callback });
-                    }
-                }
-                catch (Exception ex)
+                if (method == POST)
                 {
-                    Logger.WriteLogAndTrace(LogTypes.Exception, "[BeginRequest Error] {0}", ex);
+                    var content = GetEncodingOption(parameter.EncodingOption).GetBytes(parameter.PostMessage);
+                    req.ContentLength = content.Length;
+                    req.BeginGetRequestStream(RequestCallback, new object[] { req, callback, content });
                 }
-            });
+                // GET
+                else
+                {
+                    req.BeginGetResponse(ReceiveCallback, new object[] { req, callback });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLogAndTrace(LogTypes.Exception, "[BeginRequest Error] {0}", ex);
+            }
         }
 
         /// <summary>
@@ -126,14 +127,14 @@ namespace ServiceBase
         /// <param name="callback"></param>
         /// <param name="isHttps"></param>
         /// <param name="path"></param>
-        public static string BeginRequest_PostData(RequestParameter parameter, Action<RequestEventArgs> callback = null,
+        public static void BeginRequestFormData(RequestParameter parameter, Action<RequestEventArgs> callback = null,
             bool isHttps = IS_HTTPS)
         {
             try
             {
                 var req = RequestMakeAndToken(parameter, POST, isHttps);
                 if (req == null)
-                    return string.Empty;
+                    return;
 
                 Logger.WriteLog(LogTypes.WebInterface, $"[Request][{POST}] {parameter.Url}\r\n{parameter.PostMessage}");
 
@@ -148,7 +149,6 @@ namespace ServiceBase
             {
                 Logger.WriteLogAndTrace(LogTypes.Exception, "[BeginRequest_PostData Error] {0}", ex);
             }
-            return string.Empty;
         }
 
         /// <summary>
@@ -206,8 +206,6 @@ namespace ServiceBase
             if (req == null)
                 return null;
 
-            RequestAddToken(req, parameter.AuthToken);
-
             string msg = $"[Request][{method}] {parameter.Url}";
             if (method == POST)
                 msg += $"\r\n{ parameter.PostMessage}";
@@ -233,19 +231,22 @@ namespace ServiceBase
 
                 if (WebRequest.Create(url) is HttpWebRequest req)
                 {
-                    //req.Proxy = null;
                     req.Timeout = 100000; // default time out.
-                    //req.ContentType = "application/" + application + "; charset=" + GetHttpCharset(parameter.EncodingOption);
                     req.Method = method;
+                    //req.Proxy = null;
                     //req.SendChunked = false;
                     //req.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
                     //req.Headers[HttpRequestHeader.ContentType] = "application/" + application + ";charset=" + GetHttpCharset(parameter.EncodingOption);
-                    req.ContentType = String.Format("application/{0};charset={1}", application, GetHttpCharset(parameter.EncodingOption));
+                    req.ContentType = String.Format(ContentType, application, GetHttpCharset(parameter.EncodingOption));
                     req.Headers[SXClientIP] = Instance.ClientIP;
+
+                    RequestAddHeader(req, SXAuthToken, parameter.AuthToken);
+                    RequestAddHeader(req, SXAPIRoute,  parameter.APIRoute);
+
                     if (parameter.Credentials != null)
                         req.Credentials = parameter.Credentials;
 
-                    if (NetworkHelper.IsHttps && isHttps)
+                    if (NetworkHelper.IsHttps)
                     {
                         var certData = NetworkHelper.GetCertDataStream(NetworkHelper.ProgramType);
                         NetworkHelper.SetRequestHttps(ref req, certData);
@@ -262,19 +263,18 @@ namespace ServiceBase
         }
 
         /// <summary>
-        /// 토큰 정보 추가
+        /// Request Header 정보 추가
         /// </summary>
-        /// <param name="parameter"></param>
         /// <param name="req"></param>
-        private static void RequestAddToken(HttpWebRequest req, string authToken)
+        /// <param name="key">Header Key</param>
+        /// <param name="value">Header Value</param>
+        private static void RequestAddHeader(HttpWebRequest req, string key, string value)
         {
             try
             {
                 // 토큰값 추가
-                if (!string.IsNullOrEmpty(authToken))
-                {
-                    req.Headers.Add(SXAuthToken, authToken);
-                }
+                if (!string.IsNullOrEmpty(value))
+                    req.Headers.Add(key, value);
             }
             catch (Exception ex)
             {
@@ -482,7 +482,9 @@ namespace ServiceBase
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "[ReceiveCallback Error] {0}", ex);
+                Logger.WriteLogAndTrace(LogTypes.Exception, $"[ReceiveCallback Error] {ex.Message}");
+                var message = new ResponseParameter() { Result = false, Message = ex.Message };
+                result = SerializeHelper.SerializeByJsonCamel(message);
             }
             finally
             {

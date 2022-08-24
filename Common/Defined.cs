@@ -67,5 +67,13 @@ namespace Common
         {
             get => String.Format("{0} {1}", OSInfo.Name, OSInfo.Version);
         }
+
+
+        private static Cryptography _Cryptography;
+        /// <summary>
+        /// 암호화
+        /// </summary>
+        public static Cryptography Cryptography => _Cryptography;
+        public static void SetCryptography(string key) => _Cryptography = new Cryptography(key);
     }
 }
