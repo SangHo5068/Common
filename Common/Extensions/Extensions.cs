@@ -156,6 +156,30 @@ namespace Common.Extensions
 
             return (T)Enum.Parse(typeof(T), target.ToString(), true);
         }
+
+        public static string ToDisplay<T>(this T obj) where T : struct
+        {
+            var converter = new Converters.EnumToDisplayConverter().Convert(obj, typeof(T), null, null);
+            return converter?.ToString();
+        }
+
+        /// <summary>
+        /// Enum Description to String
+        /// Local, Client 인 경우 Port 변환 필요.
+        /// </summary>
+        /// <typeparam name="TEnum"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static string ToDescription<T>(this T source) where T : struct
+        {
+            var fi = source.GetType().GetField(source.ToString());
+            var attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+            if (attributes != null && attributes.Length > 0)
+                return attributes[0].Description;
+            else
+                return source.ToString();
+        }
     }
 
     /// <summary>
