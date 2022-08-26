@@ -588,6 +588,21 @@ namespace Common.Utilities
             }
         }
 
+        private static readonly JsonSerializerOptions _options = new JsonSerializerOptions() { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull };
+        /// <summary>
+		/// Json Serialize
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static string Serialize<T>(T model)
+        {
+            var options = new JsonSerializerOptions(_options) {
+                WriteIndented = true
+            };
+            return System.Text.Json.JsonSerializer.Serialize(model, options);
+        }
+
         /// <summary>
 		/// Json Serialize
 		/// </summary>
