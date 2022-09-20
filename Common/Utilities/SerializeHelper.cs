@@ -495,7 +495,7 @@ namespace Common.Utilities
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "[SaveDataToXml<T> Error]", ex);
+                Logger.WriteLog(LogTypes.Exception, "[SaveDataToXml<T> Error]", ex);
                 return string.Empty;
             }
         }
@@ -539,7 +539,7 @@ namespace Common.Utilities
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "[SerializeByXmlSerializerUTF16<T> Error]", ex);
+                Logger.WriteLog(LogTypes.Exception, "[SerializeByXmlSerializerUTF16<T> Error]", ex);
                 return string.Empty;
             }
         }
@@ -583,7 +583,7 @@ namespace Common.Utilities
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "[DataContractSerialize<T> Error]", ex);
+                Logger.WriteLog(LogTypes.Exception, "[DataContractSerialize<T> Error]", ex);
                 return string.Empty;
             }
         }
@@ -678,7 +678,7 @@ namespace Common.Utilities
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "[DataDeserialize<T> Error]", ex);
+                Logger.WriteLog(LogTypes.Exception, "[DataDeserialize<T> Error]", ex);
                 return null;
             }
         }
@@ -702,7 +702,7 @@ namespace Common.Utilities
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "[DataDeserialize<T> Error]", ex);
+                Logger.WriteLog(LogTypes.Exception, "[DataDeserialize<T> Error]", ex);
                 return null;
             }
         }
@@ -731,7 +731,7 @@ namespace Common.Utilities
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "[ReadDataFromXml Error]", ex);
+                Logger.WriteLog(LogTypes.Exception, "[ReadDataFromXml Error]", ex);
                 return null;
             }
         }
@@ -755,7 +755,7 @@ namespace Common.Utilities
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "[ReadDataFromXml Error]", ex);
+                Logger.WriteLog(LogTypes.Exception, "[ReadDataFromXml Error]", ex);
                 return null;
             }
         }
@@ -888,7 +888,7 @@ namespace Common.Utilities
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "[SaveDataToXml<T> Error]", ex);
+                Logger.WriteLog(LogTypes.Exception, "[SaveDataToXml<T> Error]", ex);
                 return ex.ToString();
             }
         }
@@ -921,7 +921,7 @@ namespace Common.Utilities
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "[ReadDataFromXmlFile<T> Error]", ex);
+                Logger.WriteLog(LogTypes.Exception, "[ReadDataFromXmlFile<T> Error]", ex);
                 return null;
             }
         }
@@ -962,7 +962,7 @@ namespace Common.Utilities
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "[DataSetToXmlByNoDiffGram Error]", ex);
+                Logger.WriteLog(LogTypes.Exception, "[DataSetToXmlByNoDiffGram Error]", ex);
                 return null;
             }
         }

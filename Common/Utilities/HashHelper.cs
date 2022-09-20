@@ -179,25 +179,40 @@ namespace Common.Utilities
 
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="nAlgorithm"></param>
+        /// <param name="bEncrypt">True:Encrypt,False:Decrypt</param>
+        /// <param name="strData"></param>
+        /// <returns></returns>
         public string CryptographyInit(int nAlgorithm, bool bEncrypt, string strData)
         {
-            string strReturnData = "";
-
-            if (nAlgorithm == AES)
+            var strReturnData = string.Empty;
+            try
             {
-                if (bEncrypt == true)
-                    strReturnData = Encrypt_AES(strData, Key);
-                else
-                    strReturnData = Decrypt_AES(strData, Key);
+                switch (nAlgorithm)
+                {
+                    case AES:
+                        if (bEncrypt == true)
+                            strReturnData = Encrypt_AES(strData, Key);
+                        else
+                            strReturnData = Decrypt_AES(strData, Key);
+                        break;
+                    case DES:
+                        if (bEncrypt == true)
+                            strReturnData = Encrypt_DES(strData);
+                        else
+                            strReturnData = Decrypt_DES(strData);
+                        break;
+                    default: break;
+                }
             }
-            else if (nAlgorithm == DES)
+            catch (Exception ex)
             {
-                if (bEncrypt == true)
-                    strReturnData = Encrypt_DES(strData);
-                else
-                    strReturnData = Decrypt_DES(strData);
+                strReturnData = strData;
+                Logger.WriteLog(LogTypes.Exception, "", ex);
             }
-
             return strReturnData;
         }
 

@@ -118,7 +118,7 @@ namespace Common.Net.Stomp
             socket.Send(msg);
 
 #if DEBUG
-            Logger.WriteLogAndTrace(LogTypes.Interface, msg.TrimEnd());
+            Logger.WriteLog(LogTypes.Interface, msg.TrimEnd());
 #endif
         }
 
@@ -134,7 +134,7 @@ namespace Common.Net.Stomp
                 var subscribeMessage = new StompMessage(StompCommand.Subscribe, headers);
                 var msg = stompSerializer.Serialize(subscribeMessage);
 #if DEBUG
-                Logger.WriteLogAndTrace(LogTypes.Interface, msg.TrimEnd());
+                Logger.WriteLog(LogTypes.Interface, msg.TrimEnd());
 #endif
                 socket.Send(msg);
 
@@ -146,7 +146,7 @@ namespace Common.Net.Stomp
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "", ex);
+                Logger.WriteLog(LogTypes.Exception, "", ex);
             }
         }
 
@@ -159,13 +159,13 @@ namespace Common.Net.Stomp
                     var sub = subscribers[code];
                     subscribers.Remove(code);
 #if DEBUG
-                    Logger.WriteLogAndTrace(LogTypes.Interface, $"UnSubscribe : {code}");
+                    Logger.WriteLog(LogTypes.Interface, $"UnSubscribe : {code}");
 #endif
                 }
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "", ex);
+                Logger.WriteLog(LogTypes.Exception, "", ex);
                 return false;
             }
             return true;
@@ -222,11 +222,11 @@ namespace Common.Net.Stomp
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "", ex);
+                Logger.WriteLog(LogTypes.Exception, "", ex);
             }
 #if DEBUG
             //Console.WriteLine("Finally got this bastard.");
-            Logger.WriteLogAndTrace(LogTypes.Interface, "Finally got this bastard.");
+            Logger.WriteLog(LogTypes.Interface, "Finally got this bastard.");
 #endif
         }
 
@@ -266,7 +266,7 @@ namespace Common.Net.Stomp
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, messageEventArgs.Data, ex);
+                Logger.WriteLog(LogTypes.Exception, messageEventArgs.Data, ex);
             }
         }
     }

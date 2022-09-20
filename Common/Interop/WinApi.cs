@@ -72,7 +72,7 @@ namespace Common.Interop
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "", ex);
+                Logger.WriteLog(LogTypes.Exception, "", ex);
             }
             return comNum;
         }
@@ -109,7 +109,7 @@ namespace Common.Interop
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "", ex);
+                Logger.WriteLog(LogTypes.Exception, "", ex);
             }
             return comNum;
         }
@@ -251,7 +251,7 @@ namespace Common.Interop
                     //var list = GetDevices("USB", modelName, out string model);
                     foreach (var device in list)
                     {
-                        Logger.WriteLogAndTrace(LogTypes.Info, "----- DEVICE -----");
+                        Logger.WriteLog(LogTypes.Info, "----- DEVICE -----");
                         //var model = device.GetPropertyValue("Model")?.ToString();
                         var deviceID = device.GetPropertyValue("DeviceID")?.ToString();
                         var dev = new DeviceInfo(model, device.Properties) {
@@ -261,7 +261,7 @@ namespace Common.Interop
                         };
                         devices.Add(dev);
                         //device.Dispose();
-                        Logger.WriteLogAndTrace(LogTypes.Info, "------------------");
+                        Logger.WriteLog(LogTypes.Info, "------------------");
                     }
                 });
                 thread.SetApartmentState(ApartmentState.STA);
@@ -311,7 +311,7 @@ namespace Common.Interop
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "", ex);
+                Logger.WriteLog(LogTypes.Exception, "", ex);
             }
 
             return disks;
@@ -376,7 +376,7 @@ namespace Common.Interop
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "", ex);
+                Logger.WriteLog(LogTypes.Exception, "", ex);
             }
             return usbDeviceAddresses;
         }
@@ -509,7 +509,7 @@ namespace Common.Interop
                     foreach (var item in collection)
                     {
                         Attributes.Add(item.Name, item.Value);
-                        Logger.WriteLogAndTrace(LogTypes.Info, string.Format("{0}: {1}", item.Name, item.Value));
+                        Logger.WriteLog(LogTypes.Info, string.Format("{0}: {1}", item.Name, item.Value));
                     }
                 }
                 catch (Exception ex)

@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 
 using Common.Utilities;
 
@@ -78,7 +79,7 @@ namespace ServiceBase
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "[Web request Error]", ex);
+                Logger.WriteLog(LogTypes.Exception, "[Web request Error]", ex);
                 return string.Format("[REQUEST ERROR] {0}", ex.Message);
             }
         }
@@ -116,8 +117,78 @@ namespace ServiceBase
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "[BeginRequest Error] {0}", ex);
+                Logger.WriteLog(LogTypes.Exception, "[BeginRequest Error] {0}", ex);
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <param name="callback"></param>
+        /// <returns></returns>
+        public static async Task<string> RequestAsync(RequestParameter parameter, Action<RequestEventArgs> callback = null)
+        {
+            var result = string.Empty;
+            HttpWebRequest req = null;
+            await Task.Run(() => {
+                try
+                {
+                    req = RequestMakeAndToken(parameter);
+                    if (req == null)
+                        return;
+
+                    req.Timeout = callback == null ? 50000 : 100000;
+
+                    result = GetResponseStream(parameter, req);
+                    Logger.WriteLog(LogTypes.WebInterface, $"[Receive ]\r\n{result}");
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLog(LogTypes.Exception, "[RequestAsync Error] {0}", ex);
+                    var message = new ResponseParameter() { Result = false, Message = ex.Message };
+                    result = SerializeHelper.SerializeByJsonCamel(message);
+                }
+                finally
+                {
+                    callback?.Invoke(new RequestEventArgs(req, !string.IsNullOrEmpty(result), result));
+                }
+            });
+            return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <param name="callback"></param>
+        /// <returns></returns>
+        public static async Task<byte[]> DownloadAsync(RequestParameter parameter, Action<RequestEventArgs> callback = null)
+        {
+            byte[] result = null;
+            HttpWebRequest req = null;
+            await Task.Run(() => {
+                try
+                {
+                    req = RequestMakeAndToken(parameter);
+                    if (req == null)
+                        return;
+
+                    req.Timeout = 100000;
+                    result = GetResponseStream(req);
+                    Logger.WriteLog(LogTypes.WebInterface, $"[Receive ]\r\n{result}");
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLog(LogTypes.Exception, "[DownloadAsync Error] {0}", ex);
+                }
+                finally
+                {
+                    var value = GetEncodingOption(parameter.EncodingOption).GetString(result);
+                    callback?.Invoke(new RequestEventArgs(req, result != null, value));
+                }
+            });
+            return result;
         }
 
         /// <summary>
@@ -127,28 +198,42 @@ namespace ServiceBase
         /// <param name="callback"></param>
         /// <param name="isHttps"></param>
         /// <param name="path"></param>
-        public static void BeginRequestFormData(RequestParameter parameter, Action<RequestEventArgs> callback = null,
+        public static async Task<string> BeginRequest_FormData(RequestParameter parameter,
+            IEnumerable<KeyValuePair<string, string>> keyvalues, Action<RequestEventArgs> callback = null,
             bool isHttps = IS_HTTPS)
         {
-            try
-            {
-                var req = RequestMakeAndToken(parameter, POST, isHttps);
-                if (req == null)
-                    return;
+            var result = string.Empty;
+            HttpWebRequest req = null;
+            await Task.Run(() => {
+                try
+                {
+                    req = RequestMakeAndToken(parameter, POST, isHttps);
+                    
+                    Logger.WriteLog(LogTypes.WebInterface, $"[Request][{POST}] {parameter.Url}\r\n{parameter.PostMessage}");
 
-                Logger.WriteLog(LogTypes.WebInterface, $"[Request][{POST}] {parameter.Url}\r\n{parameter.PostMessage}");
+                    // RequestStream 에 데이터 추가
+                    UploadFilesStream(req, new string[] { parameter.PostMessage }, keyvalues);
 
-                // RequestStream 에 데이터 추가
-                UploadFilesStream(req, new string[] { parameter.PostMessage });
-
-                req.Timeout = callback == null ? 5000 : 100000;
-                // 비동기로 Response 호출.
-                req.BeginGetResponse(ReceiveCallback, new object[] { req, callback });
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "[BeginRequest_PostData Error] {0}", ex);
-            }
+                    //result = GetResponseStream(parameter, req);
+                    using (var webResponse = req.GetResponse())
+                    {
+                        using (var stream = webResponse?.GetResponseStream())
+                        {
+                            using (var streamReader = new StreamReader(stream))
+                                result = streamReader.ReadToEnd();
+                        }
+                    }
+                    Logger.WriteLog(LogTypes.WebInterface, $"[Receive ]\r\n{result}");
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLog(LogTypes.Exception, "[BeginRequest_FormData Error] {0}", ex);
+                    var message = new ResponseParameter() { Result = false, Message = ex.Message };
+                    result = SerializeHelper.SerializeByJsonCamel(message);
+                }
+                callback?.Invoke(new RequestEventArgs(req, !string.IsNullOrEmpty(result), result));
+            });
+            return result;
         }
 
         /// <summary>
@@ -180,7 +265,7 @@ namespace ServiceBase
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "[BeginRequest_ToStream Error] {0}", ex);
+                Logger.WriteLog(LogTypes.Exception, "[BeginRequest_ToStream Error] {0}", ex);
             }
             finally
             {
@@ -257,7 +342,7 @@ namespace ServiceBase
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "[MakeRequestOnly Error] {0}", ex);
+                Logger.WriteLog(LogTypes.Exception, "[MakeRequestOnly Error] {0}", ex);
             }
             return null;
         }
@@ -278,7 +363,7 @@ namespace ServiceBase
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "[RequestAddToken Error] {0}", ex);
+                Logger.WriteLog(LogTypes.Exception, "[RequestAddToken Error] {0}", ex);
             }
         }
 
@@ -289,11 +374,13 @@ namespace ServiceBase
         /// <param name="files"></param>
         /// <param name="formFields"></param>
         private static void UploadFilesStream(HttpWebRequest request, string[] files,
-            System.Collections.Specialized.NameValueCollection formFields = null)
+            IEnumerable<KeyValuePair<string, string>> formFields)
+            //System.Collections.Specialized.NameValueCollection formFields = null)
         {
             string boundary = "----------------------------" + DateTime.Now.Ticks.ToString("x");
 
-            request.ContentType = "multipart/form-data; boundary=" + boundary;
+            request.ContentType = Multipart+"; boundary=" + boundary;
+            request.Timeout = 1000000;
             request.KeepAlive = true;
 
             using (Stream memStream = new MemoryStream())
@@ -306,10 +393,10 @@ namespace ServiceBase
 
                 if (formFields != null)
                 {
-                    foreach (string key in formFields.Keys)
+                    foreach (var field in formFields)
                     {
-                        string formitem = string.Format(formdataTemplate, key, formFields[key]);
-                        byte[] formitembytes = Encoding.UTF8.GetBytes(formitem);
+                        var formitem = string.Format(formdataTemplate, field.Key, field.Value);
+                        var formitembytes = Encoding.UTF8.GetBytes(formitem);
                         memStream.Write(formitembytes, 0, formitembytes.Length);
                     }
                 }
@@ -331,9 +418,7 @@ namespace ServiceBase
                         var buffer = new byte[1024];
                         var bytesRead = 0;
                         while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
-                        {
                             memStream.Write(buffer, 0, bytesRead);
-                        }
                     }
                 }
 
@@ -343,7 +428,7 @@ namespace ServiceBase
                 using (Stream requestStream = request.GetRequestStream())
                 {
                     memStream.Position = 0;
-                    byte[] tempBuffer = new byte[memStream.Length];
+                    var tempBuffer = new byte[memStream.Length];
                     memStream.Read(tempBuffer, 0, tempBuffer.Length);
                     memStream.Close();
                     requestStream.Write(tempBuffer, 0, tempBuffer.Length);
@@ -373,12 +458,15 @@ namespace ServiceBase
 
                     // Set the ContentType property of the WebRequest.
                     //req.ContentType = "application/x-www-form-urlencoded";
-                    req.ContentType = $"application/{application}";
+                    //req.ContentType = $"application/{application}";
+                    req.ContentType = String.Format(ContentType, application, GetHttpCharset(parameter.EncodingOption));
                     req.ContentLength = byteArray.Length;
 
-                    var dataStream = req.GetRequestStream();
-                    dataStream.Write(byteArray, 0, byteArray.Length);
-                    dataStream.Close();
+                    using (var dataStream = req.GetRequestStream())
+                    {
+                        dataStream.Write(byteArray, 0, byteArray.Length);
+                        dataStream.Close();
+                    }
                 }
 
                 using (var webResponse = req.GetResponse())
@@ -386,40 +474,91 @@ namespace ServiceBase
                     using (var stream = webResponse?.GetResponseStream())
                     {
                         if (stream == null)
-                        {
                             return string.Empty;
-                        }
 
-                        if (String.CompareOrdinal(webResponse.ContentType, "application/zip") == 0)
+                        if (webResponse.ContentType.ToString().Contains("octet-stream") ||
+                            String.CompareOrdinal(webResponse.ContentType, "application/zip") == 0)
                         {
-                            using (var decompressedFileStream = new MemoryStream())
+                            //using (var decompressedFileStream = new MemoryStream())
+                            //{
+                            //    using (var decompressionStream = new DeflateStream(stream, CompressionMode.Decompress))
+                            //    {
+                            //        decompressionStream.CopyTo(decompressedFileStream);
+                            //        var encodingOption = GetEncodingOption(parameter.EncodingOption);
+                            //        var resultArray = encodingOption.GetString(decompressedFileStream.ToArray());
+                            //        return resultArray;
+                            //    }
+                            //}
+
+                            using (var binaryReader = new BinaryReader(stream))
                             {
-                                using (var decompressionStream = new DeflateStream(stream, CompressionMode.Decompress))
+                                using (var memoryStream = new MemoryStream())
                                 {
-                                    decompressionStream.CopyTo(decompressedFileStream);
-                                    var encodingOption = GetEncodingOption(parameter.EncodingOption);
-                                    var resultArray = encodingOption.GetString(decompressedFileStream.ToArray());
-                                    return resultArray;
+                                    var lnBuffer = binaryReader.ReadBytes(1024);
+                                    while (lnBuffer.Length > 0)
+                                    {
+                                        memoryStream.Write(lnBuffer, 0, lnBuffer.Length);
+                                        lnBuffer = binaryReader.ReadBytes(1024);
+                                    }
+                                    var lnFile = new byte[(int)memoryStream.Length];
+                                    memoryStream.Position = 0;
+                                    memoryStream.Read(lnFile, 0, lnFile.Length);
+
+                                    return GetEncodingOption(parameter.EncodingOption).GetString(lnFile);
                                 }
                             }
                         }
                         else
                         {
                             using (var streamReader = new StreamReader(stream))
-                            {
                                 return streamReader.ReadToEnd();
-                            }
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "[GetResponseStream Error] {0}", ex);
+                Logger.WriteLog(LogTypes.Exception, "[GetResponseStream Error] {0}", ex);
+                throw ex;
             }
-            return string.Empty;
         }
 
+        /// <summary>
+        /// Download
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        private static byte[] GetResponseStream(HttpWebRequest req)
+        {
+            byte[] result;
+            using (var webResponse = req.GetResponse())
+            {
+                using (var stream = webResponse?.GetResponseStream())
+                {
+                    using (var binaryReader = new BinaryReader(stream))
+                    {
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            var lnBuffer = binaryReader.ReadBytes(1024);
+                            while (lnBuffer.Length > 0)
+                            {
+                                memoryStream.Write(lnBuffer, 0, lnBuffer.Length);
+                                lnBuffer = binaryReader.ReadBytes(1024);
+                            }
+                            var lnFile = new byte[(int)memoryStream.Length];
+                            memoryStream.Position = 0;
+                            memoryStream.Read(lnFile, 0, lnFile.Length);
+
+                            result = lnFile;
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
+
+        #region Callback
 
         /// <summary>
         /// POST 전용 비동기 Callback.
@@ -448,7 +587,7 @@ namespace ServiceBase
             catch (Exception ex)
             {
                 Logger.WriteLog(LogTypes.WebInterface, $"[Request]", ex);
-                Logger.WriteLogAndTrace(LogTypes.Exception, "[RequestCallback Error] {0}", ex);
+                Logger.WriteLog(LogTypes.Exception, "[RequestCallback Error] {0}", ex);
                 //Console.WriteLine(ex);
             }
         }
@@ -482,7 +621,7 @@ namespace ServiceBase
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, $"[ReceiveCallback Error] {ex.Message}");
+                Logger.WriteLog(LogTypes.Exception, $"[ReceiveCallback Error] {ex.Message}");
                 var message = new ResponseParameter() { Result = false, Message = ex.Message };
                 result = SerializeHelper.SerializeByJsonCamel(message);
             }
@@ -492,6 +631,8 @@ namespace ServiceBase
                 callback?.Invoke(new RequestEventArgs(req, !string.IsNullOrEmpty(result), result));
             }
         }
+
+        #endregion //Callback
 
 
 
@@ -560,7 +701,7 @@ namespace ServiceBase
             }
             catch (Exception ex)
             {
-                Logger.WriteLogAndTrace(LogTypes.Exception, "[GetEncodingFromContentType Error] {0}", ex);
+                Logger.WriteLog(LogTypes.Exception, "[GetEncodingFromContentType Error] {0}", ex);
             }
             return defaultDecoderEncodingOption;
         }

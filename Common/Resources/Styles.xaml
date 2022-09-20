@@ -16,6 +16,7 @@
     <converter:BooleanToVisibilityConverter         x:Key="BooleanToVisibilityConverter"/>
     <converter:BooleanToVisibilityConverter         x:Key="BoolToVisibilityConverter"/>
     <converter:BooleanToReverseConverter            x:Key="BooleanToReverseConverter"/>
+    <converter:BooleanToWidthConverter              x:Key="BooleanToWidthConverter"/>
     <converter:ContainsToBooleanConverter           x:Key="ContainsToBooleanConverter"/>
     <converter:ContainsToBooleanReverseConverter    x:Key="ContainsToBooleanReverseConverter"/>
     <converter:EnumToBooleanConverter               x:Key="EnumToBooleanConverter" />
@@ -1717,7 +1718,7 @@
                                            Height="{TemplateBinding ActualHeight}"
                                            Text="{Binding Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"/>
 
-                        <ctrl:RemoveTextButton x:Name="PART_Remove" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="4" Width="12" Height="12" Visibility="Collapsed" />
+                        <ctrl:RemoveTextButton x:Name="PART_Remove" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="4" Width="12" Height="12" Visibility="Collapsed" Focusable="False" IsTabStop="False" />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <MultiTrigger>

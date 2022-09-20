@@ -355,16 +355,6 @@ namespace Common.Utilities
         /// <summary>
         /// 폴더 오픈
         /// </summary>
-        /// <param name="pArg"></param>
-        public static void ExecuteExplorer(string pArg)
-        {
-            if (File.Exists(pArg))
-                pArg = "/select, " + pArg;
-            System.Diagnostics.Process.Start("explorer.exe", pArg);
-        }
-        /// <summary>
-        /// 폴더 오픈
-        /// </summary>
         /// <param name="exe"></param>
         /// <param name="pArg"></param>
         /// <param name="runas">관리자 권한 실행 여부(true:관리자권한 실행)</param>

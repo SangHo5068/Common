@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
 
 using Common.Utilities;
+
 
 namespace ServiceBase
 {
@@ -62,12 +64,31 @@ namespace ServiceBase
         Default = 6,
     }
 
+
+
+    public class ResponseParameter
+    {
+        public virtual bool Result { get; set; }
+        public virtual object Extra { get; set; }
+        public virtual long SystemTime { get; set; }
+        public virtual int Error { get; set; }
+        public virtual string Message { get; set; }
+        public virtual string RemoteIp { get; set; }
+        public virtual string AccessToken { get; set; }
+
+        public virtual int Index { get; set; }
+        public virtual int TotalCount { get; set; }
+    }
+
+
     /// <summary>
     /// HTTP 비동기 요청시 이벤트 인자.
     /// </summary>
     public class RequestEventArgs : EventArgs
     {
         public object Source { get; private set; }
+        public object RequestUrl { get; private set; }
+        public string[] RequestSegments { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether SuccessRequest.
@@ -101,6 +122,11 @@ namespace ServiceBase
             this.Response = result;
             if (!string.IsNullOrEmpty(this.Response))
                 this.Result = SerializeHelper.DeserializeByJsonCamel<ResponseParameter>(result);
+            if (sender is HttpWebRequest req)
+            {
+                this.RequestUrl      = req.RequestUri;
+                this.RequestSegments = req.Address.Segments;
+            }
         }
     }
 
@@ -152,20 +178,5 @@ namespace ServiceBase
         }
 
         #endregion //Construct
-    }
-
-
-    public class ResponseParameter
-    {
-        public virtual bool Result { get; set; }
-        public virtual object Extra { get; set; }
-        public virtual long SystemTime { get; set; }
-        public virtual int Error { get; set; }
-        public virtual string Message { get; set; }
-        public virtual string RemoteIp { get; set; }
-        public virtual string AccessToken { get; set; }
-
-        public virtual int Index { get; set; }
-        public virtual int TotalCount { get; set; }
     }
 }
