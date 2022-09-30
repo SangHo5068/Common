@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Management;
 using System.Runtime.InteropServices;
 
 
@@ -686,4 +687,42 @@ namespace Common.Utilities
         #endregion //REVISION
         #endregion //VERSION
     }
+
+
+    public static class Software
+    {
+        // Method that will fetch the version of a given software
+        public static string GetSoftwateVersion(string softWareName)
+        {
+            string strVersion = string.Empty;
+            try
+            {
+                var version = (object)null;
+                //Query the system registery for the verion of the given software                
+                var searcher = new ManagementObjectSearcher(
+                  "SELECT * FROM Win32_Product where Name LIKE " +
+                  "'%" + softWareName + "%'");
+                foreach (ManagementObject obj in searcher.Get())
+                {
+                    version = obj["Version"];
+                }
+                if (version != null)
+                {
+                    strVersion = (String)version;
+                }
+                // if given product is not found in list of installed products in control panel
+                else
+                {
+                    strVersion = "Given Product is not found the list of Installed Programs";
+                }
+            }
+            // Exception Handling
+            catch (Exception e)
+            {
+                strVersion = "An Error occured while fetching Version" + " (" + e.Message + ")";
+            }
+            return strVersion;
+        }
+    }
+
 }
