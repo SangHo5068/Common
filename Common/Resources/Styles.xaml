@@ -19,6 +19,7 @@
     <converter:BooleanToWidthConverter              x:Key="BooleanToWidthConverter"/>
     <converter:ContainsToBooleanConverter           x:Key="ContainsToBooleanConverter"/>
     <converter:ContainsToBooleanReverseConverter    x:Key="ContainsToBooleanReverseConverter"/>
+    <converter:ContainsValueToBooleanConverter      x:Key="ContainsValueToBooleanConverter"/>
     <converter:EnumToBooleanConverter               x:Key="EnumToBooleanConverter" />
     <converter:EnumToBooleanReverseConverter        x:Key="EnumToBooleanReverseConverter" />
     <converter:EnumToVisibleConverter               x:Key="EnumToVisibleConverter"/>
@@ -362,9 +363,11 @@
     <!--#region Button-->
     <Style TargetType="Button">
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
     </Style>
     <Style TargetType="Button" x:Key="BaseButtonStyle">
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
     </Style>
     <Style TargetType="Button" x:Key="ButtonWindowStyle" BasedOn="{StaticResource BaseButtonStyle}">
         <Setter Property="Background" Value="Transparent" />
@@ -392,8 +395,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style TargetType="Button" x:Key="ButtonStyle">
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+    <Style TargetType="Button" x:Key="ButtonStyle" BasedOn="{StaticResource BaseButtonStyle}">
         <Setter Property="Margin" Value="5,2"/>
         <Setter Property="Height" Value="24"/>
         <Setter Property="MinWidth" Value="80"/>
@@ -478,18 +480,19 @@
             <Setter.Value>
                 <ControlTemplate>
                     <Border x:Name="xBorder" Background="Transparent">
-                        <Path Fill="{TemplateBinding Foreground}">
+                        <Path x:Name="xPath" Fill="{TemplateBinding Foreground}">
                             <Path.Data>
                                 <!--<PathGeometry Figures="m 9.999999 16.999962 c 0 0 9.999962 0 9.999962 0 0 0 0 2.000006 0 2.000006 0 0 -9.999962 0 -9.999962 0 0 0 0 -2.000006 0 -2.000006 z" FillRule="NonZero" />-->
                                 <PathGeometry Figures="M20,14H4V10H20" FillRule="NonZero" />
                             </Path.Data>
                         </Path>
                     </Border>
-                    <!--<ControlTemplate.Triggers>
+                    <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="xBorder" Property="Background" Value="LightPink"/>
+                            <!--<Setter TargetName="xBorder" Property="Background" Value="LightPink"/>-->
+                            <Setter TargetName="xPath" Property="Fill" Value="{DynamicResource Brush.Black}"/>
                         </Trigger>
-                    </ControlTemplate.Triggers>-->
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -507,9 +510,9 @@
                         </Path>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <!--<Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="xBorder" Property="Background" Value="LightPink"/>
-                        </Trigger>-->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="xPath" Property="Fill" Value="{DynamicResource Brush.Black}"/>
+                        </Trigger>
                         <!--<DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" Value="Maximized">-->
                         <DataTrigger Binding="{Binding Path=(util:WindowStateHelper.IsMaximized), UpdateSourceTrigger=PropertyChanged}" Value="True">
                             <Setter TargetName="xPath" Property="Data">
@@ -599,6 +602,7 @@
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Foreground" Value="{DynamicResource Foreground_Logout}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ctrl:LogoutButton}">
@@ -665,6 +669,7 @@
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Foreground" Value="{StaticResource Foreground_CommonText}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ctrl:RadiusButton}">
@@ -701,6 +706,7 @@
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Foreground" Value="{StaticResource Foreground_CommonText}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ctrl:RadiusButton}">
@@ -728,6 +734,7 @@
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Foreground" Value="{StaticResource Foreground_Logout}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
         <!-- The control template. -->
         <Setter Property="Template">
             <Setter.Value>
@@ -872,8 +879,11 @@
         </Setter>
     </Style>
 
-    <Style TargetType="ctrl:PagingCommon">
+    <Style TargetType="Button" x:Key="PagingBaseStyle">
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+    </Style>
+    <Style TargetType="ctrl:PagingCommon" BasedOn="{StaticResource PagingBaseStyle}">
         <Setter Property="Foreground" Value="{DynamicResource Foreground_ButtonText}"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="VerticalAlignment" Value="Stretch"/>
@@ -906,8 +916,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style TargetType="ctrl:PagingPrev">
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+    <Style TargetType="ctrl:PagingPrev" BasedOn="{StaticResource PagingBaseStyle}">
         <Setter Property="Foreground" Value="{DynamicResource Foreground_ButtonText}"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="VerticalAlignment" Value="Stretch"/>
@@ -952,8 +961,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style TargetType="ctrl:PagingFirst">
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+    <Style TargetType="ctrl:PagingFirst" BasedOn="{StaticResource PagingBaseStyle}">
         <Setter Property="Foreground" Value="{DynamicResource Foreground_ButtonText}"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="VerticalAlignment" Value="Stretch"/>
@@ -1008,8 +1016,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style TargetType="ctrl:PagingNext">
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+    <Style TargetType="ctrl:PagingNext" BasedOn="{StaticResource PagingBaseStyle}">
         <Setter Property="Foreground" Value="{DynamicResource Foreground_ButtonText}"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="VerticalAlignment" Value="Stretch"/>
@@ -1052,8 +1059,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style TargetType="ctrl:PagingLast">
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+    <Style TargetType="ctrl:PagingLast" BasedOn="{StaticResource PagingBaseStyle}">
         <Setter Property="Foreground" Value="{DynamicResource Foreground_ButtonText}"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="VerticalAlignment" Value="Stretch"/>
@@ -1107,7 +1113,7 @@
         </Setter>
     </Style>
     <!--#endregion //Button-->
-    
+
     <!--#region ComboBox-->
     <ControlTemplate TargetType="{x:Type ComboBox}" x:Key="ComboBoxEditableTemplate">
         <Grid x:Name="Placement" SnapsToDevicePixels="true">
@@ -1130,7 +1136,7 @@
                 </Border>
             </Popup>
             <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.ColumnSpan="2" />
-            <TextBox x:Name="PART_EditableTextBox" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" IsReadOnly="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}" Margin="{TemplateBinding Padding}" Style="{StaticResource ComboBoxEditableTextBox}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            <TextBox x:Name="PART_EditableTextBox" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" IsReadOnly="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}" Margin="{TemplateBinding Padding}" Style="{DynamicResource ComboBoxEditableTextBox}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
             <ToggleButton Grid.Column="1" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Style="{DynamicResource ComboBoxToggleButton}"/>
         </Grid>
         <ControlTemplate.Triggers>
@@ -1157,8 +1163,28 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+    <Style TargetType="{x:Type ComboBoxItem}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Foreground_CommonText}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+        <Setter Property="FontSize" Value="{DynamicResource ListBoxFontSize}"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+    </Style>
+    <Style TargetType="{x:Type ComboBox}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Foreground_CommonText}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+        <Setter Property="FontSize" Value="{DynamicResource ListBoxFontSize}"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="Margin" Value="5,0,0,0"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="4"/>
+    </Style>
     <Style TargetType="{x:Type ctrl:PopupComboBox}">
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
         <Setter Property="Foreground" Value="{DynamicResource Brushes.Combo.Foreground}"/>
         <Setter Property="Background" Value="{DynamicResource Brushes.Combo.Background}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource Brushes.Combo.Border}"/>
@@ -1550,6 +1576,7 @@
     <!--#region TextBlock-->
     <Style TargetType="TextBlock" x:Key="TextBased">
         <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
         <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
         <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -1563,6 +1590,7 @@
     <Style TargetType="TextBlock" BasedOn="{StaticResource TextBased}" x:Key="PopupTextBlockStyle">
         <Setter Property="Foreground" Value="{DynamicResource Foreground_CommonText}"/>
         <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="Margin" Value="0,8,0,0"/>
         <Setter Property="LineHeight" Value="20"/>
@@ -1572,6 +1600,7 @@
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="Foreground" Value="{DynamicResource Brush.White}"/>
         <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
         <Setter Property="Margin" Value="15,1,0,0"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
@@ -1579,6 +1608,7 @@
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="Foreground" Value="{DynamicResource Brush.White}"/>
         <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
         <Setter Property="Margin" Value="15,1,0,0"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
@@ -1667,6 +1697,24 @@
                 <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors).CurrentItem.ErrorContent}"/>
             </Trigger>
         </Style.Triggers>-->
+    </Style>
+    <Style TargetType="TextBox" x:Key="ComboBoxEditableTextBox">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="MinWidth" Value="0"/>
+        <Setter Property="MinHeight" Value="0"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <ScrollViewer x:Name="PART_ContentHost" Background="Transparent" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
     <Style TargetType="ctrl:PopupTextBox" BasedOn="{StaticResource BaseTextBoxStyle}">
         <Setter Property="FontSize" Value="14"/>
@@ -2297,10 +2345,14 @@
                             </ItemsControl>
                             <Grid x:Name="PART_SEARCHBUTTON_AREA" HorizontalAlignment="Stretch">
                                 <ctrl:RightPanel x:Name="BtnPanel" Orientation="Horizontal" VerticalAlignment="Bottom" Background="{x:Null}" Margin="2">
-                                    <ctrl:InitialButton Content="{Binding LanguageInitialize, FallbackValue=Initialize}" IsEnabled="{Binding IsEnabled, ElementName=BtnSearch}" Visibility="{TemplateBinding Property=VisibilityInitial}"
+                                    <ctrl:InitialButton Content="{TemplateBinding LanguageInitialize}"
+                                                        IsEnabled="{Binding IsEnabled, ElementName=BtnSearch}"
+                                                        Visibility="{TemplateBinding Property=VisibilityInitial}"
                                                         Command="{Binding InitialCommand}"
                                                         CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ctrl:SearchPanel}}}"/>
-                                    <ctrl:SearchButton x:Name="BtnSearch" Content="{Binding LanguageSearch, FallbackValue=Search}" IsEnabled="{Binding IsEnabledSearching}"
+                                    <ctrl:SearchButton x:Name="BtnSearch"
+                                                       Content="{TemplateBinding LanguageSearch}"
+                                                       IsEnabled="{Binding IsEnabledSearching}"
                                                        Command="{Binding SearchCommand}"
                                                        CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ctrl:SearchPanel}}}"/>
                                 </ctrl:RightPanel>
@@ -2378,6 +2430,7 @@
         <Setter Property="MinWidth" Value="140"/>
         <Setter Property="MinHeight" Value="40"/>
         <Setter Property="Margin" Value="-15"/>
+        <Setter Property="Background" Value="{DynamicResource Background_Window}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ctrl:ChildWindow}">
@@ -2452,7 +2505,7 @@
                                         </ctrl:RightPanel>
                                     </Grid>
                                 </Border>
-                                <Border Grid.Row="1" x:Name="Contents" Background="{DynamicResource Background_Window}" BorderBrush="{DynamicResource Brush_ChildWindowBorder}" BorderThickness="0,1,0,0">
+                                <Border Grid.Row="1" x:Name="Contents" Background="{TemplateBinding Background}" BorderBrush="{DynamicResource Brush_ChildWindowBorder}" BorderThickness="0,1,0,0">
                                     <ContentPresenter x:Name="ContentPresenter" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" />
                                 </Border>
                             </Grid>
@@ -2703,10 +2756,10 @@
                             </Border>
                             <ctrl:MessageBorder Grid.Row="2" x:Name="PART_Button" Visibility="Collapsed" CornerRadius="0,0,5,5">
                                 <ctrl:MessagePanel>
-                                    <ctrl:CommonButton Margin="5 0" x:Name="PART_YesButton" Visibility="Collapsed" Content="{TemplateBinding YesButtonContent}" Width="58"/>
-                                    <ctrl:CommonButton Margin="5 0" x:Name="PART_NoButton" Visibility="Collapsed" Content="{TemplateBinding NoButtonContent}" Width="58"/>
-                                    <ctrl:CommonButton Margin="5 0" x:Name="PART_OkButton" Visibility="Collapsed" Content="{TemplateBinding OkButtonContent}" Width="58"/>
-                                    <ctrl:CommonButton Margin="5 0" x:Name="PART_CancelButton" Visibility="Collapsed" Content="{TemplateBinding CancelButtonContent}" IsCancel="True" MinWidth="58"/>
+                                    <ctrl:CommonButton Margin="5 0" x:Name="PART_YesButton"    Visibility="Collapsed" Content="{TemplateBinding YesButtonContent}"    Width="65"/>
+                                    <ctrl:CommonButton Margin="5 0" x:Name="PART_NoButton"     Visibility="Collapsed" Content="{TemplateBinding NoButtonContent}"     Width="65"/>
+                                    <ctrl:CommonButton Margin="5 0" x:Name="PART_OkButton"     Visibility="Collapsed" Content="{TemplateBinding OkButtonContent}"     Width="65"/>
+                                    <ctrl:CommonButton Margin="5 0" x:Name="PART_CancelButton" Visibility="Collapsed" Content="{TemplateBinding CancelButtonContent}" Width="65" MinWidth="58" IsCancel="True"/>
                                 </ctrl:MessagePanel>
                             </ctrl:MessageBorder>
                         </Grid>
@@ -2728,6 +2781,7 @@
 
     <!--#region MultiComboBox-->
     <Style TargetType="{x:Type ComboBoxItem}" x:Key="MultiComboBoxItemStyle">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
         <Setter Property="IsSelected" Value="{Binding Path=DataContext.IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
         <Setter Property="Template">
             <Setter.Value>
@@ -2873,6 +2927,7 @@
     </Style>
     
     <Style TargetType="ctrl:MultiComboBox">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ctrl:MultiComboBox">

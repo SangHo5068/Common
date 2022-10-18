@@ -121,15 +121,6 @@ namespace Common.Notify
         /// </summary>
         private readonly SynchronizationContext _syncContext = AsyncOperationManager.SynchronizationContext;
 
-        bool disposeSignal;
-        [XmlIgnore]
-        [Newtonsoft.Json.JsonIgnore]
-        [Json.JsonIgnore]
-        public bool DisposeSignal
-        {
-            get { return disposeSignal; }
-            private set { SetValue(ref disposeSignal, value); }
-        }
         /// <summary>
         /// 속성값 Binding 설정
         /// </summary>
@@ -237,12 +228,6 @@ namespace Common.Notify
             if (!disposeOldValue) return;
             if (oldValue is IDisposable disposableOldValue)
                 disposableOldValue.Dispose();
-        }
-        protected override void DisposeManaged()
-        {
-            DisposeSignal = true;
-            DisposeSignal = false;
-            base.DisposeManaged();
         }
 
         #region Static

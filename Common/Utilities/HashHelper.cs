@@ -4,16 +4,15 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
+
 namespace Common.Utilities
 {
     /// <summary>
     /// 해쉬메소드
     /// 지정된 타입으로 해쉬를 만듭니다.(MD5, SHA1, SHA256, SHA512)
     /// </summary>
-    public class HashHelper
+    public static class HashHelper
     {
-        public HashHelper() { }
-
         public enum HashType : int
         {
             MD5,
@@ -22,36 +21,66 @@ namespace Common.Utilities
             SHA512
         }
 
-        /// <summary>
-        /// 해쉬값을 가져옵니다.
-        /// </summary>
-        /// <param name="text">원본 문자열</param>
-        /// <param name="hashType">해쉬 타입</param>
-        /// <returns></returns>
-        public static string GetHash(string text, HashType hashType)
+        //private static string GetHash(byte[] hash)
+        private static string GetHash(object text, HashAlgorithm algorithm)
         {
-            string hashString;
-            switch (hashType)
+            var hash = new byte[0];
+            if (text is string str && !string.IsNullOrEmpty(str))
             {
-                case HashType.MD5:
-                    hashString = GetMD5(text);
-                    break;
-                case HashType.SHA1:
-                    hashString = GetSHA1(text);
-                    break;
-                case HashType.SHA256:
-                    hashString = GetSHA256(text);
-                    break;
-                case HashType.SHA512:
-                    hashString = GetSHA512(text);
-                    break;
-                default:
-                    hashString = "Invalid Hash Type";
-                    break;
+                var message = Cryptography.CurrentEncoding.GetBytes(str);
+                hash = algorithm.ComputeHash(message);
             }
+            else
+            if (text is FileStream fs && fs.CanRead)
+                hash = algorithm.ComputeHash(fs);
 
-            return hashString;
+            var hex = string.Empty;
+            foreach (byte x in hash)
+                hex += String.Format("{0:x2}", x);
+            return hex;
         }
+
+        private static string GetMD5(object text)
+        {
+            var algorithm = new MD5CryptoServiceProvider();
+
+            return GetHash(text, algorithm);
+        }
+
+        private static string GetSHA1(object text)
+        {
+            var algorithm = new SHA1Managed();
+
+            return GetHash(text, algorithm);
+        }
+
+        private static string GetSHA256(object text)
+        {
+            var algorithm = new SHA256Managed();
+
+            return GetHash(text, algorithm);
+        }
+
+        private static string GetSHA512(object text)
+        {
+            var algorithm = new SHA512Managed();
+
+            return GetHash(text, algorithm);
+        }
+
+        ///// <summary>
+        ///// 인코딩이 없는 파일 데이터 해쉬값
+        ///// </summary>
+        ///// <param name="message"></param>
+        ///// <returns></returns>
+        //public static string GetSHA256(byte[] message)
+        //{
+        //    var hashAlgorithm = new SHA256Managed();
+        //    var hashValue = hashAlgorithm.ComputeHash(message);
+        //    return GetHash(hashValue);
+        //}
+
+
 
         public static bool CheckHash(string original, string hashString, HashType hashType)
         {
@@ -59,88 +88,52 @@ namespace Common.Utilities
             return (originalHash == hashString);
         }
 
-        private static string GetMD5(string text)
+        /// <summary>
+        /// 해쉬값을 가져옵니다.
+        /// </summary>
+        /// <param name="text">원본 문자열</param>
+        /// <param name="hashType">해쉬 타입</param>
+        /// <returns></returns>
+        public static string GetHash(object text, HashType hashType)
         {
-            MD5 hashString = new MD5CryptoServiceProvider();
-            string hex = "";
+            string hash;
+            switch (hashType)
+            {
+                case HashType.MD5:
+                    hash = GetMD5(text);
+                    break;
+                case HashType.SHA1:
+                    hash = GetSHA1(text);
+                    break;
+                case HashType.SHA256:
+                    hash = GetSHA256(text);
+                    break;
+                case HashType.SHA512:
+                    hash = GetSHA512(text);
+                    break;
+                default:
+                    hash = "Invalid Hash Type";
+                    break;
+            }
 
-            byte[] message = Cryptography.CurrentEncoding.GetBytes(text);
-            byte[] hashValue = hashString.ComputeHash(message);
-            foreach (byte x in hashValue)
-                hex += String.Format("{0:x2}", x);
-            return hex;
+            return hash;
         }
-
-        private static string GetSHA1(string text)
-        {
-            byte[] hashValue;
-            byte[] message = Cryptography.CurrentEncoding.GetBytes(text);
-
-            SHA1Managed hashString = new SHA1Managed();
-            string hex = "";
-
-            hashValue = hashString.ComputeHash(message);
-            foreach (byte x in hashValue)
-                hex += String.Format("{0:x2}", x);
-            return hex;
-        }
-
-        private static string GetSHA256(string text)
-        {
-            var message = Cryptography.CurrentEncoding.GetBytes(text);
-            return GetSHA256(message);
-            //var hashValue = hashString.ComputeHash(message);
-            //foreach (byte x in hashValue)
-            //    hex += String.Format("{0:x2}", x);
-            //return hex;
-        }
-
-        public static string GetSHA256(byte[] buff)
-        {
-            var hex = string.Empty;
-            var hashString = new SHA256Managed();
-            var hashValue = hashString.ComputeHash(buff);
-            foreach (byte x in hashValue)
-                hex += String.Format("{0:x2}", x);
-            return hex;
-        }
-
-        private static string GetSHA512(string text)
-        {
-            byte[] hashValue;
-            byte[] message = Cryptography.CurrentEncoding.GetBytes(text);
-
-            SHA512Managed hashString = new SHA512Managed();
-            string hex = "";
-
-            hashValue = hashString.ComputeHash(message);
-            foreach (byte x in hashValue)
-                hex += String.Format("{0:x2}", x);
-            return hex;
-        }
-
-
 
         /// <summary>
         /// 지정된 경로의 파일 해쉬값을 가져옵니다.
         /// </summary>
-        /// <param name="filePath"></param>
+        /// <param name="path">파일이름</param>
         /// <returns></returns>
-        private static string GetFileHashSHA256(string filePath)
+        public static string GetFilesHash(string path, HashType hashType = HashType.SHA256)
         {
-            if (!File.Exists(filePath))
+            if (!File.Exists(path))
                 return string.Empty;
 
-            string hex = string.Empty;
-            //byte[] hashValue;
-            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            var hex = string.Empty;
+            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
             {
-                var hashString = new SHA256Managed();
-                var hashValue  = hashString.ComputeHash(fs);
-                foreach (byte x in hashValue)
-                    hex += String.Format("{0:x2}", x);
+                hex = GetHash(fs, hashType);
             }
-
             return hex;
         }
 
@@ -148,13 +141,16 @@ namespace Common.Utilities
         /// 사용되는 파일들을 해쉬값을 가져옵니다.(무결성 검사)
         /// </summary>
         /// <returns></returns>
-        public static string GetFilesHash(string path, params object[] paramaters)
+        public static string GetFilesHash(string path, HashType hashType, params object[] paramaters)
         {
-            string hashValue = string.Empty;
-            foreach (string target in paramaters.Cast<string>().ToList())
-                hashValue += GetFileHashSHA256(path + target + ".dll");
+            var hashValue = string.Empty;
+            if (paramaters != null && paramaters.Length > 0)
+            {
+                foreach (string target in paramaters.Cast<string>().ToList())
+                    hashValue += GetFilesHash(path + target + ".dll", hashType);
+            }
 
-            return GetHash(hashValue, HashType.SHA256);
+            return GetHash(hashValue, hashType);
         }
     }
 

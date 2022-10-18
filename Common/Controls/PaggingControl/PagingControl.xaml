@@ -65,8 +65,8 @@
 
             <!--Total Count-->
             <local:RightPanel Grid.Column="2" Margin="0,0,5,0">
-                <!--<local:PagingCountTextBlock x:Name="TxtTotal" Text="{Binding LanguageTotal, FallbackValue=Total}"/>-->
-                <local:PagingCountTextBlock Margin="5 0 15 0" Text="{Binding Path=TotalCount, StringFormat={}Total : {0}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:PagingControl}}"/>
+                <local:PagingCountTextBlock x:Name="TxtTotal" Text="{Binding Path=LanguageTotal, FallbackValue=Total, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:PagingControl}, UpdateSourceTrigger=PropertyChanged}"/>
+                <local:PagingCountTextBlock Margin="5 0 15 0" Text="{Binding Path=TotalCount, StringFormat={} : {0}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:PagingControl}}"/>
                 <!--<local:PagingCountTextBlock Text="{Binding Path=DataContext.TxtTotalCount, RelativeSource={RelativeSource Self}}"/>-->
                 <!--<local:PagingCountTextBlock x:Name="TxtCount" Text="{Binding LanguageCount, FallbackValue=Count}"/>-->
                 <ComboBox Width="100" FontSize="10" Name="cbPageSize" Margin="15,0,5,0" TabIndex="6" SelectedIndex="0"

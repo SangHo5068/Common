@@ -162,6 +162,21 @@ namespace Common.Converters
         }
     }
 
+    public class ContainsValueToBooleanConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value == null || parameter == null)
+                return false;
+            return value.ToString().Contains(parameter.ToString());
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return false;
+        }
+    }
+
     public class ContainsToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

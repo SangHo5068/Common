@@ -102,35 +102,6 @@ namespace Common.Controls
         /// </summary>
         public static bool IsShow { get; set; }
 
-        #region Constructors
-
-        static MessageBox()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(MessageBox), new FrameworkPropertyMetadata(typeof(MessageBox)));
-        }
-
-        public MessageBox()
-        {
-            this.Visibility = Visibility.Collapsed;
-            IsShow = false;
-
-            SetLanguageButtonsContent();
-            this.InitHandlers();
-        }
-
-        /// <summary>
-        /// 메시지박스 ButtonContent 다국어 지원
-        /// </summary>
-        private void SetLanguageButtonsContent()
-        {
-            YesButtonContent = "Yes";
-            NoButtonContent = "No";
-            OkButtonContent = "Ok";
-            CancelButtonContent = "Cancel";
-        }
-
-        #endregion //Constructors
-
         #region Properties
 
         #region Protected Properties
@@ -159,6 +130,84 @@ namespace Common.Controls
         }
 
         #endregion //ButtonRegionBackground
+
+
+        #region MessageBoxResult
+
+        /// <summary>
+        /// Gets the MessageBox result, which is set when the "Closed" event is raised.
+        /// </summary>
+        public MessageBoxResult MessageBoxResult
+        {
+            get { return _dialogResult; }
+        }
+
+        #endregion //MessageBoxResult
+
+        #region Text
+
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(MessageBox), new UIPropertyMetadata(String.Empty));
+        public string Text
+        {
+            get { return (string)GetValue(TextProperty); }
+            set
+            {
+                if (this._syncContext == null)
+                    SetValue(TextProperty, value);
+                else this._syncContext.Send(delegate { SetValue(TextProperty, value); }, null);
+            }
+        }
+
+        #endregion //Text
+
+        #region Caption
+
+        public static readonly DependencyProperty CaptionProperty = DependencyProperty.Register("Caption", typeof(string), typeof(MessageBox), new UIPropertyMetadata(String.Empty));
+        public string Caption
+        {
+            get { return (string)GetValue(CaptionProperty); }
+            set
+            {
+                if (this._syncContext == null)
+                    SetValue(CaptionProperty, value);
+                else this._syncContext.Send(delegate { SetValue(CaptionProperty, value); }, null);
+            }
+        }
+
+        #endregion //Caption
+
+        #region ImageSource
+
+        public static readonly DependencyProperty ImageSourceProperty = DependencyProperty.Register("ImageSource", typeof(ImageSource), typeof(MessageBox), new UIPropertyMetadata(default(ImageSource)));
+        public ImageSource ImageSource
+        {
+            get { return (ImageSource)GetValue(ImageSourceProperty); }
+            set
+            {
+                if (this._syncContext == null)
+                    SetValue(ImageSourceProperty, value);
+                else this._syncContext.Send(delegate { SetValue(ImageSourceProperty, value); }, null);
+            }
+        }
+
+        #endregion //ImageSource
+
+
+        #region CancelButtonContent
+
+        public static readonly DependencyProperty CloseButtonContentProperty = DependencyProperty.Register("CloseButtonContent", typeof(object), typeof(MessageBox), new UIPropertyMetadata("Close"));
+        public object CloseButtonContent
+        {
+            get { return (object)GetValue(CloseButtonContentProperty); }
+            set
+            {
+                if (this._syncContext == null)
+                    SetValue(CloseButtonContentProperty, value);
+                else this._syncContext.Send(delegate { SetValue(CloseButtonContentProperty, value); }, null);
+            }
+        }
+
+        #endregion //CancelButtonContent
 
         #region CancelButtonContent
 
@@ -192,22 +241,6 @@ namespace Common.Controls
 
         #endregion //CancelButtonStyle
 
-        #region ImageSource
-
-        public static readonly DependencyProperty ImageSourceProperty = DependencyProperty.Register("ImageSource", typeof(ImageSource), typeof(MessageBox), new UIPropertyMetadata(default(ImageSource)));
-        public ImageSource ImageSource
-        {
-            get { return (ImageSource)GetValue(ImageSourceProperty); }
-            set
-            {
-                if (this._syncContext == null)
-                    SetValue(ImageSourceProperty, value);
-                else this._syncContext.Send(delegate { SetValue(ImageSourceProperty, value); }, null);
-            }
-        }
-
-        #endregion //ImageSource
-
         #region OkButtonContent
 
         public static readonly DependencyProperty OkButtonContentProperty = DependencyProperty.Register("OkButtonContent", typeof(object), typeof(MessageBox), new UIPropertyMetadata("OK"));
@@ -240,18 +273,6 @@ namespace Common.Controls
 
         #endregion //OkButtonStyle
 
-        #region MessageBoxResult
-
-        /// <summary>
-        /// Gets the MessageBox result, which is set when the "Closed" event is raised.
-        /// </summary>
-        public MessageBoxResult MessageBoxResult
-        {
-            get { return _dialogResult; }
-        }
-
-        #endregion //MessageBoxResult
-
         #region NoButtonContent
 
         public static readonly DependencyProperty NoButtonContentProperty = DependencyProperty.Register("NoButtonContent", typeof(object), typeof(MessageBox), new UIPropertyMetadata("No"));
@@ -283,38 +304,6 @@ namespace Common.Controls
         }
 
         #endregion //NoButtonStyle
-
-        #region Text
-
-        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(MessageBox), new UIPropertyMetadata(String.Empty));
-        public string Text
-        {
-            get { return (string)GetValue(TextProperty); }
-            set
-            {
-                if (this._syncContext == null)
-                    SetValue(TextProperty, value);
-                else this._syncContext.Send(delegate { SetValue(TextProperty, value); }, null);
-            }
-        }
-
-        #endregion //Text
-
-        #region Caption
-
-        public static readonly DependencyProperty CaptionProperty = DependencyProperty.Register("Caption", typeof(string), typeof(MessageBox), new UIPropertyMetadata(String.Empty));
-        public string Caption
-        {
-            get { return (string)GetValue(CaptionProperty); }
-            set
-            {
-                if (this._syncContext == null)
-                    SetValue(CaptionProperty, value);
-                else this._syncContext.Send(delegate { SetValue(CaptionProperty, value); }, null);
-            }
-        }
-
-        #endregion //Caption
 
         #region YesButtonContent
 
@@ -352,6 +341,52 @@ namespace Common.Controls
 
         #endregion //Properties
 
+
+
+        #region Constructors
+
+        static MessageBox()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(MessageBox), new FrameworkPropertyMetadata(typeof(MessageBox)));
+        }
+
+        public MessageBox()
+        {
+            this.Visibility = Visibility.Collapsed;
+            IsShow = false;
+
+            SetLanguageButtonsContent();
+            this.InitHandlers();
+        }
+
+        /// <summary>
+        /// 메시지박스 ButtonContent 다국어 지원
+        /// </summary>
+        private void SetLanguageButtonsContent()
+        {
+            var culture = Thread.CurrentThread.CurrentCulture;
+            if (culture == null || string.IsNullOrEmpty(culture.Name) || culture.Name.ToLower() == "en-us")
+            {
+                YesButtonContent    = "Yes";
+                NoButtonContent     = "No";
+                OkButtonContent     = "Ok";
+                CancelButtonContent = "Cancel";
+                CloseButtonContent  = "Close";
+            }
+            else
+            if (culture.Name.ToLower() == "ko-kr")
+            {
+                YesButtonContent    = "예";
+                NoButtonContent     = "아니오";
+                OkButtonContent     = "확인";
+                CancelButtonContent = "취소";
+                CloseButtonContent  = "닫기";
+            }
+        }
+
+        #endregion //Constructors
+
+
         #region Base Class Overrides
 
         //internal override bool AllowPublicIsActiveChange
@@ -386,7 +421,10 @@ namespace Common.Controls
 
             Button closeButton = GetMessageBoxButton(PART_CloseButton);
             if (closeButton != null)
+            {
+                closeButton.Content = CloseButtonContent;
                 closeButton.IsEnabled = !object.Equals(_button, MessageBoxButton.YesNo);
+            }
 
             Button okButton = GetMessageBoxButton(PART_OkButton);
             if (okButton != null)

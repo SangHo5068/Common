@@ -39,6 +39,9 @@ namespace Common.Controls
         public static readonly DependencyProperty ShowSearchPanelProperty;
         public static readonly DependencyProperty SearchButtonAreaTemplateProperty;
         public static readonly DependencyProperty VisibilityInitialProperty;
+
+        public static readonly DependencyProperty LanguageInitializeProperty;
+        public static readonly DependencyProperty LanguageSearchProperty;
         #endregion //DependencyProperty
 
         #region Private
@@ -77,6 +80,17 @@ namespace Common.Controls
         {
             get { return (Visibility)GetValue(VisibilityInitialProperty); }
             set { SetValue(VisibilityInitialProperty, value); }
+        }
+
+        public string LanguageInitialize
+        {
+            get { return (string)GetValue(LanguageInitializeProperty); }
+            set { SetValue(LanguageInitializeProperty, value); }
+        }
+        public string LanguageSearch
+        {
+            get { return (string)GetValue(LanguageSearchProperty); }
+            set { SetValue(LanguageSearchProperty, value); }
         }
 
         #endregion //Properties
@@ -133,6 +147,9 @@ namespace Common.Controls
             ShowSearchPanelProperty = DependencyProperty.Register(nameof(ShowSearchPanel), typeof(bool), owner, new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ShowSearchPanelPropertyChanged));
             SearchButtonAreaTemplateProperty = DependencyProperty.Register(nameof(SearchButtonAreaTemplate), typeof(ControlTemplate), owner, new PropertyMetadata(null));
             VisibilityInitialProperty = DependencyProperty.Register(nameof(VisibilityInitial), typeof(Visibility), owner, new PropertyMetadata(Visibility.Visible));
+
+            LanguageInitializeProperty = DependencyProperty.Register(nameof(LanguageInitialize), typeof(String), owner, new PropertyMetadata("Initialize"));
+            LanguageSearchProperty = DependencyProperty.Register(nameof(LanguageSearch), typeof(String), owner, new PropertyMetadata("Search"));
 
             ShowEvent = EventManager.RegisterRoutedEvent(nameof(Show), RoutingStrategy.Bubble, typeof(RoutedEventHandler), owner);
             HideEvent = EventManager.RegisterRoutedEvent(nameof(Hide), RoutingStrategy.Bubble, typeof(RoutedEventHandler), owner);

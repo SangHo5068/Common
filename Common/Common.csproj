@@ -144,6 +144,7 @@
     <Compile Include="Controls\ColorPicker\ColorUtils.cs" />
     <Compile Include="Controls\ColorPicker\HsvControl.cs" />
     <Compile Include="Controls\ColorPicker\SpectrumSlider.cs" />
+    <Compile Include="Controls\FontFamilySearchBox.cs" />
     <Compile Include="Controls\MultiComboBox.cs" />
     <Compile Include="Controls\MultiSelectComboBox.xaml.cs">
       <DependentUpon>MultiSelectComboBox.xaml</DependentUpon>
@@ -290,6 +291,27 @@
       <Link>.editorconfig</Link>
     </None>
     <None Include="app.config" />
+    <Resource Include="Resources\Fonts\GmarketSansTTFBold.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Fonts\GmarketSansTTFLight.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Fonts\GmarketSansTTFMedium.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Fonts\Handel Gothic D Medium.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Fonts\Handel Gothic D Light.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Fonts\Handel Gothic Compress D Medium.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Fonts\Handel Gothic Only Shadow D Light.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <None Include="log4net.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
