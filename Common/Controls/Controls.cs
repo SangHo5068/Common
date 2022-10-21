@@ -678,6 +678,7 @@ namespace Common.Controls
         public static DependencyProperty WaterMarkProperty = DependencyProperty.Register(nameof(WaterMark), typeof(String), typeof(WaterMarkPassword), new PropertyMetadata(null));
         public static DependencyProperty PasswordProperty = DependencyProperty.Register(nameof(Password), typeof(String), typeof(WaterMarkPassword), new PropertyMetadata(null));
         public static DependencyProperty PasswordCharProperty = DependencyProperty.Register(nameof(PasswordChar), typeof(char), typeof(WaterMarkPassword), new PropertyMetadata(null));
+        public static DependencyProperty IsEnabledRemoveProperty = DependencyProperty.Register(nameof(IsEnabledRemove), typeof(Boolean), typeof(WaterMarkPassword), new PropertyMetadata(true));
         #endregion //DependencyProperty
 
         #region Property
@@ -714,6 +715,17 @@ namespace Common.Controls
             set { SetValue(PasswordCharProperty, value); }
         }
         #endregion //PasswordChar
+
+        #region IsEnabledRemove
+        /// <summary>
+        /// 텍스트 삭제 버튼 표시 여부
+        /// </summary>
+        public Boolean IsEnabledRemove
+        {
+            get { return (Boolean)GetValue(IsEnabledRemoveProperty); }
+            set { SetValue(IsEnabledRemoveProperty, value); }
+        }
+        #endregion //IsEnabledRemove
 
         #endregion //Property
 
@@ -1053,7 +1065,7 @@ namespace Common.Controls
             get { return (Boolean)GetValue(IsEnabledRemoveProperty); }
             set { SetValue(IsEnabledRemoveProperty, value); }
         }
-        #endregion //WaterMark
+        #endregion //IsEnabledRemove
 
         #endregion //Property
 

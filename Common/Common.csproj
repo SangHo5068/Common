@@ -243,7 +243,10 @@
     <Compile Include="Views\ViewsManager.cs" />
     <Compile Include="Views\WindowRoot.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Images\eye_hidden.png" />
+    <Resource Include="Resources\Images\eye_show.png" />
+  </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\ColorPicker\ColorPicker_Generic.xaml">
       <Generator>MSBuild:Compile</Generator>

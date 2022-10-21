@@ -1475,14 +1475,22 @@
         </Style.Triggers>
     </Style>
     <Style TargetType="ctrl:WaterMarkPassword">
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource TextBoxFocusVisual}"/>
         <Setter Property="FontFamily" Value="{DynamicResource AppFont}" />
+        <Setter Property="FontSize" Value="{DynamicResource ListBoxFontSize}"/>
+        <Setter Property="Background" Value="{DynamicResource Background_PopupCommon}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush_PopupCommon}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Foreground_CommonText}"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="AllowDrop" Value="False"/>
         <Setter Property="PasswordChar" Value="●"/>
         <Setter Property="Height" Value="24"/>
+        <Setter Property="Margin" Value="5,0,0,0"/>
+        <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ctrl:WaterMarkPassword}">
@@ -1493,7 +1501,7 @@
                                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                                        Text="{TemplateBinding WaterMark}"
                                        FontSize="{TemplateBinding FontSize}"
-                                       FontFamily="{StaticResource AppFont}"
+                                       FontFamily="{TemplateBinding FontFamily}"
                                        Visibility="{Binding Path=IsChecked, ElementName=xEyeToggle, Converter={StaticResource BooleanToVisibilityInvertConverter}, ConverterParameter=false}"
                                        Foreground="{Binding Path=Foreground, ElementName=xWaterMarkTextBox}"
                                        Width="{TemplateBinding ActualWidth}"
@@ -1534,10 +1542,17 @@
                             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
                             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
                         </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
+                        <!--<Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="PART_Remove" Property="Visibility" Value="Visible" />
-                        </Trigger>
-                        <DataTrigger  Binding="{Binding Path=IsFocused, ElementName=PART_PasswordBox}" Value="True">
+                        </Trigger>-->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="IsEnabledRemove" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_Remove" Property="Visibility" Value="Visible" />
+                        </MultiTrigger>
+                        <DataTrigger Binding="{Binding Path=IsFocused, ElementName=PART_PasswordBox}" Value="True">
                             <Setter TargetName="PART_WaterMark" Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Path=Password, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource StringEmptyToVisibilityConverter}}" Value="Collapsed">
@@ -1729,8 +1744,8 @@
         <Setter Property="Foreground" Value="{DynamicResource Foreground_CommonText}"/>
         <Setter Property="SelectionBrush" Value="{DynamicResource Brush.Red}"/>
         <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
-        <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
-        <Setter Property="Height" Value="22"/>
+        <Setter Property="FontSize" Value="{DynamicResource ListBoxFontSize}"/>
+        <Setter Property="Height" Value="24"/>
         <Setter Property="Margin" Value="5,0,0,0"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -1744,8 +1759,10 @@
                     <Grid>
                         <TextBlock x:Name="PART_WaterMark"
                                    Margin="5,6,0,0" Focusable="False"
-                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                   VerticalAlignment="Center"
+                                   VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                                   FontSize="{TemplateBinding FontSize}"
+                                   FontFamily="{TemplateBinding FontFamily}"
+                                   Foreground="{Binding Path=Foreground, ElementName=PART_TextBox}"
                                    Text="{TemplateBinding WaterMark}"
                                    Width="{TemplateBinding ActualWidth}"
                                    Height="{TemplateBinding ActualHeight}">
@@ -1756,10 +1773,12 @@
                                 </MultiBinding>
                             </TextBlock.Visibility>
                         </TextBlock>
-                        <ctrl:PopupTextBox x:Name="PART_TextBox" Background="Transparent" Margin="0" MaxLength="{TemplateBinding MaxLength}"
+                        <ctrl:PopupTextBox x:Name="PART_TextBox" Background="Transparent" Margin="0"
+                                           MaxLength="{TemplateBinding MaxLength}"
                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                            Focusable="{TemplateBinding Focusable}"
+                                           Foreground="{TemplateBinding Foreground}"
                                            TabIndex="{TemplateBinding TabIndex}"
                                            IsTabStop="True"
                                            BorderThickness="{TemplateBinding BorderThickness}"
@@ -1790,9 +1809,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ctrl:EyeToggleButton}">
-                    <Grid Width="16" Height="16" Background="Transparent">
-                        <Image x:Name="hide" Width="12" Height="14" Source="../Resources/Images/pw_hide.png" Stretch="Fill"/>
-                        <Image x:Name="show" Width="12" Height="14" Source="../Resources/Images/pw_show.png" Stretch="Fill" Opacity="0"/>
+                    <Grid Width="20" Height="20" Background="Transparent">
+                        <Image x:Name="hide" Width="16" Height="14" Source="../Resources/Images/eye_hidden.png" Stretch="Fill"/>
+                        <Image x:Name="show" Width="16" Height="14" Source="../Resources/Images/eye_show.png" Stretch="Fill" Opacity="0"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
