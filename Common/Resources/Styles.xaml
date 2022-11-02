@@ -1810,8 +1810,8 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ctrl:EyeToggleButton}">
                     <Grid Width="20" Height="20" Background="Transparent">
-                        <Image x:Name="hide" Width="16" Height="14" Source="../Resources/Images/eye_hidden.png" Stretch="Fill"/>
-                        <Image x:Name="show" Width="16" Height="14" Source="../Resources/Images/eye_show.png" Stretch="Fill" Opacity="0"/>
+                        <Image x:Name="hide" Width="16" Height="14" Source="../Resources/Images/pw_hide.png" Stretch="Fill"/>
+                        <Image x:Name="show" Width="16" Height="14" Source="../Resources/Images/pw_show.png" Stretch="Fill" Opacity="0"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
