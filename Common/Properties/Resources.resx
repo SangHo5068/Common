@@ -135,6 +135,28 @@
   <data name="EventAggregatorNotConstructedOnUIThread" xml:space="preserve">
     <value>To use the UIThread option for subscribing, the EventAggregator must be constructed on the UI thread.</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="GmarketSansTTFBold" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\fonts\gmarketsansttfbold.ttf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="GmarketSansTTFLight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\fonts\gmarketsansttflight.ttf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="GmarketSansTTFMedium" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\fonts\gmarketsansttfmedium.ttf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Handel_Gothic_Compress_D_Medium" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\fonts\handel gothic compress d medium.ttf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Handel_Gothic_D_Light" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\fonts\handel gothic d light.ttf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Handel_Gothic_D_Medium" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\fonts\handel gothic d medium.ttf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Handel_Gothic_Only_Shadow_D_Light" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\fonts\handel gothic only shadow d light.ttf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="InvalidDelegateRerefenceTypeException" xml:space="preserve">
     <value>Invalid Delegate Reference Type Exception</value>
   </data>

@@ -39,7 +39,7 @@ namespace Common
         
 
 
-        private const String VersionFormat = "1.0.{0}";
+        private const String VersionFormat = "1.1.{0}";
         /// <summary>
         /// Git Commits Number
         /// </summary>
@@ -47,7 +47,7 @@ namespace Common
         /// <summary>
         /// 프로그램 버전
         /// </summary>
-        private const String _LastVersion = "12";
+        private const String _LastVersion = "00";
         /// <summary>
         /// 프로그램 버전 "1.0.{GitCommitNo}"
         /// </summary>

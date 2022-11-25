@@ -1095,5 +1095,39 @@ namespace Common.Controls
 
     #region Toggle
     public class EyeToggleButton : ToggleButton { }
+    public class SliderToggle : ToggleButton
+    {
+        public static readonly DependencyProperty ButtonWidthProperty =
+               DependencyProperty.Register("ButtonWidth", typeof(double),
+               typeof(SliderToggle), new PropertyMetadata(0.0));
+
+        public static readonly DependencyProperty
+               OnLabelProperty = DependencyProperty.Register
+               ("OnLabel", typeof(string), typeof(SliderToggle),
+               new PropertyMetadata(""));
+
+        public static readonly DependencyProperty OffLabelProperty =
+               DependencyProperty.Register("OffLabel", typeof(string),
+               typeof(SliderToggle), new PropertyMetadata(""));
+
+
+        public double ButtonWidth
+        {
+            get { return (double)GetValue(ButtonWidthProperty); }
+            set { SetValue(ButtonWidthProperty, value); }
+        }
+
+        public string OnLabel
+        {
+            get { return (string)GetValue(OnLabelProperty); }
+            set { SetValue(OnLabelProperty, value); }
+        }
+
+        public string OffLabel
+        {
+            get { return (string)GetValue(OffLabelProperty); }
+            set { SetValue(OffLabelProperty, value); }
+        }
+    }
     #endregion //Toggle
 }
