@@ -2,11 +2,11 @@
 
 namespace Common.Controls
 {
-    public enum TreeViewType
+    public enum TreeElementType
     {
         None,
-        GisElementList,
-        GisFilter
+        Element,
+        Filter
     }
 
     public enum UpdateSource
@@ -23,7 +23,7 @@ namespace Common.Controls
         Indeterminate
     }
 
-    public interface IGISElement
+    public interface ITreeElement
     {
         string _IW_GE_ID { get; set; }
         string _IW_GE_NAME { get; set; }
@@ -36,7 +36,7 @@ namespace Common.Controls
 
     public interface ITree
     {
-        TreeViewType TreeViewType { get; set; }
+        TreeElementType TreeViewType { get; set; }
 
         UpdateSource UpdateSource { get; set; }
 

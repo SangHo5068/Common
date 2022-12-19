@@ -769,12 +769,10 @@ namespace Common.Converters
         {
             try
             {
-                var treeviewType = (TreeViewType)value;
+                var treeviewType = (TreeElementType)value;
 
-                if (treeviewType == TreeViewType.GisFilter)
-                {
+                if (treeviewType == TreeElementType.Filter)
                     return Visibility.Visible;
-                }
 
                 return Visibility.Collapsed;
             }
@@ -786,7 +784,7 @@ namespace Common.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return TreeViewType.None;
+            return TreeElementType.None;
         }
     }
 

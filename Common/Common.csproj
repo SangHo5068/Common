@@ -154,6 +154,9 @@
     </Compile>
     <Compile Include="Controls\ProgressRing.cs" />
     <Compile Include="Controls\SearchPanel\SearchPanel.cs" />
+    <Compile Include="Controls\TreeView\FocusTreeView.cs" />
+    <Compile Include="Controls\TreeView\FocusTreeViewModel.cs" />
+    <Compile Include="Controls\TreeView\ITreeInterface.cs" />
     <Compile Include="Controls\UniformGridWithOrientation.cs" />
     <Compile Include="Converters\MarkupConverter.cs" />
     <Compile Include="Interop\WinApi.cs" />
@@ -167,7 +170,6 @@
     <Compile Include="Controls\BindableListBox.cs" />
     <Compile Include="Controls\ChildWindow.cs" />
     <Compile Include="Controls\ListView\GridView.cs" />
-    <Compile Include="Controls\IControlInterface.cs" />
     <Compile Include="Controls\ListView\ListViewColumns.cs" />
     <Compile Include="Controls\ListView\ListViewLayoutManager.cs" />
     <Compile Include="Controls\UpDownControls\ArrowRepeatButton.cs" />
@@ -236,6 +238,7 @@
     <Compile Include="Extensions\TreeViewItemExtensions.cs" />
     <Compile Include="Utilities\Screen\SystemInformation.cs" />
     <Compile Include="Utilities\Screen\WindowStateHelper.cs" />
+    <Compile Include="Utilities\VisualElementHelper.cs" />
     <Compile Include="Views\BaseWindow.cs" />
     <Compile Include="Controls\Controls.cs" />
     <Compile Include="Controls\MessageBox.cs" />
@@ -259,6 +262,10 @@
     <Page Include="Controls\PaggingControl\PagingControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TreeView\FocusTreeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
     <Page Include="Controls\UpDownControls\NumericUpDown.xaml">
       <SubType>Designer</SubType>
