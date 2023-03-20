@@ -47,9 +47,9 @@ namespace Common
         /// <summary>
         /// 프로그램 버전
         /// </summary>
-        private const String _LastVersion = "00";
+        private const String _LastVersion = "01";
         /// <summary>
-        /// 프로그램 버전 "1.0.{GitCommitNo}"
+        /// 프로그램 버전 "1.0.{LastVersion}"
         /// </summary>
         public static String AppVersion
         {

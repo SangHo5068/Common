@@ -432,6 +432,32 @@ namespace Common.Controls
     public class WindowMinButton : Button { }
     public class WindowMaxButton : Button { }
     public class WindowCloseButton : Button { }
+    public class WindowStyleButton : Button
+    {
+        #region DependencyProperty
+        public static readonly DependencyProperty CornerRadiusProperty;
+        #endregion //DependencyProperty
+
+        #region Property
+
+        #region CornerRadius
+        /// <summary>
+        /// CornerRadius
+        /// </summary>
+        public CornerRadius CornerRadius
+        {
+            get { return (CornerRadius)GetValue(CornerRadiusProperty); }
+            set { SetValue(CornerRadiusProperty, value); }
+        }
+        #endregion //CornerRadius
+
+        #endregion //Property
+        static WindowStyleButton()
+        {
+            Type owner = typeof(WindowStyleButton);
+            CornerRadiusProperty = DependencyProperty.Register(nameof(CornerRadius), typeof(CornerRadius), owner, new PropertyMetadata(new CornerRadius()));
+        }
+    }
     #endregion //Window Button
 
     #region Paging
@@ -679,6 +705,7 @@ namespace Common.Controls
         public static DependencyProperty PasswordProperty = DependencyProperty.Register(nameof(Password), typeof(String), typeof(WaterMarkPassword), new PropertyMetadata(null));
         public static DependencyProperty PasswordCharProperty = DependencyProperty.Register(nameof(PasswordChar), typeof(char), typeof(WaterMarkPassword), new PropertyMetadata(null));
         public static DependencyProperty IsEnabledRemoveProperty = DependencyProperty.Register(nameof(IsEnabledRemove), typeof(Boolean), typeof(WaterMarkPassword), new PropertyMetadata(true));
+        public static DependencyProperty IsEnabledEyeToggleProperty = DependencyProperty.Register(nameof(IsEnabledEyeToggle), typeof(Boolean), typeof(WaterMarkPassword), new PropertyMetadata(true));
         #endregion //DependencyProperty
 
         #region Property
@@ -726,6 +753,17 @@ namespace Common.Controls
             set { SetValue(IsEnabledRemoveProperty, value); }
         }
         #endregion //IsEnabledRemove
+
+        #region IsEnabledEyeToggle
+        /// <summary>
+        /// 비밀번호 표시 버튼 표시 여부
+        /// </summary>
+        public Boolean IsEnabledEyeToggle
+        {
+            get { return (Boolean)GetValue(IsEnabledEyeToggleProperty); }
+            set { SetValue(IsEnabledEyeToggleProperty, value); }
+        }
+        #endregion //IsEnabledEyeToggle
 
         #endregion //Property
 

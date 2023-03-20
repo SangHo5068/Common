@@ -47,6 +47,23 @@
     <Geometry x:Key="Checkmark">M 0,5.1 L 1.7,5.2 L 3.4,7.1 L 8,0.4 L 9.2,0 L 3.3,10.8 Z</Geometry>
     <Geometry x:Key="DownArrowGeometry">M 0 0 L 3.5 4 L 7 0 Z</Geometry>
 
+    <GeometryGroup x:Key="icon_pach_user">
+        <PathGeometry Figures="M26.77,16.59c1.53-1.76,2.47-4.05,2.47-6.57C29.24,4.5,24.74,0,19.21,0S9.19,4.5,9.19,10.02c0,2.51,.94,4.81,2.47,6.57C4.81,19.53,0,26.34,0,34.25c0,1.38,1.12,2.51,2.51,2.51H35.92c1.38,0,2.51-1.12,2.51-2.51,0-7.91-4.81-14.72-11.66-17.66Zm-12.57-6.57c0-2.76,2.25-5.01,5.01-5.01s5.01,2.25,5.01,5.01-2.25,5.01-5.01,5.01-5.01-2.25-5.01-5.01ZM5.23,31.75c1.19-6.64,7-11.7,13.98-11.7s12.79,5.06,13.98,11.7H5.23Z" FillRule="NonZero" />
+    </GeometryGroup>
+    <GeometryGroup x:Key="icon_pach_lock">
+        <PathGeometry Figures="M32.58,14.2h-3.34v-2.51C29.24,5.25,23.99,0,17.54,0S5.85,5.25,5.85,11.7v2.51H2.51c-1.38,0-2.51,1.12-2.51,2.51v20.05c0,1.38,1.12,2.51,2.51,2.51h30.08c1.38,0,2.51-1.12,2.51-2.51V16.71c0-1.38-1.12-2.51-2.51-2.51Zm-21.72-2.51c0-3.69,3-6.68,6.68-6.68s6.68,3,6.68,6.68v2.51H10.86v-2.51Zm19.21,22.56H5.01v-15.04H30.08v15.04Z" FillRule="NonZero" />
+        <PathGeometry Figures="M17.54,22.56c-1.38,0-2.51,1.12-2.51,2.51v3.34c0,1.38,1.12,2.51,2.51,2.51s2.51-1.12,2.51-2.51v-3.34c0-1.38-1.12-2.51-2.51-2.51Z" FillRule="NonZero" />
+    </GeometryGroup>
+
+    <Style TargetType="Path" x:Key="PathBaseStyle">
+        <Setter Property="Stretch" Value="Uniform"/>
+        <Setter Property="Width" Value="18"/>
+        <Setter Property="Height" Value="18"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Fill" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=FrameworkElement}}"/>
+    </Style>
+
     <!--#region FocusVisual-->
     <Style x:Key="ButtonFocusVisual">
         <Setter Property="Control.Template">
@@ -251,7 +268,7 @@
                                 <ctrl:LogoutButton Margin="0,0,0,0" Command="{TemplateBinding CommandLogout}" Visibility="{TemplateBinding IsShowLogout}" Height="40" Width="40" HorizontalAlignment="Right" VerticalAlignment="Center" ToolTip="Logout"/>
                                 <ctrl:WindowMinButton Margin="0,0,5,0" Command="{TemplateBinding CommandWindowMin}" CommandParameter="Minimized" Visibility="{TemplateBinding IsShowMin}"/>
                                 <ctrl:WindowMaxButton Margin="2,0,2,0" Command="{TemplateBinding CommandWindowMax}" CommandParameter="Maximized" Visibility="{TemplateBinding IsShowMax}"/>
-                                <ctrl:WindowCloseButton Margin="0,0,0,0" Command="{TemplateBinding CloseCommand}"/>
+                                <ctrl:WindowStyleButton Margin="0,0,0,0" Command="{TemplateBinding CloseCommand}" Style="{DynamicResource WinCloseButtonStyle}" CornerRadius="0 5 0 0"/>
                             </ctrl:RightPanel>
                         </Grid>
                     </Border>
@@ -302,14 +319,27 @@
                             <ctrl:TextBlockMainHeader Grid.Column="1" Margin="20,0,5,5" Text="{TemplateBinding Header}" />
 
                             <ctrl:RightPanel Grid.Column="2" Margin="0" VerticalAlignment="Top">
+                                <ctrl:WindowStyleButton Margin="0 2" CornerRadius="0" Command="{Binding CommandWindowMin, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" CommandParameter="Minimized" Visibility="{TemplateBinding IsShowMin}" Style="{DynamicResource WinMinimizeButtonStyle}"/>
+                                <ctrl:WindowStyleButton Margin="0 2" CornerRadius="0" Command="{Binding CommandWindowMax, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" CommandParameter="Maximized" Visibility="{TemplateBinding IsShowMax}" Style="{DynamicResource WinMaximizeButtonStyle}" x:Name="xMaxButton"/>
+                                <ctrl:WindowStyleButton Margin="0 2 2 2" CornerRadius="0 5 0 0" Command="{Binding CommandWindowClose}" Style="{DynamicResource WinCloseButtonStyle}"/>
+                            </ctrl:RightPanel>
+                            <!--<ctrl:RightPanel Grid.Column="2" Margin="0" VerticalAlignment="Top">
                                 <ctrl:WindowMinButton Margin="0 3 5 0" Command="{Binding CommandWindowMin, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" CommandParameter="Minimized" Visibility="{TemplateBinding IsShowMin}"/>
                                 <ctrl:WindowMaxButton Margin="2 3 2 0" Command="{Binding CommandWindowMax, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" CommandParameter="Maximized" Visibility="{TemplateBinding IsShowMax}"/>
-                                <!--<ctrl:WindowCloseButton Margin="0,0,0,0" Command="{Binding CommandWindowClose, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}"/>-->
+                                --><!--<ctrl:WindowCloseButton Margin="0,0,0,0" Command="{Binding CommandWindowClose, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}"/>--><!--
                                 <ctrl:WindowCloseButton Margin="0 -3 0 0" Width="40" VerticalAlignment="Stretch" Command="{TemplateBinding CloseCommand}"
                                                         Style="{DynamicResource CloseButtonStyle}"/>
-                            </ctrl:RightPanel>
+                            </ctrl:RightPanel>-->
                         </Grid>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Path=(util:WindowStateHelper.IsMaximized), UpdateSourceTrigger=PropertyChanged}" Value="False">
+                            <Setter TargetName="xMaxButton" Property="Style" Value="{DynamicResource WinMaximizeButtonStyle}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=(util:WindowStateHelper.IsMaximized), UpdateSourceTrigger=PropertyChanged}" Value="True">
+                            <Setter TargetName="xMaxButton" Property="Style" Value="{DynamicResource WinRestoreButtonStyle}"/>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -401,7 +431,65 @@
         <Setter Property="MinWidth" Value="80"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
     </Style>
-    
+
+    <Style TargetType="ctrl:WindowStyleButton" x:Key="CaptionButtonStyle">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="CornerRadius" Value="0,4,0,0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ctrl:WindowStyleButton">
+                    <Border x:Name="LayoutRoot" Background="Transparent" UseLayoutRounding="True"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                        <Grid Width="44" Height="30" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <TextBlock x:Name="txt" Text="{TemplateBinding Content}"
+                                       FontFamily="Segoe MDL2 Assets" FontSize="{DynamicResource ListBoxFontSize}" FontWeight="Bold"
+                                       Foreground="{DynamicResource Foreground_CommonText}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       RenderOptions.ClearTypeHint="Auto" TextOptions.TextRenderingMode="Aliased"  TextOptions.TextFormattingMode="Display"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="LayoutRoot" Property="Background" Value="{DynamicResource Brushes.Windows.Over}"/>
+                            <Setter TargetName="txt" Property="Foreground" Value="{DynamicResource Brush.Black}"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="Content" Value="&#xE106;"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="LayoutRoot" Property="Background" Value="{DynamicResource Brushes.Windows.Close.Over}"/>
+                            <Setter TargetName="txt" Property="Foreground" Value="{DynamicResource Brush.White}"/>
+                        </MultiTrigger>
+                        <!--<MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=Content, RelativeSource={RelativeSource Mode=Self}}" Value="&#xE739;"/>
+                                <Condition Binding="{Binding Path=(util:WindowStateHelper.IsMaximized), UpdateSourceTrigger=PropertyChanged}" Value="True"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Content" Value="&#xE923;"/>
+                        </MultiDataTrigger>-->
+                        <!--<DataTrigger Binding="{Binding Path=(util:WindowStateHelper.IsMaximized), UpdateSourceTrigger=PropertyChanged}" Value="True">
+                            <Setter Property="Content" Value="&#xE923;"/>
+                        </DataTrigger>-->
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ctrl:WindowStyleButton" BasedOn="{StaticResource CaptionButtonStyle}" x:Key="WinMinimizeButtonStyle">
+        <Setter Property="Content" Value="&#xE949;"/>
+    </Style>
+    <Style TargetType="ctrl:WindowStyleButton" BasedOn="{StaticResource CaptionButtonStyle}" x:Key="WinMaximizeButtonStyle">
+        <Setter Property="Content" Value="&#xE739;"/>
+    </Style>
+    <Style TargetType="ctrl:WindowStyleButton" BasedOn="{StaticResource CaptionButtonStyle}" x:Key="WinRestoreButtonStyle">
+        <Setter Property="Content" Value="&#xE923;"/>
+    </Style>
+    <Style TargetType="ctrl:WindowStyleButton" BasedOn="{StaticResource CaptionButtonStyle}" x:Key="WinCloseButtonStyle">
+        <Setter Property="Content" Value="&#xE106;"/>
+    </Style>
+
     <Style TargetType="ctrl:CommonButton" BasedOn="{StaticResource BaseButtonStyle}">
         <Setter Property="Background" Value="{DynamicResource Background_CommonButton}" />
         <Setter Property="Foreground" Value="{DynamicResource Brush.White}" />
@@ -1532,7 +1620,8 @@
 
                             <ctrl:RightPanel Margin="0">
                                 <ctrl:EyeToggleButton x:Name="xEyeToggle" Width="16" Height="16" Margin="0,2,2,2" Focusable="False" IsTabStop="False"
-                                                      HorizontalAlignment="Right" VerticalAlignment="Center" />
+                                                      HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                      Visibility="{Binding IsEnabledEyeToggle, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                 <ctrl:RemoveTextButton x:Name="PART_Remove" Margin="4" Width="12" Visibility="Collapsed" Focusable="False" IsTabStop="False"/>
                             </ctrl:RightPanel>
                         </Grid>
