@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -211,6 +212,22 @@ namespace ServiceBase
                     
                     Logger.WriteLog(LogTypes.WebInterface, $"[Request][{POST}] {parameter.Url}\r\n{parameter.PostMessage}");
 
+//#if DEBUG
+//                    try
+//                    {
+//                        var fileName = Path.GetFileNameWithoutExtension(parameter.PostMessage) + ".json";
+//                        var filePath = @"D:\Works\Temp\";
+//                        //var json = new JObject();
+//                        //foreach (var item in keyvalues)
+//                        //    json.Add(item.Key, item.Value?.ToString());
+//                        var data = SerializeHelper.SerializeByJson(keyvalues);
+//                        FileManager.FileCreate(filePath + fileName, data);
+//                    }
+//                    catch (Exception ex)
+//                    {
+//                        Logger.WriteLog(LogTypes.Exception, "", ex);
+//                    }
+//#endif
                     // RequestStream 에 데이터 추가
                     UploadFilesStream(req, new string[] { parameter.PostMessage }, keyvalues);
 
@@ -430,6 +447,32 @@ namespace ServiceBase
                     memStream.Position = 0;
                     var tempBuffer = new byte[memStream.Length];
                     memStream.Read(tempBuffer, 0, tempBuffer.Length);
+
+//#if DEBUG
+//                    try
+//                    {
+//                        using (Stream newStream = new MemoryStream())
+//                        {
+//                            newStream.Position = 0;
+//                            newStream.Write(tempBuffer, 0, tempBuffer.Length);
+//                            var fileName = Path.GetFileNameWithoutExtension(files.First()) + ".json";
+//                            var filePath = @"D:\Works\Temp\";
+//                            if (!Directory.Exists(filePath))
+//                                Directory.CreateDirectory(filePath);
+//                            fileName = filePath + fileName;
+//                            if (System.IO.File.Exists(fileName))
+//                                System.IO.File.Delete(fileName);
+//                            //var json = SerializeHelper.SerializeByJsonCamel(requestStream);
+
+//                            FileManager.FileCreate(fileName, newStream, newStream.Length);
+//                            newStream.Close();
+//                        }
+//                    }
+//                    catch (Exception ex)
+//                    {
+//                        Logger.WriteLog(LogTypes.Exception, "", ex);
+//                    }
+//#endif
                     memStream.Close();
                     requestStream.Write(tempBuffer, 0, tempBuffer.Length);
                 }

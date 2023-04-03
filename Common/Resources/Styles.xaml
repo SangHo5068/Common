@@ -55,6 +55,51 @@
         <PathGeometry Figures="M17.54,22.56c-1.38,0-2.51,1.12-2.51,2.51v3.34c0,1.38,1.12,2.51,2.51,2.51s2.51-1.12,2.51-2.51v-3.34c0-1.38-1.12-2.51-2.51-2.51Z" FillRule="NonZero" />
     </GeometryGroup>
 
+    <GeometryGroup x:Key="icon_pach_Exit">
+        <PathGeometry Figures="M 0,0 L 20,20 M 20,0 L 0,20" FillRule="EvenOdd" />
+    </GeometryGroup>
+
+    <GeometryGroup x:Key="icon_pach_Min">
+        <PathGeometry Figures="M 0,0 L 20,20 M 20,0 L 0,20" FillRule="NonZero" />
+        <PathGeometry Figures="M 0,0 L 20,20 M 20,0 L 0,20" FillRule="NonZero" />
+    </GeometryGroup>
+    <GeometryGroup x:Key="icon_pach_min">
+        <PathGeometry Figures="M0,7L8,7Z" FillRule="EvenOdd" />
+    </GeometryGroup>
+    <GeometryGroup x:Key="icon_pach_Restore">
+        <PathGeometry Figures="M2,0 L8,0 L8,6 M0,3 L6,3 M0,2 L6,2 L6,8 L0,8 Z" FillRule="EvenOdd" />
+        <!--<PathGeometry Figures="M2,2 L2,14 L14,14 L14,2 Z" FillRule="EvenOdd" />-->
+        <!--<PathGeometry Figures="M3,3 L3,13 L13,13 L13,3 Z" FillRule="EvenOdd" />-->
+        
+        <!--<LineGeometry StartPoint="0,0" EndPoint="20,0" />
+        <LineGeometry StartPoint="0,0" EndPoint="0,20" />
+        <LineGeometry StartPoint="0,20" EndPoint="20,20" />
+        <LineGeometry StartPoint="10,0" EndPoint="20,0" />
+        <LineGeometry StartPoint="10,0" EndPoint="10,10" />
+        <LineGeometry StartPoint="10,10" EndPoint="20,10" />
+        <LineGeometry StartPoint="20,0" EndPoint="20,10" />-->
+
+        <!--<RectangleGeometry Rect="0,0,6,2"/>
+        <RectangleGeometry Rect="0,4,6,2"/>
+        <RectangleGeometry Rect="0,8,6,2"/>
+        <RectangleGeometry Rect="8,0,2,2"/>
+        <RectangleGeometry Rect="8,4,2,6"/>
+        <RectangleGeometry Rect="8,10,2,2"/>-->
+    </GeometryGroup>
+    <GeometryGroup x:Key="icon_pach_Maximize">
+        <PathGeometry Figures="M0,0 L16,0 L16,16 L0,16 Z M1,1 L1,15 L15,15 L15,1 Z" FillRule="EvenOdd" />
+    </GeometryGroup>
+    <GeometryGroup x:Key="icon_pach_Close">
+        <PathGeometry>
+            <PathFigure StartPoint="0,0">
+                <LineSegment Point="8,8"/>
+            </PathFigure>
+            <PathFigure StartPoint="0,8">
+                <LineSegment Point="8,0"/>
+            </PathFigure>
+        </PathGeometry>
+    </GeometryGroup>
+
     <Style TargetType="Path" x:Key="PathBaseStyle">
         <Setter Property="Stretch" Value="Uniform"/>
         <Setter Property="Width" Value="18"/>
@@ -319,9 +364,9 @@
                             <ctrl:TextBlockMainHeader Grid.Column="1" Margin="20,0,5,5" Text="{TemplateBinding Header}" />
 
                             <ctrl:RightPanel Grid.Column="2" Margin="0" VerticalAlignment="Top">
-                                <ctrl:WindowStyleButton Margin="0 2" CornerRadius="0" Command="{Binding CommandWindowMin, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" CommandParameter="Minimized" Visibility="{TemplateBinding IsShowMin}" Style="{DynamicResource WinMinimizeButtonStyle}"/>
-                                <ctrl:WindowStyleButton Margin="0 2" CornerRadius="0" Command="{Binding CommandWindowMax, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" CommandParameter="Maximized" Visibility="{TemplateBinding IsShowMax}" Style="{DynamicResource WinMaximizeButtonStyle}" x:Name="xMaxButton"/>
-                                <ctrl:WindowStyleButton Margin="0 2 2 2" CornerRadius="0 5 0 0" Command="{Binding CommandWindowClose}" Style="{DynamicResource WinCloseButtonStyle}"/>
+                                <ctrl:WindowStyleButton Margin="0 2" CornerRadius="0" Command="{Binding CommandWindowMin, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" CommandParameter="Minimized" Visibility="{TemplateBinding IsShowMin}" Style="{DynamicResource WindowsMinimizeButtonStyle}"/>
+                                <ctrl:WindowStyleButton Margin="0 2" CornerRadius="0" Command="{Binding CommandWindowMax, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" CommandParameter="Maximized" Visibility="{TemplateBinding IsShowMax}" Style="{DynamicResource WindowsMaximizeButtonStyle}" x:Name="xMaxButton"/>
+                                <ctrl:WindowStyleButton Margin="0 2 2 2" CornerRadius="0 5 0 0" Command="{Binding CommandWindowClose}" Style="{DynamicResource WindowsCloseButtonStyle}"/>
                             </ctrl:RightPanel>
                             <!--<ctrl:RightPanel Grid.Column="2" Margin="0" VerticalAlignment="Top">
                                 <ctrl:WindowMinButton Margin="0 3 5 0" Command="{Binding CommandWindowMin, RelativeSource={RelativeSource AncestorType=view:BaseWindow}}" CommandParameter="Minimized" Visibility="{TemplateBinding IsShowMin}"/>
@@ -334,10 +379,10 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <DataTrigger Binding="{Binding Path=(util:WindowStateHelper.IsMaximized), UpdateSourceTrigger=PropertyChanged}" Value="False">
-                            <Setter TargetName="xMaxButton" Property="Style" Value="{DynamicResource WinMaximizeButtonStyle}"/>
+                            <Setter TargetName="xMaxButton" Property="Style" Value="{DynamicResource WindowsMaximizeButtonStyle}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Path=(util:WindowStateHelper.IsMaximized), UpdateSourceTrigger=PropertyChanged}" Value="True">
-                            <Setter TargetName="xMaxButton" Property="Style" Value="{DynamicResource WinRestoreButtonStyle}"/>
+                            <Setter TargetName="xMaxButton" Property="Style" Value="{DynamicResource WindowsRestoreButtonStyle}"/>
                         </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -488,6 +533,45 @@
     </Style>
     <Style TargetType="ctrl:WindowStyleButton" BasedOn="{StaticResource CaptionButtonStyle}" x:Key="WinCloseButtonStyle">
         <Setter Property="Content" Value="&#xE106;"/>
+    </Style>
+
+    <Style TargetType="ctrl:WindowStyleButton" x:Key="WindowsButtonStyle">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="CornerRadius" Value="0,4,0,0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ctrl:WindowStyleButton">
+                    <Border x:Name="LayoutRoot" Background="Transparent" UseLayoutRounding="True"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                        <Grid Width="44" Height="30" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <Path x:Name="txt" Width="13" Height="13" Stretch="Fill"
+                                  HorizontalAlignment="Center" VerticalAlignment="Center"
+                                  Stroke="{DynamicResource Brush.Black}" StrokeThickness="1"
+                                  Data="{TemplateBinding Content}"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="LayoutRoot" Property="Background" Value="{DynamicResource Brushes.Windows.Close.Over}"/>
+                            <Setter TargetName="txt" Property="Stroke" Value="{DynamicResource Brush.White}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ctrl:WindowStyleButton" BasedOn="{StaticResource WindowsButtonStyle}" x:Key="WindowsMinimizeButtonStyle">
+        <Setter Property="Content" Value="{DynamicResource icon_pach_min}"/>
+    </Style>
+    <Style TargetType="ctrl:WindowStyleButton" BasedOn="{StaticResource WindowsButtonStyle}" x:Key="WindowsRestoreButtonStyle">
+        <Setter Property="Content" Value="{DynamicResource icon_pach_Restore}"/>
+    </Style>
+    <Style TargetType="ctrl:WindowStyleButton" BasedOn="{StaticResource WindowsButtonStyle}" x:Key="WindowsMaximizeButtonStyle">
+        <Setter Property="Content" Value="{DynamicResource icon_pach_Maximize}"/>
+    </Style>
+    <Style TargetType="ctrl:WindowStyleButton" BasedOn="{StaticResource WindowsButtonStyle}" x:Key="WindowsCloseButtonStyle">
+        <Setter Property="Content" Value="{DynamicResource icon_pach_Close}"/>
     </Style>
 
     <Style TargetType="ctrl:CommonButton" BasedOn="{StaticResource BaseButtonStyle}">

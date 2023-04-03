@@ -211,6 +211,7 @@ namespace Common.Utilities
                 {
                     byte[] buffer = new byte[1024 * 1024];
                     int length = 0;
+                    Context.Position = 0;
                     do
                     {
                         length = Context.Read(buffer, 0, buffer.Length);
@@ -226,7 +227,7 @@ namespace Common.Utilities
                     while (length > 0);
 
                     stream.Close();
-                    Context?.Close();
+                    //Context?.Close();
                 }
                 return true;
             }
