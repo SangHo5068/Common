@@ -7,7 +7,19 @@
     <DataTemplate DataType="{x:Type view:BaseContentView}">
         <Grid noti:LoadedBindings.LoadedEnabled="True"
               noti:LoadedBindings.LoadedAction="{Binding LoadAction}">
-            <TextBlock Text="Test" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Test" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <view:GridDemoView DataContext="{Binding }"/>
+            </Grid>
         </Grid> 
     </DataTemplate>
 </ResourceDictionary>

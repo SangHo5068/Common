@@ -6,6 +6,7 @@
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      xmlns:basectrl="clr-namespace:Common.Controls;assembly=Common"
                      xmlns:baseview="clr-namespace:Common.Views;assembly=Common"
+                     xmlns:cultures="clr-namespace:Common.Cultures;assembly=Common.Cultures"
                      xmlns:noti="clr-namespace:Common.Notify;assembly=Common"
                      xmlns:local="clr-namespace:Common.Demo"
                      mc:Ignorable="d"
@@ -99,7 +100,11 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="2" Style="{DynamicResource TextBlockStyle}"
+                <TextBlock Grid.Row="1" Style="{DynamicResource TextBlockStyle}" Height="24"
+                           VerticalAlignment="Center" HorizontalAlignment="Center"
+                           Foreground="{DynamicResource Brush_PopupButtonCommon}"
+                           Text="{Binding Path=Login, Source={StaticResource CultureResources}}"/>
+                <TextBlock Grid.Row="2" Style="{DynamicResource TextBlockStyle}" Height="24"
                            VerticalAlignment="Center" HorizontalAlignment="Center"
                            Foreground="{DynamicResource Brush_PopupButtonCommon}"
                            Text="{Binding Path=StartingMessage, UpdateSourceTrigger=PropertyChanged}"/>

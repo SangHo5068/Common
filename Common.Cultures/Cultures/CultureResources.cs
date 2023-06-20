@@ -16,12 +16,12 @@ namespace Common.Cultures
     public class CultureResources
     {
         #region Lazy Instance
-        private static readonly Lazy<Resources> instance = new Lazy<Resources>(() => new Resources());
+        //private static readonly Lazy<Resources> instance = new Lazy<Resources>(() => new Resources());
 
-        /// <summary>
-        /// 싱글턴 객체
-        /// </summary>
-        public static Resources Instance { get { return instance.Value; } }
+        ///// <summary>
+        ///// 싱글턴 객체
+        ///// </summary>
+        //public static Resources Instance { get { return instance.Value; } }
         #endregion //Lazy Instance
 
         //only fetch installed cultures once
@@ -63,20 +63,21 @@ namespace Common.Cultures
                 const string dll = ".resources.dll";
                 //determine which cultures are available to this application
                 Logger.WriteLogAndTrace(LogTypes.Info, "Get Installed cultures:");
+
+                var name = Assembly.GetExecutingAssembly().GetName().Name;
                 var path = Environment.CurrentDirectory;
                 foreach (string dir in Directory.GetDirectories(path))
                 {
                     try
                     {
-                        string name = Assembly.GetExecutingAssembly().GetName().Name;
                         //see if this directory corresponds to a valid culture name
-                        DirectoryInfo dirinfo = new DirectoryInfo(dir);
+                        var dirinfo = new DirectoryInfo(dir);
 
                         //determine if a resources dll exists in this directory that matches the executable name
                         //if (dirinfo.GetFiles(Path.GetFileNameWithoutExtension(path) + ".resources.dll").Length > 0)
                         if (dirinfo.GetFiles(name + dll).Length > 0)
                         {
-                            CultureInfo tCulture = CultureInfo.GetCultureInfo(dirinfo.Name);
+                            var tCulture = CultureInfo.GetCultureInfo(dirinfo.Name);
                             pSupportedCultures.Add(tCulture);
                             Logger.WriteLogAndTrace(LogTypes.Info, string.Format("Found Culture: {0} [{1}]", tCulture.DisplayName, tCulture.Name));
                         }

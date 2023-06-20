@@ -16,6 +16,7 @@ using Common.Utilities;
 
 using Culture = Common.Cultures.Cultures.Resources;
 
+
 namespace Common.Demo
 {
     /// <summary>
@@ -88,20 +89,14 @@ namespace Common.Demo
                     this.ShutdownMode = ShutdownMode.OnMainWindowClose;
 
                     Bootstrapper.Initialize();
-                    _ = CultureResources.Instance;
+                    //_ = CultureResources.Instance;
 
+                    CultureInfo culture = null;
                     try
                     {
                         var language = INIHelper.ReadIniValue(AppDefined.LanguageSession, "Language", "", IniPath);
-                        language = String.IsNullOrEmpty(language) ? Settings.Default.DefaultCulture : language;
-                        var culture = CultureInfo.GetCultureInfo(language);
-                        //culture = culture ?? Settings.Default.DefaultCulture;
-                        CultureResources.ResourceProvider.DataChanged += new EventHandler(ResourceProvider_DataChanged);
-
-                        //initialise with default culture
-                        Logger.WriteLogAndTrace(LogTypes.Info, string.Format("Set culture to default [{0}]:", culture));
-                        //CultureResources.ChangeCulture(Settings.Default.DefaultCulture);
-                        CultureResources.ChangeCulture(culture);
+                            //language = String.IsNullOrEmpty(language) ? Settings.Default.DefaultCulture : language;
+                        culture = CultureInfo.GetCultureInfo(language);
 
                         foreach (var item in Application.Current.Resources.MergedDictionaries)
                             Logger.WriteLogAndTrace(LogTypes.Info, string.Format("Resources [{0}]:", item.Source));
@@ -109,6 +104,15 @@ namespace Common.Demo
                     catch (Exception ex)
                     {
                         Logger.WriteLog(LogTypes.Exception, "", ex);
+                    }
+                    finally
+                    {
+                        culture = culture ?? Settings.Default.DefaultCulture;
+                        CultureResources.ResourceProvider.DataChanged += new EventHandler(ResourceProvider_DataChanged);
+                        //initialise with default culture
+                        Logger.WriteLogAndTrace(LogTypes.Info, string.Format("Set culture to default [{0}]:", culture));
+                        //CultureResources.ChangeCulture(Settings.Default.DefaultCulture);
+                        CultureResources.ChangeCulture(culture);
                     }
 
                     var window = new StartApp();
@@ -135,7 +139,11 @@ namespace Common.Demo
 
             var culture = Culture.Culture;
             INIHelper.WriteIniValue(AppDefined.LanguageSession, "Language", culture.Name, IniPath);
-            Settings.Default.DefaultCulture = culture.Name;
+            Settings.Default.DefaultCulture = culture;
+
+            //App.Current.Dispatcher.Thread.CurrentUICulture = culture;
+            //Thread.CurrentThread.CurrentCulture = culture;
+            //Thread.CurrentThread.CurrentUICulture = culture;
         }
 
         protected override void OnExit(ExitEventArgs e)

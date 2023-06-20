@@ -49,7 +49,7 @@
 
 
             <!--Change Content-->
-            <ContentPresenter Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            <ContentPresenter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                               Content="{Binding CurrentView, UpdateSourceTrigger=PropertyChanged}"/>
 
             <!--Footer-->

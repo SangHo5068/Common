@@ -25,6 +25,7 @@
     <converter:EnumToVisibleConverter               x:Key="EnumToVisibleConverter"/>
     <converter:EnumToCollapsedConverter             x:Key="EnumToCollapsedConverter"/>
     <converter:EnumToDisplayConverter               x:Key="EnumToDisplayConverter"/>
+    <converter:EnumToDescConverter                  x:Key="EnumToDescConverter"/>
     <converter:EnumToDescriptionConverter           x:Key="EnumToDescriptionConverter"/>
     <converter:EqualsToVisibilityConverter          x:Key="EqualsToVisibilityConverter"/>
     <converter:HeightConverter                      x:Key="HeightConverter"/>

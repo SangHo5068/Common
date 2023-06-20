@@ -8,6 +8,8 @@
                 <ResourceDictionary Source="pack://application:,,,/Common;component/Resources/Brushes.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Common;component/Resources/Styles.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Common;component/Controls/TreeView/FocusTreeView.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Common;component/Controls/TreeView/FocusTreeView.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Common.Cultures;component/Resources/Resources.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Common.Demo;component/Template/Template.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Common.Demo;component/Resources/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>

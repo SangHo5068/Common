@@ -361,10 +361,28 @@ namespace Common.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return DependencyProperty.UnsetValue;
         }
     }
-    
+
+    public class EnumToDescConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value == null || string.IsNullOrEmpty(value.ToString()))
+                return DependencyProperty.UnsetValue;
+            var attributes = value.GetType().GetField(value.ToString()).GetCustomAttributes(false).Cast<Attribute>();
+            if (!(attributes.FirstOrDefault(attribute => attribute is DisplayAttribute) is DisplayAttribute displayAttribute))
+                return Enum.GetName(value.GetType(), value);
+            return displayAttribute.Description;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return DependencyProperty.UnsetValue;
+        }
+    }
+
     public class EnumToDescriptionConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -379,7 +397,7 @@ namespace Common.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return DependencyProperty.UnsetValue;
         }
     }
 
